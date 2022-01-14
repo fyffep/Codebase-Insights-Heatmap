@@ -10,15 +10,16 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vscode-codebase-insights-iu.helloWorld"
+        "onCommand:vscode-codebase-insights-iu.start"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-codebase-insights-iu.helloWorld",
-				"title": "Hello World"
-			}
+				"command": "vscode-codebase-insights-iu.start",
+				"title": "Quick Launch Codebase Insights Demo",
+				"category": "Codebase Insights"
+			}		
 		]
 	},
 	"scripts": {
