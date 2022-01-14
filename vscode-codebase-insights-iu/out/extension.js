@@ -2,11 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = void 0;
 const vscode = require("vscode");
-const cats = {
-    'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
-    'Compiling Cat': 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
-    'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif'
-};
 function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('vscode-codebase-insights-iu.start', () => {
         CodingPanel.createOrShow(context.extensionUri);
@@ -15,8 +10,6 @@ function activate(context) {
         // Make sure we register a serializer in activation event
         vscode.window.registerWebviewPanelSerializer(CodingPanel.viewType, {
             async deserializeWebviewPanel(webviewPanel, state) {
-                console.log(`Got state: ${state}`);
-                // Reset the webview options so we use latest uri for `localResourceRoots`.
                 webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
                 CodingPanel.revive(webviewPanel, context.extensionUri);
             }
@@ -91,37 +84,23 @@ class CodingPanel {
     }
     _update() {
         const webview = this._panel.webview;
-        // // Vary the webview's content based on where it is located in the editor.
-        // switch (this._panel.viewColumn) {
-        // 	case vscode.ViewColumn.Two:
-        // 		this._updateForCat(webview, 'Compiling Cat');
-        // 		return;
-        // 	case vscode.ViewColumn.Three:
-        // 		this._updateForCat(webview, 'Testing Cat');
-        // 		return;
-        // 	case vscode.ViewColumn.One:
-        // 	default:
-        this._updateForCat(webview, 'Coding Cat');
-        return;
-        // }
-    }
-    _updateForCat(webview, catName) {
         this._panel.title = "Codebase Insights";
-        this._panel.webview.html = this._getHtmlForWebview(webview, cats[catName]);
+        this._panel.webview.html = this._getHtmlForWebview(webview);
     }
-    _getHtmlForWebview(webview, catGifPath) {
+    _getHtmlForWebview(webview) {
         // Local path to main script run in the webview
-        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
+        // const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'resources', 'main.js');
         // And the uri we use to load this script in the webview
-        const scriptUri = (scriptPathOnDisk).with({ 'scheme': 'vscode-resource' });
+        // const scriptUri = (scriptPathOnDisk).with({ 'scheme': 'vscode-resource' });
         // Local path to css styles
-        const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
-        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css');
-        const heatMapPath = vscode.Uri.joinPath(this._extensionUri, 'resources', 'Heatmap.png');
+        // const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'resources', 'reset.css');
+        // const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'resources', 'vscode.css');
+        // const heatMapPath = vscode.Uri.joinPath(this._extensionUri, 'resources', 'Heatmap.png');
         // Uri to load styles into webview
-        const stylesResetUri = webview.asWebviewUri(styleResetPath);
-        const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-        const heatMapUri = webview.asWebviewUri(heatMapPath);
+        // const stylesResetUri = webview.asWebviewUri(styleResetPath);
+        // const styleFile = vscode.Uri.file(path.join(this._extensionUri.path, "resources", "vscode.css"));
+        // const stylesMainUri = webview.asWebviewUri(styleFile);
+        // const heatMapUri = webview.asWebviewUri(heatMapPath);
         // Use a nonce to only allow specific scripts to be run
         const nonce = getNonce();
         return `<!DOCTYPE html>
@@ -134,14 +113,14 @@ class CodingPanel {
 				-->
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${stylesResetUri}" rel="stylesheet">
-				<link href="${stylesMainUri}" rel="stylesheet">
 				<title>Codebase Insights</title>
 			</head>
 			<body>
-				<h1 style="background-color: white;">Welcome To Codebase Insights</h1>
+			<div id="mainview-div"> 
+				<h1>Welcome To Codebase Insights</h1>
 				<img src="https://i.imgur.com/QI28Ewm.png" width=300 height=300></img>
 				<p>This is all HTML - in theory we can handle complex UIs as well</p>
+			</div>
 			</html>`;
     }
 }
