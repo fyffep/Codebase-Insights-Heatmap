@@ -2,12 +2,20 @@ import path = require('path');
 import * as vscode from 'vscode';
 
 
+//From the microsoft tutorials:
+//This method is called when we activate the extension
+//The extension is activated the very first time this command is executed
 export function activate(context: vscode.ExtensionContext) {
-	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-codebase-insights-iu.start', () => {
-			CodingPanel.createOrShow(context.extensionUri);
-		})
-	);
+
+	//Register the command which has already been defined in package.json
+	//Now we provide the implementation of that command
+	let setup = vscode.commands.registerCommand('vscode-codebase-insights-iu.start', () => {
+		//Code we put here will be executed on startup
+		//Create or show the webview
+		CodingPanel.createOrShow(context.extensionUri);
+	});
+
+	context.subscriptions.push(setup);
 
 	if (vscode.window.registerWebviewPanelSerializer) {
 		// Make sure we register a serializer in activation event
@@ -165,7 +173,7 @@ class CodingPanel {
 			</head>
 			<body>
 			<div id="mainview-div"> 
-				<h1>Welcome To Codebase Insights</h1>
+				<h1 style="color:red;">Welcome To Codebase Insights</h1>
 				<img src="https://i.imgur.com/QI28Ewm.png" width=300 height=300></img>
 				<p>This is all HTML - in theory we can handle complex UIs as well</p>
 			</div>
