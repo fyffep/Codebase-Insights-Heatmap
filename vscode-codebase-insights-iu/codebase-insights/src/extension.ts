@@ -14,5 +14,26 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.showInformationMessage('Hello World from Codebase Insights!');
 }
 
+export class CodeBaseInsightsView extends vscode.TreeItem {
+  constructor(
+    public readonly label: string,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly description: string
+  ) {
+    super(label, collapsibleState);
+    this.tooltip = `${this.label}`;
+    this.description = this.description;
+  }
+}
+
+export class CodebaseInsightsViewProvider implements vscode.TreeDataProvider<CodeBaseInsightsView> {
+  getTreeItem(element: CodeBaseInsightsView) {
+    return element;
+  }
+  getChildren(element?: CodeBaseInsightsView): Thenable<CodeBaseInsightsView[]> {
+    return Promise.resolve([]);
+  }
+}
+
 // this method is called when your extension is deactivated
 export function deactivate() {}
