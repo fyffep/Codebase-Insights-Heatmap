@@ -10,17 +10,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:codebase-insights.helloWorld",
     "onView:codebaseInsightsTree"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "codebase-insights.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "views": {
       "explorer": [
         {
