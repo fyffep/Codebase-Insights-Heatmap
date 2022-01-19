@@ -14,11 +14,20 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codebase-insights",
+          "title": "Codebase Insights",
+          "icon": "resources/hg0.svg"
+        }
+      ]
+    },
     "views": {
-      "explorer": [
+      "codebase-insights": [
         {
           "id": "codebaseInsightsTree",
-          "name": "Codebase Insights Navigation"
+          "name": "Navigation"
         }
       ]
     }
