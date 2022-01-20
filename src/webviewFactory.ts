@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
 import * as htmlFactory from './htmlFactory';
 
-var overviewWebviewPanel: vscode.WebviewPanel | undefined;
-var codeMapWebviewPanel: vscode.WebviewPanel | undefined;
-var knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
-var insightsWebviewPanel: vscode.WebviewPanel | undefined;
+let overviewWebviewPanel: vscode.WebviewPanel | undefined;
+let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
+let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
+let insightsWebviewPanel: vscode.WebviewPanel | undefined;
+
+const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
 
 export function overviewPanel(): void {
@@ -12,12 +14,12 @@ export function overviewPanel(): void {
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
     if (overviewWebviewPanel) {
-        overviewWebviewPanel.reveal(vscode.ViewColumn.One);
+        overviewWebviewPanel.reveal(preferredColumn);
     } else {
         overviewWebviewPanel = vscode.window.createWebviewPanel(
         'overviewPage',
         'Overview',
-        vscode.ViewColumn.One,
+        preferredColumn,
         {
             enableScripts: true
         }
@@ -35,12 +37,12 @@ export function codeMapPanel(): void {
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
     if (codeMapWebviewPanel) {
-        codeMapWebviewPanel.reveal(vscode.ViewColumn.One);
+        codeMapWebviewPanel.reveal(preferredColumn);
     } else {
         codeMapWebviewPanel = vscode.window.createWebviewPanel(
         'codeMapPage',
         'Code Map',
-        vscode.ViewColumn.One,
+        preferredColumn,
         {
             enableScripts:true
         }
@@ -57,12 +59,12 @@ export function knowledgeGraphPanel(): void {
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
     if (knowledgeGraphWebviewPanel) {
-        knowledgeGraphWebviewPanel.reveal(vscode.ViewColumn.One);
+        knowledgeGraphWebviewPanel.reveal(preferredColumn);
     } else {
         knowledgeGraphWebviewPanel = vscode.window.createWebviewPanel(
         'knowledgeGraph',
         'Knowledge Graph',
-        vscode.ViewColumn.One,
+        preferredColumn,
         {
             enableScripts: true
         }
@@ -79,12 +81,12 @@ export function insightsPanel(): void {
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     if (insightsWebviewPanel) {
-        insightsWebviewPanel.reveal(vscode.ViewColumn.One);
+        insightsWebviewPanel.reveal(preferredColumn);
     } else {
         insightsWebviewPanel = vscode.window.createWebviewPanel(
         'insights',
         'Insights',
-        vscode.ViewColumn.One,
+        preferredColumn,
         {
             enableScripts: true
         }
