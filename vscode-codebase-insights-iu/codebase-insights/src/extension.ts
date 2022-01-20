@@ -8,22 +8,23 @@ export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   console.log(
-    'Congratulations, your extension "codebase-insights" is now active!'
+    'Codebase Insights extension activated!'
   );
 
-  vscode.window.showInformationMessage('fdasfsfafreqw');
-  //vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
+  vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
 }
 
 export class CodeBaseInsightsView extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly description: string
+    public readonly description: string,
+    public readonly cmd: vscode.Command
   ) {
     super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
-    this.description = this.description;
+    this.tooltip = `${this.description}`;
+    this.description = "";
+    this.command = cmd;
   }
 }
 

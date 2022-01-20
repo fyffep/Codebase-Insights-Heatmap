@@ -30,7 +30,10 @@
           "name": "Navigation"
         }
       ]
-    }
+    },
+    "commands": [
+
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
