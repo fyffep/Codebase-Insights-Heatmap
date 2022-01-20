@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.window.showInformationMessage('fdasfsfafreqw');
-  vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
+  //vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
 }
 
 export class CodeBaseInsightsView extends vscode.TreeItem {
@@ -22,7 +22,7 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
     public readonly description: string
   ) {
     super(label, collapsibleState);
-    this.tooltip = this.label;
+    this.tooltip = `${this.label}`;
     this.description = this.description;
   }
 }
