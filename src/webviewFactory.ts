@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as htmlFactory from './htmlFactory';
 
 var overviewWebviewPanel: vscode.WebviewPanel | undefined;
 var codeMapWebviewPanel: vscode.WebviewPanel | undefined;
@@ -19,7 +20,7 @@ export function overviewPanel(): void {
         vscode.ViewColumn.One,
         {}
         );
-        overviewWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(); 
         overviewWebviewPanel.onDidDispose(
             () => {
                 overviewWebviewPanel = undefined;
@@ -40,7 +41,7 @@ export function codeMapPanel(): void {
         vscode.ViewColumn.One,
         {}
         );
-        codeMapWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(); //This is where we will put the html content for the view later
         codeMapWebviewPanel.onDidDispose( () => {
             codeMapWebviewPanel = undefined;
         });
@@ -60,7 +61,7 @@ export function knowledgeGraphPanel(): void {
         vscode.ViewColumn.One,
         {}
         );
-        knowledgeGraphWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(); //This is where we will put the html content for the view later
         knowledgeGraphWebviewPanel.onDidDispose( () => {
             knowledgeGraphWebviewPanel = undefined;
         });
@@ -80,7 +81,7 @@ export function insightsPanel(): void {
         vscode.ViewColumn.One,
         {}
         );
-        insightsWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(); //This is where we will put the html content for the view later
         insightsWebviewPanel.onDidDispose( () => {
             insightsWebviewPanel = undefined;
         });
