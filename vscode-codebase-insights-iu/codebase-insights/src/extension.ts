@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.window.showInformationMessage('fdasfsfafreqw');
-  //vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
+  vscode.window.registerTreeDataProvider('codebaseInsightsTree', new CodebaseInsightsViewProvider());
 }
 
 export class CodeBaseInsightsView extends vscode.TreeItem {
