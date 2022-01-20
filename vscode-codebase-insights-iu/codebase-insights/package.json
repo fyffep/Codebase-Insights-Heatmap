@@ -14,6 +14,28 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "codebase-insights.overview",
+        "title": "Open Codebase Insights overview page",
+        "category": "Codebase Insight Tools"
+      },
+      {
+        "command": "codebase-insights.code-map",
+        "title": "Open Codebase Insights code map page",
+        "category": "Codebase Insight Tools"
+      },
+      {
+        "command": "codebase-insights.knowledge-graph",
+        "title": "Open Codebase Insights knowledge graph page",
+        "category": "Codebase Insight Tools"
+      },
+      {
+        "command": "codebase-insights.insights",
+        "title": "Open Codebase Insights Insights page",
+        "category": "Codebase Insight Tools"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -30,10 +52,7 @@
           "name": "Navigation"
         }
       ]
-    },
-    "commands": [
-
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
