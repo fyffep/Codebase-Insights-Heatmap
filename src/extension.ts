@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as webviewFactory from './webviewFactory';
-import { CodebaseInsightsViewProvider } from './CodeBaseInsightsViewProvider';
+import { CodebaseInsightsViewProvider } from './codeBaseInsightsViewProvider';
 
 //Factory methods for our webviews using the singleton pattern
 //Called when an event in package.json.activationEvents occurs
