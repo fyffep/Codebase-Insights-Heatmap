@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as extension from './extension';
 
 var overviewWebviewPanel: vscode.WebviewPanel | undefined;
 var codeMapWebviewPanel: vscode.WebviewPanel | undefined;
@@ -21,6 +20,11 @@ export function overviewPanel(): void {
         {}
         );
         overviewWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        overviewWebviewPanel.onDidDispose(
+            () => {
+                overviewWebviewPanel = undefined;
+            }
+        );
     }
 }
 export function codeMapPanel(): void {
@@ -37,6 +41,9 @@ export function codeMapPanel(): void {
         {}
         );
         codeMapWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        codeMapWebviewPanel.onDidDispose( () => {
+            codeMapWebviewPanel = undefined;
+        });
     }
 }
 
@@ -54,6 +61,9 @@ export function knowledgeGraphPanel(): void {
         {}
         );
         knowledgeGraphWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        knowledgeGraphWebviewPanel.onDidDispose( () => {
+            knowledgeGraphWebviewPanel = undefined;
+        });
     }
 }
 
@@ -71,6 +81,9 @@ export function insightsPanel(): void {
         {}
         );
         insightsWebviewPanel.webview.html = ""; //This is where we will put the html content for the view later
+        insightsWebviewPanel.onDidDispose( () => {
+            insightsWebviewPanel = undefined;
+        });
     }
 }
 
