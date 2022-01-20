@@ -14,15 +14,14 @@ function activate(context) {
 }
 exports.activate = activate;
 class CodeBaseInsightsView extends vscode.TreeItem {
-    constructor(label, collapsibleState, description, cmd) {
+    constructor(label, collapsibleState, description) {
         super(label, collapsibleState);
         this.label = label;
         this.collapsibleState = collapsibleState;
         this.description = description;
-        this.cmd = cmd;
         this.tooltip = `${this.description}`;
         this.description = "";
-        this.command = cmd;
+        //this.command = cmd;
     }
 }
 exports.CodeBaseInsightsView = CodeBaseInsightsView;

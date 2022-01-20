@@ -19,12 +19,12 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly description: string,
-    public readonly cmd: vscode.Command
+    //public readonly cmd: vscode.Command
   ) {
     super(label, collapsibleState);
     this.tooltip = `${this.description}`;
     this.description = "";
-    this.command = cmd;
+    //this.command = cmd;
   }
 }
 
