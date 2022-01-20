@@ -1,13 +1,6 @@
 import * as vscode from 'vscode';
 import * as webviewFactory from './webviewFactory';
-
 import { CodebaseInsightsViewProvider } from './CodeBaseInsightsViewProvider';
-
-// export var currentPanel: vscode.WebviewPanel | undefined;
-
-// export function updateCurrentPanel(panel: vscode.WebviewPanel): void {
-//   currentPanel = panel;
-// }
 
 //Factory methods for our webviews using the singleton pattern
 //Called when an event in package.json.activationEvents occurs

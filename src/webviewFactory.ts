@@ -18,7 +18,9 @@ export function overviewPanel(): void {
         'overviewPage',
         'Overview',
         vscode.ViewColumn.One,
-        {}
+        {
+            enableScripts: true
+        }
         );
         overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(); 
         overviewWebviewPanel.onDidDispose(
@@ -39,7 +41,9 @@ export function codeMapPanel(): void {
         'codeMapPage',
         'Code Map',
         vscode.ViewColumn.One,
-        {}
+        {
+            enableScripts:true
+        }
         );
         codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(); //This is where we will put the html content for the view later
         codeMapWebviewPanel.onDidDispose( () => {
@@ -59,7 +63,9 @@ export function knowledgeGraphPanel(): void {
         'knowledgeGraph',
         'Knowledge Graph',
         vscode.ViewColumn.One,
-        {}
+        {
+            enableScripts: true
+        }
         );
         knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(); //This is where we will put the html content for the view later
         knowledgeGraphWebviewPanel.onDidDispose( () => {
@@ -79,7 +85,9 @@ export function insightsPanel(): void {
         'insights',
         'Insights',
         vscode.ViewColumn.One,
-        {}
+        {
+            enableScripts: true
+        }
         );
         insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(); //This is where we will put the html content for the view later
         insightsWebviewPanel.onDidDispose( () => {

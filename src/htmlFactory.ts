@@ -1,52 +1,16 @@
+import * as overview from './overview';
+import * as codeMap from './codeMap';
+import * as knowledgeGraph from './knowledgeGraph';
+import * as insights from './insights';
 export function generateOverviewHTML(): string {
-    return `
-    <!DOCTYPE HTML>
-    <HTML>
-        <head>
-            <meta charset="UTF-8" lang="en"/>
-        </head>
-        <body>
-            <h1> Welcome to the overview page! </h1>
-        </body>
-    </HTML>
-    `;
+    return overview.overviewHTML();
 }
 export function generateCodeMapHTML(): string {
-    return `
-    <!DOCTYPE HTML>
-    <HTML>
-        <head>
-            <meta charset="UTF-8" lang="en"/>
-        </head>
-        <body>
-            <h1> Welcome to the code map page! </h1>
-        </body>
-    </HTML>
-    `;
+    return codeMap.codemapHTML();
 }
 export function generateKnowledgeGraphHTML(): string {
-    return `
-    <!DOCTYPE HTML>
-    <HTML>
-        <head>
-            <meta charset="UTF-8" lang="en"/>
-        </head>
-        <body>
-            <h1> Welcome to the knowledge graph! </h1>
-        </body>
-    </HTML>
-    `;
+    return knowledgeGraph.knowledgeGraphHTML();
 }
 export function generateInsightsHTML(): string {
-    return `
-    <!DOCTYPE HTML>
-    <HTML>
-        <head>
-            <meta charset="UTF-8" lang="en"/>
-        </head>
-        <body>
-            <h1> Welcome to the insights page! </h1>
-        </body>
-    </HTML>
-    `;
+    return insights.insightsHTML();
 }
