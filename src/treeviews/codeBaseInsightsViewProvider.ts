@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 import { CodeBaseInsightsView } from './codeBaseInsightsView';
 
 export class CodebaseInsightsViewProvider
-  implements vscode.TreeDataProvider<CodeBaseInsightsView>
-{
+  implements vscode.TreeDataProvider<CodeBaseInsightsView> {
   getTreeItem(element: CodeBaseInsightsView) {
     return element;
   }
