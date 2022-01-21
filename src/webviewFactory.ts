@@ -9,11 +9,8 @@ let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
-
 export function overviewPanel(context:vscode.ExtensionContext): void {
-    safelyDisposeWebviewPanel(codeMapWebviewPanel);
-    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-    safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeAllButOverview();
     if (overviewWebviewPanel) {
         overviewWebviewPanel.reveal(preferredColumn);
     } else {
@@ -40,10 +37,9 @@ export function overviewPanel(context:vscode.ExtensionContext): void {
         );
     }
 }
+
 export function codeMapPanel(context:vscode.ExtensionContext): void {
-    safelyDisposeWebviewPanel(overviewWebviewPanel);
-    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-    safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeAllButCodeMap();
     if (codeMapWebviewPanel) {
         codeMapWebviewPanel.reveal(preferredColumn);
     } else {
@@ -70,9 +66,7 @@ export function codeMapPanel(context:vscode.ExtensionContext): void {
 }
 
 export function knowledgeGraphPanel(context:vscode.ExtensionContext): void {
-    safelyDisposeWebviewPanel(overviewWebviewPanel);
-    safelyDisposeWebviewPanel(codeMapWebviewPanel);
-    safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeAllButKnowledgeGraph();
     if (knowledgeGraphWebviewPanel) {
         knowledgeGraphWebviewPanel.reveal(preferredColumn);
     } else {
@@ -99,9 +93,7 @@ export function knowledgeGraphPanel(context:vscode.ExtensionContext): void {
 }
 
 export function insightsPanel(context:vscode.ExtensionContext): void {
-    safelyDisposeWebviewPanel(overviewWebviewPanel);
-    safelyDisposeWebviewPanel(codeMapWebviewPanel);
-    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+    safelyDisposeAllButInsightsPanel();
     if (insightsWebviewPanel) {
         insightsWebviewPanel.reveal(preferredColumn);
     } else {
@@ -131,4 +123,28 @@ function safelyDisposeWebviewPanel(webview: vscode.WebviewPanel | undefined): vo
     if (webview) {
         webview.dispose();
     }
+}
+
+function safelyDisposeAllButOverview(): void {
+    safelyDisposeWebviewPanel(codeMapWebviewPanel);
+    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+    safelyDisposeWebviewPanel(insightsWebviewPanel);
+}
+
+function safelyDisposeAllButCodeMap(): void {
+    safelyDisposeWebviewPanel(overviewWebviewPanel);
+    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+    safelyDisposeWebviewPanel(insightsWebviewPanel);
+}
+
+function safelyDisposeAllButKnowledgeGraph(): void {
+    safelyDisposeWebviewPanel(overviewWebviewPanel);
+    safelyDisposeWebviewPanel(codeMapWebviewPanel);
+    safelyDisposeWebviewPanel(insightsWebviewPanel);
+}
+
+function safelyDisposeAllButInsightsPanel(): void {
+    safelyDisposeWebviewPanel(overviewWebviewPanel);
+    safelyDisposeWebviewPanel(codeMapWebviewPanel);
+    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
 }
