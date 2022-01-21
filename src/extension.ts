@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as webviewFactory from './webviewFactory';
-import { CodebaseInsightsViewProvider } from './codeBaseInsightsViewProvider';
+import * as webviewFactory from './webviews/webviewFactory';
+import { CodebaseInsightsViewProvider } from './treeviews/codeBaseInsightsViewProvider';
 import path = require('path');
 
 //This function is called when any of the events in package.json.activationEvents are thrown

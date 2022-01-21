@@ -1,7 +1,7 @@
-import * as overview from './overview';
-import * as codeMap from './codeMap';
-import * as knowledgeGraph from './knowledgeGraph';
-import * as insights from './insights';
+import * as overview from './overview/overview';
+import * as codeMap from './codeMap/codeMap';
+import * as knowledgeGraph from './knowledgeGraph/knowledgeGraph';
+import * as insights from './insights/insights';
 import * as vscode from 'vscode';
 
 export function generateOverviewHTML(cssUri: vscode.Uri): string {

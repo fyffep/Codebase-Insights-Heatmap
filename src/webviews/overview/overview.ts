@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as api from './api';
+import * as api from '../../api';
 
 export function overviewHTML(cssUri:vscode.Uri): string {
 
