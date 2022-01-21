@@ -3,7 +3,11 @@ import * as api from './api';
 
 export function overviewHTML(cssUri:vscode.Uri): string {
 
-    let numberOfDevelopers: number = api.getNumberOfDevelopers();
+    let developers: number = api.getNumberOfDevelopers();
+    let sloc: number = api.getSLOC();
+    let inactiveDevs: number = api.getNumberOfInactiveDevelopers();
+    let commits: number = api.getNumberOfTotalCommits();
+    let healthScore: string = api.getOverallCodebaseHealthScore();
 
     return `
     <!DOCTYPE HTML>
@@ -14,6 +18,9 @@ export function overviewHTML(cssUri:vscode.Uri): string {
         </head>
         <body>
             <h1> Welcome to the overview page! </h1>
+            <h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
+            <h2> ${sloc} lines of code across ${commits} commits </h2>
+            <h2> Overall health score: ${healthScore} </h2>
         </body>
     </HTML>
     `;
