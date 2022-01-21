@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
+import * as api from './api';
 
 export function overviewHTML(cssUri:vscode.Uri): string {
+
+    let numberOfDevelopers: number = api.getNumberOfDevelopers();
+
     return `
     <!DOCTYPE HTML>
     <HTML>
