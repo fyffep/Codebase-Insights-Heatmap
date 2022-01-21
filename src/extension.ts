@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 import * as webviewFactory from './webviewFactory';
 import { CodebaseInsightsViewProvider } from './codeBaseInsightsViewProvider';
 
-//Factory methods for our webviews using the singleton pattern
-//Called when an event in package.json.activationEvents occurs
+//This function is called when any of the events in package.json.activationEvents are thrown
 export function activate(context: vscode.ExtensionContext) {
   console.log('Codebase Insights extension activated!');
 
@@ -15,32 +14,28 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.overview', () => {
-      // Create and show a new webview
       webviewFactory.overviewPanel();
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.code-map', () => {
-      // Create and show a new webview
       webviewFactory.codeMapPanel();
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.knowledge-graph', () => {
-      // Create and show a new webview
       webviewFactory.knowledgeGraphPanel();
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.insights', () => {
-      // Create and show a new webview
       webviewFactory.insightsPanel();
     })
   );
 }
 
-// this method is called when your extension is deactivated
+//If we need to close resources in the case where the user closes VSCode while our extension is running, this is where to do it
 export function deactivate() {}
