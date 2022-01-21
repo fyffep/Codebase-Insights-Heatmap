@@ -9,7 +9,9 @@ export function insightsHTML(cssUri:vscode.Uri): string {
             <link rel="stylesheet" type="text/css" href="${cssUri}"/>
         </head>
         <body>
-            <h1> Welcome to the insights page! </h1>
+            <div class="page">
+                <h1> Welcome to the insights page! </h1>
+            </div>
         </body>
     </HTML>
     `;

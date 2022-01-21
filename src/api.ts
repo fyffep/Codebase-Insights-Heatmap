@@ -3,7 +3,7 @@ import { randomInt } from "crypto";
 //These are all temporary until we get the REST API up
 
 export function getNumberOfDevelopers(): number {
-    return randomInt(100);
+    return randomInt(25,100);
 }
 
 export function getSLOC(): number {

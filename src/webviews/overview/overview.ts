@@ -17,10 +17,12 @@ export function overviewHTML(cssUri:vscode.Uri): string {
             <link rel="stylesheet" type="text/css" href="${cssUri}"/>
         </head>
         <body>
-            <h1> Welcome to the overview page! </h1>
-            <h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
-            <h2> ${sloc} lines of code across ${commits} commits </h2>
-            <h2> Overall health score: ${healthScore} </h2>
+            <div class="page">
+                <h1> Welcome to the overview page! </h1>
+                <h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
+                <h2> ${sloc} lines of code across ${commits} commits </h2>
+                <h2> Overall health score: ${healthScore} </h2>
+            </div>
         </body>
     </HTML>
     `;

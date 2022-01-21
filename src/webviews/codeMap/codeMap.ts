@@ -10,7 +10,9 @@ export function codemapHTML(cssUri: vscode.Uri): string {
             <link rel="stylesheet" type="text/css" href="${cssUri}"/>
         </head>
         <body>
-            <h1> Welcome to the code map page! </h1>
+            <div class="page">
+                <h1> Welcome to the code map page! </h1>
+            </div>
         </body>
     </HTML>
     `;

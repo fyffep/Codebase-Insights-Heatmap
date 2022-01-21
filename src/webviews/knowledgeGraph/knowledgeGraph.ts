@@ -9,7 +9,9 @@ export function knowledgeGraphHTML(cssUri:vscode.Uri) {
             <link rel="stylesheet" type="text/css" href="${cssUri}"/>
         </head>
         <body>
-            <h1> Welcome to the knowledge graph! </h1>
+            <div class="page">
+                <h1> Welcome to the knowledge graph! </h1>
+            </div>
         </body>
     </HTML>
     `;
