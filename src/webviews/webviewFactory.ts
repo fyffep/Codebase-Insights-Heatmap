@@ -20,12 +20,12 @@ export function createOrShowOverviewPane(context:vscode.ExtensionContext): void 
         preferredColumn,
         {
             enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/overview'))]
         }
         );
 
         const onDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'src', 'overview.css')
+            path.join(context.extensionPath, 'src/webviews/overview', 'overview.css')
             );
         const cssUri = overviewWebviewPanel.webview.asWebviewUri(onDiskPath);
 
@@ -49,12 +49,12 @@ export function createOrShowCodeMapPane(context:vscode.ExtensionContext): void {
         preferredColumn,
         {
             enableScripts:true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/codeMap'))]
         }
         );
 
         const onDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'src', 'codeMap.css')
+            path.join(context.extensionPath, 'src/webviews/codeMap', 'codeMap.css')
             );
         const cssUri = codeMapWebviewPanel.webview.asWebviewUri(onDiskPath);
 
@@ -76,12 +76,12 @@ export function createOrShowKnowledgeGraphPane(context:vscode.ExtensionContext):
         preferredColumn,
         {
             enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/knowledgeGraph'))]
         }
         );
 
         const onDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'src', 'knowledgeGraph.css')
+            path.join(context.extensionPath, 'src/webviews/knowledgeGraph', 'knowledgeGraph.css')
             );
         const cssUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(onDiskPath);
 
@@ -103,12 +103,12 @@ export function createOrShowInsightsPane(context:vscode.ExtensionContext): void 
         preferredColumn,
         {
             enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/insights'))]
         }
         );
 
         const onDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'src', 'insights.css')
+            path.join(context.extensionPath, 'src/webviews/insights', 'insights.css')
             );
         const cssUri = insightsWebviewPanel.webview.asWebviewUri(onDiskPath);
 
