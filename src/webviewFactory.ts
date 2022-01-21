@@ -1,3 +1,4 @@
+import path = require('path');
 import * as vscode from 'vscode';
 import * as htmlFactory from './htmlFactory';
 
@@ -9,7 +10,7 @@ let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
 
-export function overviewPanel(): void {
+export function overviewPanel(context:vscode.ExtensionContext): void {
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
@@ -21,10 +22,17 @@ export function overviewPanel(): void {
         'Overview',
         preferredColumn,
         {
-            enableScripts: true
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
         }
         );
-        overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(); 
+
+        const onDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src', 'overview.css')
+            );
+        const cssUri = overviewWebviewPanel.webview.asWebviewUri(onDiskPath);
+
+        overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(cssUri); 
         overviewWebviewPanel.onDidDispose(
             () => {
                 overviewWebviewPanel = undefined;
@@ -32,7 +40,7 @@ export function overviewPanel(): void {
         );
     }
 }
-export function codeMapPanel(): void {
+export function codeMapPanel(context:vscode.ExtensionContext): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
@@ -44,17 +52,24 @@ export function codeMapPanel(): void {
         'Code Map',
         preferredColumn,
         {
-            enableScripts:true
+            enableScripts:true,
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
         }
         );
-        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(); //This is where we will put the html content for the view later
+
+        const onDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src', 'codeMap.css')
+            );
+        const cssUri = codeMapWebviewPanel.webview.asWebviewUri(onDiskPath);
+
+        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri); //This is where we will put the html content for the view later
         codeMapWebviewPanel.onDidDispose( () => {
             codeMapWebviewPanel = undefined;
         });
     }
 }
 
-export function knowledgeGraphPanel(): void {
+export function knowledgeGraphPanel(context:vscode.ExtensionContext): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
@@ -66,17 +81,24 @@ export function knowledgeGraphPanel(): void {
         'Knowledge Graph',
         preferredColumn,
         {
-            enableScripts: true
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
         }
         );
-        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(); //This is where we will put the html content for the view later
+
+        const onDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src', 'knowledgeGraph.css')
+            );
+        const cssUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(onDiskPath);
+
+        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(cssUri); //This is where we will put the html content for the view later
         knowledgeGraphWebviewPanel.onDidDispose( () => {
             knowledgeGraphWebviewPanel = undefined;
         });
     }
 }
 
-export function insightsPanel(): void {
+export function insightsPanel(context:vscode.ExtensionContext): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
@@ -88,10 +110,17 @@ export function insightsPanel(): void {
         'Insights',
         preferredColumn,
         {
-            enableScripts: true
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))]
         }
         );
-        insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(); //This is where we will put the html content for the view later
+
+        const onDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src', 'insights.css')
+            );
+        const cssUri = insightsWebviewPanel.webview.asWebviewUri(onDiskPath);
+
+        insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(cssUri); //This is where we will put the html content for the view later
         insightsWebviewPanel.onDidDispose( () => {
             insightsWebviewPanel = undefined;
         });

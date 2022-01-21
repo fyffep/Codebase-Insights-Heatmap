@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as webviewFactory from './webviewFactory';
 import { CodebaseInsightsViewProvider } from './codeBaseInsightsViewProvider';
+import path = require('path');
 
 //This function is called when any of the events in package.json.activationEvents are thrown
 export function activate(context: vscode.ExtensionContext) {
@@ -14,25 +15,25 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.overview', () => {
-      webviewFactory.overviewPanel();
+      webviewFactory.overviewPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.code-map', () => {
-      webviewFactory.codeMapPanel();
+      webviewFactory.codeMapPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.knowledge-graph', () => {
-      webviewFactory.knowledgeGraphPanel();
+      webviewFactory.knowledgeGraphPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.insights', () => {
-      webviewFactory.insightsPanel();
+      webviewFactory.insightsPanel(context);
     })
   );
 }
