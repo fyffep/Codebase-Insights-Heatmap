@@ -15,25 +15,25 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.overview', () => {
-      webviewFactory.overviewPanel(context);
+      webviewFactory.createOrShowOverviewPane(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.code-map', () => {
-      webviewFactory.codeMapPanel(context);
+      webviewFactory.createOrShowCodeMapPane(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.knowledge-graph', () => {
-      webviewFactory.knowledgeGraphPanel(context);
+      webviewFactory.createOrShowKnowledgeGraphPane(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.insights', () => {
-      webviewFactory.insightsPanel(context);
+      webviewFactory.createOrShowInsightsPane(context);
     })
   );
 }

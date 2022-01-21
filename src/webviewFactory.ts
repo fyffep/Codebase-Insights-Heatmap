@@ -9,7 +9,7 @@ let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
-export function overviewPanel(context:vscode.ExtensionContext): void {
+export function createOrShowOverviewPane(context:vscode.ExtensionContext): void {
     safelyDisposeAllButOverview();
     if (overviewWebviewPanel) {
         overviewWebviewPanel.reveal(preferredColumn);
@@ -38,7 +38,7 @@ export function overviewPanel(context:vscode.ExtensionContext): void {
     }
 }
 
-export function codeMapPanel(context:vscode.ExtensionContext): void {
+export function createOrShowCodeMapPane(context:vscode.ExtensionContext): void {
     safelyDisposeAllButCodeMap();
     if (codeMapWebviewPanel) {
         codeMapWebviewPanel.reveal(preferredColumn);
@@ -65,7 +65,7 @@ export function codeMapPanel(context:vscode.ExtensionContext): void {
     }
 }
 
-export function knowledgeGraphPanel(context:vscode.ExtensionContext): void {
+export function createOrShowKnowledgeGraphPane(context:vscode.ExtensionContext): void {
     safelyDisposeAllButKnowledgeGraph();
     if (knowledgeGraphWebviewPanel) {
         knowledgeGraphWebviewPanel.reveal(preferredColumn);
@@ -92,7 +92,7 @@ export function knowledgeGraphPanel(context:vscode.ExtensionContext): void {
     }
 }
 
-export function insightsPanel(context:vscode.ExtensionContext): void {
+export function createOrShowInsightsPane(context:vscode.ExtensionContext): void {
     safelyDisposeAllButInsightsPanel();
     if (insightsWebviewPanel) {
         insightsWebviewPanel.reveal(preferredColumn);
