@@ -18,11 +18,19 @@ export function codemapHTML(cssUri: vscode.Uri): string {
             </div>
             <canvas id="codeMap" width="${width}" height="${height}"/>
             <script>
+                function drawCircle(context, x, y, radius) {
+                    context.beginPath();
+                    context.arc(x, y, radius, 0, 2 * Math.PI);
+                    context.fill();
+                    context.stroke();
+                }
                 let canvas = document.getElementById("codeMap");
+                let width = canvas.width;
+                let height = canvas.height;
                 let ctx = canvas.getContext("2d");
-                ctx.moveTo(0,0);
-                ctx.lineTo(200, 100);
-                ctx.stroke();
+                ctx.strokeStyle = 'black';
+                ctx.fillStyle = 'red';
+                drawCircle(ctx, width/2, height/2, 15);
             </script>
         </body>
         <script src="codeMapScript.ts"/>
