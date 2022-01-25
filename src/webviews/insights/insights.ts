@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export function insightsHTML(cssUri:vscode.Uri): string {
+export function insightsHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
     return `
     <!DOCTYPE HTML>
     <HTML>
@@ -13,6 +13,7 @@ export function insightsHTML(cssUri:vscode.Uri): string {
                 <h1> Welcome to the insights page! </h1>
             </div>
         </body>
+        <script src="${scriptUri}"/>
     </HTML>
     `;
 }
