@@ -17,17 +17,22 @@
     "commands": [
       {
         "command": "codebase-insights.overview",
-        "title": "Open Codebase Insights overview page",
+        "title": "Open Codebase Insights Overview page",
         "category": "Codebase Insight Tools"
       },
       {
         "command": "codebase-insights.code-map",
-        "title": "Open Codebase Insights code map page",
+        "title": "Open Codebase Insights Code Map page",
         "category": "Codebase Insight Tools"
       },
       {
         "command": "codebase-insights.knowledge-graph",
-        "title": "Open Codebase Insights knowledge graph page",
+        "title": "Open Codebase Insights Knowledge Graph page",
+        "category": "Codebase Insight Tools"
+      },
+      {
+        "command": "codebase-insights.commit-risk-assessment",
+        "title": "Open Codebase Insights Commit Risk Assessment page",
         "category": "Codebase Insight Tools"
       },
       {
@@ -41,7 +46,7 @@
         {
           "id": "codebase-insights",
           "title": "Codebase Insights",
-          "icon": "resources/owl.svg"
+          "icon": "resources/owl_bulb.svg"
         }
       ]
     },

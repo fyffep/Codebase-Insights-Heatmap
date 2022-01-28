@@ -15,25 +15,31 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.overview', () => {
-      webviewFactory.createOrShowOverviewPane(context);
+      webviewFactory.createOrShowOverviewPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.code-map', () => {
-      webviewFactory.createOrShowCodeMapPane(context);
+      webviewFactory.createOrShowCodeMapPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.knowledge-graph', () => {
-      webviewFactory.createOrShowKnowledgeGraphPane(context);
+      webviewFactory.createOrShowKnowledgeGraphPanel(context);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('codebase-insights.commit-risk-assessment', () => {
+      webviewFactory.createOrShowCommitRiskAssessmentPanel(context);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('codebase-insights.insights', () => {
-      webviewFactory.createOrShowInsightsPane(context);
+      webviewFactory.createOrShowInsightsPanel(context);
     })
   );
 }

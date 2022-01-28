@@ -29,6 +29,11 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           title: 'Open Codebase Insights knowledge graph page',
           command: 'codebase-insights.knowledge-graph',
         };
+      case 'Commit Risk Assessment':
+        return {
+          title: 'Open Codebase Insights Commit Risk Assessment page',
+          command: 'codebase-insights.commit-risk-assessment',
+        };
       case 'Insights':
         return {
           title: 'Open Codebase Insights Insights page',
