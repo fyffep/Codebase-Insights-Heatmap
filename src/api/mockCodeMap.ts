@@ -34,9 +34,20 @@ export function mockCodeMapGETRequest(): object {
     return {};
 }
 
-//function generateFile(): FileObject {
-    //return new FileObject()
-//}
+export function generateFile(nameLength: number, extension: string, 
+                id: number, coupledTo: number[]): FileObject {
+    let file = new FileObject(
+        id,
+        randomFileName(nameLength, extension),
+        Math.random() * 1000,
+        Math.random() * 50,
+        Math.random() * 25,
+        Math.random() * 100,
+        Math.random(),
+        coupledTo
+    );
+    return file;
+}
 
 export function randomFileName(length: number, extension: string): string {
     let name = "";
