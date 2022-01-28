@@ -38,6 +38,17 @@ export function mockCodeMapGETRequest(numberOfFiles: number, extension: string):
         let file: FileObject = generateFile(length, extension, i, coupledTo);
         files[i] = file;
     }
+    let coupledFiles = Math.random() * numberOfFiles / 2;
+    //for (let i = 0; i < coupledFiles; i++) {
+        //let fileA: number;
+        //let fileB: number;
+        //fileA = Math.random() * numberOfFiles;
+        //do {
+            //fileB = Math.random() * numberOfFiles;
+        //} while (fileB === fileA || fileB in files[fileA].coupledTo);
+        //files[fileA].coupledTo.push(fileB);
+        //files[fileB].coupledTo.push(fileA);
+    //}
     return files;
 }
 

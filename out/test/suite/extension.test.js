@@ -17,10 +17,21 @@ suite('Extension Test Suite', () => {
         let file = mockCodeMap.generateFile(10, ".java", 0, coupledTo);
         assert.strictEqual(15, file.name.length);
         assert.strictEqual(0, file.id);
+        assert.strictEqual(true, file.goodToBadCommitRatio <= 1 && file.goodToBadCommitRatio >= 0);
     });
     test('Generate mock files test', () => {
         let files = mockCodeMap.mockCodeMapGETRequest(100, ".java");
         assert.strictEqual(100, files.length);
+        //let couplingExists = false;
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            assert.strictEqual(true, file.goodToBadCommitRatio <= 1 && file.goodToBadCommitRatio >= 0);
+            //let coupledTo: number[] = file.coupledTo;
+            //if (coupledTo.length > 0) {
+            //couplingExists = true;
+            //}
+        }
+        //assert.strictEqual(true, couplingExists);
     });
 });
 //# sourceMappingURL=extension.test.js.map
