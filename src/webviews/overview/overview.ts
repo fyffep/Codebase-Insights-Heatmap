@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as api from '../../api';
+import * as api from '../../api/api';
 import axios, { AxiosPromise } from 'axios';
 
 export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
