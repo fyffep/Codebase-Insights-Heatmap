@@ -11,8 +11,7 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
     let healthScore: string = api.getOverallCodebaseHealthScore();
 
     //Hello World GET
-    helloWorldGetRequest().then(responseData => {
-        console.log(responseData); 
+    api.helloWorldGetRequest().then(responseData => {
     });
 
     return `
@@ -41,27 +40,4 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
         </script>
     </HTML>
     `;
-}
-
-function helloWorldGetRequest(): AxiosPromise<any> 
-{
-    //Setup (TODO should be moved so that it is only done once)
-    const instance = axios.create({
-        baseURL: 'https://supercontinent-lutil.herokuapp.com/api',
-        timeout: 5000,
-        //headers: {'X-Custom-Header': 'foobar'}
-    });
-
-    //Send a request
-    var userId = '612854ee6aa27d439ed826e2';
-    return instance.get(`/account/all`)
-        .then((response) => {
-            //Return data from the axios promise
-            return response.data;
-        })
-        .catch(err => {
-            //Handle timeout or error
-            console.error(err);
-            return err;
-        });
 }
