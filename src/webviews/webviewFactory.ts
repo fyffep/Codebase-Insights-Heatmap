@@ -54,7 +54,8 @@ export function createOrShowCodeMapPanel(context:vscode.ExtensionContext): void 
         preferredColumn,
         {
             enableScripts:true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/codeMap'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/codeMap')),
+            vscode.Uri.file(path.join(context.extensionPath, 'resources/d3'))]
         }
         );
 
@@ -67,7 +68,12 @@ export function createOrShowCodeMapPanel(context:vscode.ExtensionContext): void 
             );
         const scriptUri = codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri, scriptUri); 
+        const d3OnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'resources/d3', 'd3.js')
+            );
+        const d3Uri = codeMapWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+
+        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri, scriptUri, d3Uri); 
         codeMapWebviewPanel.onDidDispose( () => {
             codeMapWebviewPanel = undefined;
         });
