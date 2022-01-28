@@ -30,8 +30,15 @@ export class FileObject {
     }
 }
 
-export function mockCodeMapGETRequest(): object {
-    return {};
+export function mockCodeMapGETRequest(numberOfFiles: number, extension: string): FileObject[] {
+    let files: FileObject[] = [];
+    for (let i = 0; i < numberOfFiles; i++) {
+        let length = Math.random() * 20;
+        let coupledTo: number[] = [];
+        let file: FileObject = generateFile(length, extension, i, coupledTo);
+        files[i] = file;
+    }
+    return files;
 }
 
 export function generateFile(nameLength: number, extension: string, 

@@ -18,4 +18,8 @@ suite('Extension Test Suite', () => {
 		assert.strictEqual(15,file.name.length);
 		assert.strictEqual(0, file.id);
 	});
+	test('Generate mock files test', () => {
+		let files: mockCodeMap.FileObject[] = mockCodeMap.mockCodeMapGETRequest(100, ".java");
+		assert.strictEqual(100, files.length);
+	});
 });
