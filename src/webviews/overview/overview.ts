@@ -12,7 +12,6 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
 
     //Hello World GET
     api.helloWorldGetRequest().then(responseData => {
-        console.log(responseData); 
     });
 
     return `

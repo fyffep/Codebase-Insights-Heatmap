@@ -69,7 +69,7 @@ export function createOrShowCodeMapPanel(context:vscode.ExtensionContext): void 
         const scriptUri = codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
         const d3OnDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'resources/d3', 'd3.js')
+            path.join(context.extensionPath, 'resources/d3', 'd3.min.js')
             );
         const d3Uri = codeMapWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
 
