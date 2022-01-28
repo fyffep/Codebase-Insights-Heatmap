@@ -24,12 +24,16 @@ export function createOrShowOverviewPane(context:vscode.ExtensionContext): void 
         }
         );
 
-        const onDiskPath = vscode.Uri.file(
-            path.join(context.extensionPath, 'src/webviews/overview', 'overview.css')
+        const cssOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/overview', 'overview.css'),
             );
-        const cssUri = overviewWebviewPanel.webview.asWebviewUri(onDiskPath);
+        const cssUri = overviewWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/overview', 'overviewScript.js'),
+            );
+        const scriptUri = overviewWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
 
-        overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(cssUri); 
+        overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(cssUri, scriptUri); 
         overviewWebviewPanel.onDidDispose(
             () => {
                 overviewWebviewPanel = undefined;
@@ -53,12 +57,16 @@ export function createOrShowCodeMapPane(context:vscode.ExtensionContext): void {
         }
         );
 
-        const onDiskPath = vscode.Uri.file(
+        const cssOnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'src/webviews/codeMap', 'codeMap.css')
             );
-        const cssUri = codeMapWebviewPanel.webview.asWebviewUri(onDiskPath);
+        const cssUri = codeMapWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/codeMap', 'codeMapScript.js')
+            );
+        const scriptUri = codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri); //This is where we will put the html content for the view later
+        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri, scriptUri); 
         codeMapWebviewPanel.onDidDispose( () => {
             codeMapWebviewPanel = undefined;
         });
@@ -80,12 +88,16 @@ export function createOrShowKnowledgeGraphPane(context:vscode.ExtensionContext):
         }
         );
 
-        const onDiskPath = vscode.Uri.file(
+        const cssOnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'src/webviews/knowledgeGraph', 'knowledgeGraph.css')
             );
-        const cssUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(onDiskPath);
+        const cssUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/knowledgeGraph', 'knowledgeGraphScript.js')
+            );
+        const scriptUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(cssUri); //This is where we will put the html content for the view later
+        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(cssUri, scriptUri); 
         knowledgeGraphWebviewPanel.onDidDispose( () => {
             knowledgeGraphWebviewPanel = undefined;
         });
@@ -107,12 +119,16 @@ export function createOrShowInsightsPane(context:vscode.ExtensionContext): void 
         }
         );
 
-        const onDiskPath = vscode.Uri.file(
+        const cssOnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'src/webviews/insights', 'insights.css')
             );
-        const cssUri = insightsWebviewPanel.webview.asWebviewUri(onDiskPath);
+        const cssUri = insightsWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/insights', 'insightsScript.js')
+            );
+        const scriptUri = insightsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-        insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(cssUri); //This is where we will put the html content for the view later
+        insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(cssUri, scriptUri); 
         insightsWebviewPanel.onDidDispose( () => {
             insightsWebviewPanel = undefined;
         });

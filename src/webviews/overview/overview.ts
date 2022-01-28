@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as api from '../../api';
 
-export function overviewHTML(cssUri:vscode.Uri): string {
+export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
 
     let developers: number = api.getNumberOfDevelopers();
     let sloc: number = api.getSLOC();
@@ -24,6 +24,7 @@ export function overviewHTML(cssUri:vscode.Uri): string {
                 <h2> Overall health score: ${healthScore} </h2>
             </div>
         </body>
+        <script src="${scriptUri}"/>
     </HTML>
     `;
 }

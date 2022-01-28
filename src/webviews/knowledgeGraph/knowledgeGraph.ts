@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export function knowledgeGraphHTML(cssUri:vscode.Uri) {
+export function knowledgeGraphHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri) {
     return `
     <!DOCTYPE HTML>
     <HTML>
@@ -13,6 +13,7 @@ export function knowledgeGraphHTML(cssUri:vscode.Uri) {
                 <h1> Welcome to the knowledge graph! </h1>
             </div>
         </body>
+        <script src="${scriptUri}"/>
     </HTML>
     `;
 }
