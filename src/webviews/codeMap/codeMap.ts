@@ -1,7 +1,7 @@
 import path = require('path');
 import * as vscode from 'vscode';
 
-export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
+export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
 
     let width = 1400;
     let height = 750;
@@ -11,7 +11,7 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
         <head>
             <meta charset="UTF-8" lang="en"/>
             <link rel="stylesheet" type="text/css" href="${cssUri}"/>
-            <script src="https://d3js.org/d3.v7.min.js"></script>
+            <script src="${d3Uri}"></script>
         </head>
         <body>
             <p> This text should be green </p>
