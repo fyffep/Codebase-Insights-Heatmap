@@ -5,11 +5,12 @@ import * as htmlFactory from './htmlFactory';
 let overviewWebviewPanel: vscode.WebviewPanel | undefined;
 let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
 let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
+let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
 let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
-export function createOrShowOverviewPane(context:vscode.ExtensionContext): void {
+export function createOrShowOverviewPanel(context:vscode.ExtensionContext): void {
     safelyDisposeAllButOverview();
     if (overviewWebviewPanel) {
         overviewWebviewPanel.reveal(preferredColumn);
@@ -42,7 +43,7 @@ export function createOrShowOverviewPane(context:vscode.ExtensionContext): void 
     }
 }
 
-export function createOrShowCodeMapPane(context:vscode.ExtensionContext): void {
+export function createOrShowCodeMapPanel(context:vscode.ExtensionContext): void {
     safelyDisposeAllButCodeMap();
     if (codeMapWebviewPanel) {
         codeMapWebviewPanel.reveal(preferredColumn);
@@ -73,7 +74,7 @@ export function createOrShowCodeMapPane(context:vscode.ExtensionContext): void {
     }
 }
 
-export function createOrShowKnowledgeGraphPane(context:vscode.ExtensionContext): void {
+export function createOrShowKnowledgeGraphPanel(context:vscode.ExtensionContext): void {
     safelyDisposeAllButKnowledgeGraph();
     if (knowledgeGraphWebviewPanel) {
         knowledgeGraphWebviewPanel.reveal(preferredColumn);
@@ -104,7 +105,38 @@ export function createOrShowKnowledgeGraphPane(context:vscode.ExtensionContext):
     }
 }
 
-export function createOrShowInsightsPane(context:vscode.ExtensionContext): void {
+export function createOrShowCommitRiskAssessmentPanel(context:vscode.ExtensionContext): void {
+    safelyDisposeAllButCommitRiskAssessment();
+    if (commitRiskAssessmentWebviewPanel) {
+        commitRiskAssessmentWebviewPanel.reveal(preferredColumn);
+    } else {
+        commitRiskAssessmentWebviewPanel = vscode.window.createWebviewPanel(
+        'commitRiskAssessment',
+        'Commit Risk Assessment',
+        preferredColumn,
+        {
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/commitRiskAssessment'))]
+        }
+        );
+
+        const cssOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/commitRiskAssessment', 'commitRiskAssessment.css')
+            );
+        const cssUri = commitRiskAssessmentWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/commitRiskAssessment', 'commitRiskAssessmentScript.js')
+            );
+        const scriptUri = commitRiskAssessmentWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+        commitRiskAssessmentWebviewPanel.webview.html = htmlFactory.generateCommitRiskAssessmentHTML(cssUri, scriptUri); 
+        commitRiskAssessmentWebviewPanel.onDidDispose( () => {
+            commitRiskAssessmentWebviewPanel = undefined;
+        });
+    }
+}
+
+export function createOrShowInsightsPanel(context:vscode.ExtensionContext): void {
     safelyDisposeAllButInsightsPanel();
     if (insightsWebviewPanel) {
         insightsWebviewPanel.reveal(preferredColumn);
@@ -145,17 +177,27 @@ function safelyDisposeAllButOverview(): void {
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
 }
 
 function safelyDisposeAllButCodeMap(): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
 }
 
 function safelyDisposeAllButKnowledgeGraph(): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
+    safelyDisposeWebviewPanel(insightsWebviewPanel);
+    safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+}
+
+function safelyDisposeAllButCommitRiskAssessment(): void {
+    safelyDisposeWebviewPanel(overviewWebviewPanel);
+    safelyDisposeWebviewPanel(codeMapWebviewPanel);
+    safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
     safelyDisposeWebviewPanel(insightsWebviewPanel);
 }
 
@@ -163,4 +205,5 @@ function safelyDisposeAllButInsightsPanel(): void {
     safelyDisposeWebviewPanel(overviewWebviewPanel);
     safelyDisposeWebviewPanel(codeMapWebviewPanel);
     safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+    safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
 }

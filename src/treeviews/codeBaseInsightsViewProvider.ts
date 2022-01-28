@@ -30,12 +30,17 @@ export class CodebaseInsightsViewProvider
       vscode.TreeItemCollapsibleState.None,
       'A graph showing the areas where each contributor on your project has knowledge'
     );
+    let risk = new CodeBaseInsightsView(
+      'Commit Risk Assessment',
+      vscode.TreeItemCollapsibleState.None,
+      'View your changes currently staged for commit and assess the potential risks associated with your changes'
+    );
     let insights = new CodeBaseInsightsView(
       'Insights',
       vscode.TreeItemCollapsibleState.None,
       'Create custom queries to analyze your codebase'
     );
-    views = [overview, map, knowledge, insights];
+    views = [overview, map, knowledge, risk, insights];
     return views;
   }
 }

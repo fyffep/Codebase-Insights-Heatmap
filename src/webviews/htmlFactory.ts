@@ -2,6 +2,7 @@ import * as overview from './overview/overview';
 import * as codeMap from './codeMap/codeMap';
 import * as knowledgeGraph from './knowledgeGraph/knowledgeGraph';
 import * as insights from './insights/insights';
+import * as commitRiskAssessment from './commitRiskAssessment/commitRiskAssessment';
 import * as vscode from 'vscode';
 
 export function generateOverviewHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
@@ -9,6 +10,9 @@ export function generateOverviewHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri):
 }
 export function generateCodeMapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return codeMap.codemapHTML(cssUri, scriptUri);
+}
+export function generateCommitRiskAssessmentHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
+    return commitRiskAssessment.commitRiskAssessmentHTML(cssUri, scriptUri);
 }
 export function generateKnowledgeGraphHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return knowledgeGraph.knowledgeGraphHTML(cssUri, scriptUri);
