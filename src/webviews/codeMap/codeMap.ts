@@ -1,10 +1,12 @@
 import path = require('path');
 import * as vscode from 'vscode';
+import * as mockCodeMap from '../../api/mockCodeMap';
 
 export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
 
     let width = 1400;
     let height = 750;
+    let files = mockCodeMap.mockCodeMapGETRequest(20, ".java");
     return `
     <!DOCTYPE HTML>
     <HTML>
@@ -15,6 +17,7 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
         </head>
         <body>
             <p> This text should be green </p>
+            <p>Look at all these files: ${files}</p>
         </body>
         <script src="${scriptUri}"></script>
     </HTML>
