@@ -1,8 +1,7 @@
 import * as vscode from "vscode";
 
-let configuration = vscode.workspace.getConfiguration("codebase-insights");
-
 export function getGitUrl(): string | undefined {
+  let configuration = vscode.workspace.getConfiguration("codebase-insights");
   let repoUrl = configuration["repoURL"];
   console.log("Get result:");
   console.log(repoUrl);
@@ -16,9 +15,10 @@ export function getGitUrl(): string | undefined {
 }
 
 export async function setGitUrl(url: string): Promise<void> {
+  let configuration = vscode.workspace.getConfiguration("codebase-insights");
   console.log("Before update:");
   console.log(configuration);
-  await configuration.update("repoURL", url,true);
+  await configuration.update("repoURL", url, true);
   console.log("After update:");
   console.log(configuration);
 }
