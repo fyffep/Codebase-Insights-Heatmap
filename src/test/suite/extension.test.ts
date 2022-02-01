@@ -1,11 +1,8 @@
-import { SilentReporter } from '@vscode/test-electron';
 import * as assert from 'assert';
-import { time } from 'console';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { threadId } from 'worker_threads';
 import * as mockCodeMap from '../../api/mockCodeMap';
 import * as config from '../../config/config';
 // import * as myExtension from '../../extension';
