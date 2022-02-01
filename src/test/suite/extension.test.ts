@@ -35,7 +35,7 @@ suite('Extension Test Suite', () => {
 		//assert.strictEqual(true, couplingExists);
 	});
 	test('Get/set github URL preference test', () => {
-		assert.strictEqual(undefined, config.getGitHubURL());
+		assert.strictEqual("", config.getGitHubURL());
 		config.setGitHubUrl("https://www.github.com/my/repository");
 		assert.strictEqual("https://www.github.com/my/repository", config.getGitHubURL());
 	});
