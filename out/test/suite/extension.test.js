@@ -5,6 +5,7 @@ const assert = require("assert");
 // as well as import your extension to test it
 const vscode = require("vscode");
 const mockCodeMap = require("../../api/mockCodeMap");
+const config = require("../../config/config");
 // import * as myExtension from '../../extension';
 suite('Extension Test Suite', () => {
     vscode.window.showInformationMessage('Start all tests.');
@@ -32,6 +33,11 @@ suite('Extension Test Suite', () => {
             //}
         }
         //assert.strictEqual(true, couplingExists);
+    });
+    test('Get/set github URL preference test', () => {
+        assert.strictEqual(undefined, config.getGitHubURL());
+        config.setGitHubUrl("https://www.github.com/my/repository");
+        assert.strictEqual("https://www.github.com/my/repository", config.getGitHubURL());
     });
 });
 //# sourceMappingURL=extension.test.js.map

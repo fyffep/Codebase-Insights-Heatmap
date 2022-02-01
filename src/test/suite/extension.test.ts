@@ -4,6 +4,7 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import * as mockCodeMap from '../../api/mockCodeMap';
+import * as config from '../../config/config';
 // import * as myExtension from '../../extension';
 
 suite('Extension Test Suite', () => {
@@ -32,5 +33,10 @@ suite('Extension Test Suite', () => {
 			//}
 		}
 		//assert.strictEqual(true, couplingExists);
+	});
+	test('Get/set github URL preference test', () => {
+		assert.strictEqual(undefined, config.getGitHubURL());
+		config.setGitHubUrl("https://www.github.com/my/repository");
+		assert.strictEqual("https://www.github.com/my/repository", config.getGitHubURL());
 	});
 });
