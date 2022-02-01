@@ -34,10 +34,11 @@ suite('Extension Test Suite', () => {
         }
         //assert.strictEqual(true, couplingExists);
     });
-    test('Get/set github URL preference test', () => {
-        assert.strictEqual(undefined, config.getGitHubURL());
-        config.setGitHubUrl("https://www.github.com/my/repository");
-        assert.strictEqual("https://www.github.com/my/repository", config.getGitHubURL());
+    test('Get/set github URL preference test', async () => {
+        await config.setGitUrl("");
+        assert.strictEqual(config.getGitUrl(), "");
+        await config.setGitUrl("https://www.github.com/my/repository");
+        assert.strictEqual(config.getGitUrl(), "https://www.github.com/my/repository");
     });
 });
 //# sourceMappingURL=extension.test.js.map

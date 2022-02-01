@@ -59,9 +59,9 @@
       ]
     },
     "configuration": {
-        "title": "Codebase Insights: Git Integration",
+        "title": "Codebase Insights",
         "properties": {
-            "Repository URL": {
+            "codebase-insights.repoURL": {
                 "type": "string",
                 "default": "",
                 "description": "URL of the public git repository to analyze"
