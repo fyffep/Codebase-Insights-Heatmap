@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export function getGitUrl(): string | undefined {
+export function getGitUrl(): string {
   let configuration = vscode.workspace.getConfiguration("codebase-insights");
   let repoUrl = configuration["repoURL"];
   if (repoUrl) {
