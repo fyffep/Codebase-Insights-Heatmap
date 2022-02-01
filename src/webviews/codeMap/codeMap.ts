@@ -7,6 +7,8 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
     let width = 1400;
     let height = 750;
     let files = mockCodeMap.mockCodeMapGETRequest(20, ".java");
+    let githubURL = vscode.workspace.getConfiguration('Codebase Insights: Git Integration').get("Repository URL");
+    console.log(githubURL);
     return `
     <!DOCTYPE HTML>
     <HTML>
@@ -18,6 +20,7 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
         <body>
             <p> This text should be green </p>
             <p>Look at all these files: ${files}</p>
+            <h1> Github URL: ${githubURL} </p>
         </body>
         <script src="${scriptUri}"></script>
     </HTML>

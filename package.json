@@ -57,7 +57,17 @@
           "name": "Navigation"
         }
       ]
-    }
+    },
+    "configuration": {
+        "title": "Codebase Insights: Git Integration",
+        "properties": {
+            "Repository URL": {
+                "type": "string",
+                "default": "",
+                "description": "URL of the public git repository to analyze"
+          }
+      }
+  }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
