@@ -47,13 +47,13 @@ suite("Extension Test Suite", () => {
     try {
       await config.setGitUrl("");
     } catch {
-      assert.strictEqual(false, true); //Test fails if this doesn't work
+      assert.fail("setGitUrl await failed");
     }
     assert.strictEqual(config.getGitUrl(), "");
     try {
       await config.setGitUrl("https://www.github.com/my/repository");
     } catch {
-      assert.strictEqual(false, true); //Test fails if this doesn't work
+      assert.fail("setGitUrl await failed");
     }
     assert.strictEqual(
       config.getGitUrl(),
