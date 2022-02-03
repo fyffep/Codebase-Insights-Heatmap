@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as api from '../../api/api';
 import axios, { AxiosPromise } from 'axios';
+import { overviewWebviewPanel } from '../webviewFactory';
 
 export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
 
@@ -10,11 +11,22 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
     let commits: number = api.getNumberOfTotalCommits();
     let healthScore: string = api.getOverallCodebaseHealthScore();
 
-    //Retrieve dashboard data call would go here
+    //Request entire codebase data
     api.getEntireCodebase().then(responseData => {
         console.log(responseData);
-        return `
-        <!DOCTYPE HTML>
+        //Send a message to our webview with Codebase data.
+        if (overviewWebviewPanel != undefined)
+        {
+            overviewWebviewPanel.webview.postMessage(responseData);
+        }
+        else
+        {
+            console.error("overviewWebviewPanel was undefined");
+        }
+    });
+
+    return `
+    <!DOCTYPE HTML>
         <HTML>
             <head>
                 <meta charset="UTF-8" lang="en"/>
@@ -27,46 +39,28 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
                     <h2> ${sloc} lines of code across ${commits} commits </h2>
                     <h2> Overall health score: ${healthScore} </h2>
                     <br/>
-                    Response: ${responseData}
-
-                    <!--button onclick="myFunction2()">This is my broken button </button-->
+                    
+                    <p id="p1">Awaiting</p1>
                 </div>
             </body>
 
+           
             <script>
-                function myFunction2() {
-                    console.log("Hello world");
-                }
+                // Handle the message inside the webview
+                window.addEventListener('message', event => {
 
+                    const message = event.data; // The JSON data our extension sent
+
+                    //Add list of commit messages (TEMPORARY)
+                    document.getElementById("p1").innerHTML = "Response Received:";
+                    let p1 = document.getElementById("p1");
+                    message.activeCommits.forEach((item) => {
+                        let li = document.createElement("li");
+                        li.innerText = item.fullMessage;
+                        p1.appendChild(li);
+                    });
+                });
             </script>
         </HTML>
-        `;
-    });
-
-    return `
-    <!DOCTYPE HTML>
-    <HTML>
-        <head>
-            <meta charset="UTF-8" lang="en"/>
-            <link rel="stylesheet" type="text/css" href="${cssUri}"/>
-        </head>
-        <body>
-            <div class="page">
-                <h1> Welcome to the overview page! </h1>
-                <h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
-                <h2> ${sloc} lines of code across ${commits} commits </h2>
-                <h2> Overall health score: ${healthScore} </h2>
-
-                <!--button onclick="myFunction2()">This is my broken button </button-->
-            </div>
-        </body>
-
-        <script>
-            function myFunction2() {
-                console.log("Hello world");
-            }
-
-        </script>
-    </HTML>
     `;
 }
