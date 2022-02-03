@@ -33,7 +33,7 @@ export function createOrShowOverviewPanel(context:vscode.ExtensionContext): void
         const scriptOnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'src/webviews/overview', 'overviewScript.js'),
             );
-        const scriptUri = overviewWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptUri = overviewWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
         overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(cssUri, scriptUri); 
         overviewWebviewPanel.onDidDispose(

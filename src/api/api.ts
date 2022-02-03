@@ -2,6 +2,12 @@ import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
 import { getGitUrl } from "../config/config";
 
+//Setup
+const instance = axios.create({
+    //baseURL: 'https://refactor-radar.herokuapp.com/api'
+    baseURL: 'http://localhost:8080/api'
+});
+
 //These are all temporary until we get the REST API up
 
 export function getNumberOfDevelopers(): number {
@@ -47,11 +53,6 @@ export function getOverallCodebaseHealthScore(): string {
  */
 export function getEntireCodebase(): AxiosPromise<any> 
 {
-    //Setup (TODO should be moved so that it is only done once)
-    const instance = axios.create({
-        baseURL: 'https://refactor-radar.herokuapp.com/api',
-    });
-
     //Send request
     var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
     var urlPayload = {  
@@ -59,6 +60,27 @@ export function getEntireCodebase(): AxiosPromise<any>
     };
     console.log("Requesting analysis of " + githubUrlOfUser);
     return instance.post('/analyze/codebase/', urlPayload)
+        .then((response) => {
+            //Return data from the axios promise
+            return response.data;
+        })
+        .catch(err => {
+            //Handle timeout or error
+            console.error(err);
+            return err;
+        });
+}
+
+
+export function getDashboardData(): AxiosPromise<any> 
+{
+    //Send request
+    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
+    var urlPayload = {  
+        githubUrl: githubUrlOfUser
+    };
+    console.log("Requesting analysis of " + githubUrlOfUser);
+    return instance.post('/analyze/dashboard/', urlPayload)
         .then((response) => {
             //Return data from the axios promise
             return response.data;

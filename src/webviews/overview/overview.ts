@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as api from '../../api/api';
 import axios, { AxiosPromise } from 'axios';
 import { overviewWebviewPanel } from '../webviewFactory';
+import { mockOverview } from './mockOverview';
 
 export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
 
@@ -12,7 +13,7 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
     let healthScore: string = api.getOverallCodebaseHealthScore();
 
     //Request entire codebase data
-    api.getEntireCodebase().then(responseData => {
+    /*api.getDashboardData().then(responseData => {
         console.log(responseData);
         //Send a message to our webview with Codebase data.
         if (overviewWebviewPanel != undefined)
@@ -23,7 +24,18 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
         {
             console.error("overviewWebviewPanel was undefined");
         }
-    });
+    });*/
+
+    //Use mock dashboard data
+    if (overviewWebviewPanel != undefined)
+    {
+        overviewWebviewPanel.webview.postMessage(mockOverview);
+    }
+    else
+    {
+        console.error("overviewWebviewPanel was undefined");
+    }
+
 
     return `
     <!DOCTYPE HTML>
@@ -34,33 +46,17 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
             </head>
             <body>
                 <div class="page">
-                    <h1> Welcome to the overview page! </h1>
-                    <h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
+                    <h1> Overview </h1>
+                    <!--h2> ${inactiveDevs} inactive developers out of ${developers} total developers</h2>
                     <h2> ${sloc} lines of code across ${commits} commits </h2>
                     <h2> Overall health score: ${healthScore} </h2>
-                    <br/>
+                    <br/-->
                     
-                    <p id="p1">Awaiting</p1>
+                    <p id="p1">Please wait while we analyze your codebase...</p1>
                 </div>
             </body>
 
-           
-            <script>
-                // Handle the message inside the webview
-                window.addEventListener('message', event => {
-
-                    const message = event.data; // The JSON data our extension sent
-
-                    //Add list of commit messages (TEMPORARY)
-                    document.getElementById("p1").innerHTML = "Response Received:";
-                    let p1 = document.getElementById("p1");
-                    message.activeCommits.forEach((item) => {
-                        let li = document.createElement("li");
-                        li.innerText = item.fullMessage;
-                        p1.appendChild(li);
-                    });
-                });
-            </script>
+            <script src="${scriptUri}"></script>
         </HTML>
     `;
 }
