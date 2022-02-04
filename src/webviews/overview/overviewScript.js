@@ -25,4 +25,16 @@ window.addEventListener('message', event => {
         p1.appendChild(li);
         i++;
     });
+    
+    let br = document.createElement("br");
+    p1.appendChild(br);
+    i = 0;
+    message.HEAT_METRIC_OPTIONS.forEach((metric) => {
+        let li = document.createElement("li");
+        li.style.fontSize = 36;
+        li.style.color = "white";
+        li.innerText = "The hottest file for "+ metric +" is "+ message.namesOfHottestFileList[i];
+        p1.appendChild(li);
+        i++;
+    });
 });

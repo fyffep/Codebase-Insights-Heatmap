@@ -4,8 +4,8 @@ import { getGitUrl } from "../config/config";
 
 //Setup
 const instance = axios.create({
-    //baseURL: 'https://refactor-radar.herokuapp.com/api'
-    baseURL: 'http://localhost:8080/api'
+    baseURL: 'https://refactor-radar.herokuapp.com/api'
+    //baseURL: 'http://localhost:8080/api'
 });
 
 //These are all temporary until we get the REST API up

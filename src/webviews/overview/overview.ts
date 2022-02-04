@@ -13,7 +13,7 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
     let healthScore: string = api.getOverallCodebaseHealthScore();
 
     //Request entire codebase data
-    /*api.getDashboardData().then(responseData => {
+    api.getDashboardData().then(responseData => {
         console.log(responseData);
         //Send a message to our webview with Codebase data.
         if (overviewWebviewPanel != undefined)
@@ -24,17 +24,17 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
         {
             console.error("overviewWebviewPanel was undefined");
         }
-    });*/
+    });
 
     //Use mock dashboard data
-    if (overviewWebviewPanel != undefined)
+    /*if (overviewWebviewPanel != undefined)
     {
         overviewWebviewPanel.webview.postMessage(mockOverview);
     }
     else
     {
         console.error("overviewWebviewPanel was undefined");
-    }
+    }*/
 
 
     return `
