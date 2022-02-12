@@ -2,11 +2,12 @@ import path = require('path');
 import * as vscode from 'vscode';
 import * as htmlFactory from './htmlFactory';
 
-let overviewWebviewPanel: vscode.WebviewPanel | undefined;
-let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
-let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
-let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
-let insightsWebviewPanel: vscode.WebviewPanel | undefined;
+//Webviews -- use these for message passing.
+export let overviewWebviewPanel: vscode.WebviewPanel | undefined;
+export let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
+export let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
+export let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
+export let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
@@ -32,7 +33,7 @@ export function createOrShowOverviewPanel(context:vscode.ExtensionContext): void
         const scriptOnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'src/webviews/overview', 'overviewScript.js'),
             );
-        const scriptUri = overviewWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+        const scriptUri = overviewWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
         overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(cssUri, scriptUri); 
         overviewWebviewPanel.onDidDispose(

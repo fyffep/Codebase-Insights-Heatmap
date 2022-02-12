@@ -57,7 +57,17 @@
           "name": "Navigation"
         }
       ]
-    }
+    },
+    "configuration": {
+        "title": "Codebase Insights",
+        "properties": {
+            "codebase-insights.repoURL": {
+                "type": "string",
+                "default": "",
+                "description": "URL of the public git repository to analyze"
+          }
+      }
+  }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
