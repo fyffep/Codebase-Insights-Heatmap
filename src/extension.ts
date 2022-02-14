@@ -18,9 +18,14 @@ export function activate(context: vscode.ExtensionContext) {
       // check if the OAuth Details are already set
       try {
         if (GithubOAuth.instance.checkOAuthStatus(context)) {
-          console.log("Device ID is set");
+          // Access Token is set. So no need to fetch the details from the API
+          console.log("Access Token Present");
+
         } else {
-          console.log("Calling to set device ID");
+          GithubOAuth.instance.triggerUserAuthDialogs(context);
+          
+          // call GithubOAuth.instance.fetchAccessToken() -- or create a different command to do the same
+
         }
       } catch (ex) {
         vscode.window.showErrorMessage("Error:" + ex);
