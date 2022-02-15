@@ -66,5 +66,21 @@ suite("Extension Test Suite", () => {
         }
         assert.strictEqual(config.getJenkinsLogin(), "jenkinsbot123");
     });
+    test("Get/set jenkins password preference test", async () => {
+        try {
+            await config.setJenkinsPassword("");
+        }
+        catch {
+            assert.fail("setJenkinsPassword await failed");
+        }
+        assert.strictEqual(config.getJenkinsPassword(), "");
+        try {
+            await config.setJenkinsPassword("jenkinsbot123");
+        }
+        catch {
+            assert.fail("setJenkinsPassword await failed");
+        }
+        assert.strictEqual(config.getJenkinsPassword(), "jenkinsbot123");
+    });
 });
 //# sourceMappingURL=extension.test.js.map
