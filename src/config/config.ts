@@ -1,46 +1,40 @@
 import * as vscode from "vscode";
 
-export function getGitUrl(): string {
+export function getPreference(desiredPreference: string) {
   let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  let repoUrl = configuration["repoURL"];
-  if (repoUrl) {
-    return repoUrl;
+  let preference = configuration[desiredPreference];
+  if (preference) {
+    return preference;
   } else {
     return "";
   }
+}
+
+export async function setPreference(desiredPreference: string, value: string | number | undefined) {
+  let configuration = vscode.workspace.getConfiguration("codebase-insights");
+  await configuration.update(desiredPreference, value, true);
+}
+
+export function getGitUrl(): string {
+  return getPreference("repoURL");
 }
 
 export async function setGitUrl(url: string): Promise<void> {
-  let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  await configuration.update("repoURL", url, true);
+  return setPreference("repoURL", url);
 }
 
 export function getJenkinsLogin(): string {
-  let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  let jenkinsLogin = configuration["jenkinsLogin"];
-  if (jenkinsLogin) {
-    return jenkinsLogin;
-  } else {
-    return "";
-  }
+  return getPreference("jenkinsLogin");
 }
 
 export async function setJenkinsLogin(login: string): Promise<void> {
-  let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  await configuration.update("jenkinsLogin", login, true);
+  return setPreference("jenkinsLogin", login);
 }
 
 export function getJenkinsPassword(): string {
-  let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  let jenkinsPassword = configuration["jenkinsPassword"];
-  if (jenkinsPassword) {
-    return jenkinsPassword;
-  } else {
-    return "";
-  }
+  return getPreference("jenkinsPassword");
 }
 
-export async function setJenkinsPassword(login: string): Promise<void> {
-  let configuration = vscode.workspace.getConfiguration("codebase-insights");
-  await configuration.update("jenkinsPassword", login, true);
+export async function setJenkinsPassword(password: string): Promise<void> {
+  return setPreference("jenkinsPassword", password);
 }
