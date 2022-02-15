@@ -14,3 +14,18 @@ export async function setGitUrl(url: string): Promise<void> {
   let configuration = vscode.workspace.getConfiguration("codebase-insights");
   await configuration.update("repoURL", url, true);
 }
+
+export function getJenkinsLogin(): string {
+  let configuration = vscode.workspace.getConfiguration("codebase-insights");
+  let jenkinsLogin = configuration["jenkinsLogin"];
+  if (jenkinsLogin) {
+    return jenkinsLogin;
+  } else {
+    return "";
+  }
+}
+
+export async function setJenkinsLogin(login: string): Promise<void> {
+  let configuration = vscode.workspace.getConfiguration("codebase-insights");
+  await configuration.update("jenkinsLogin", login, true);
+}

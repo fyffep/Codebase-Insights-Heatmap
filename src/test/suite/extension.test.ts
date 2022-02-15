@@ -60,4 +60,22 @@ suite("Extension Test Suite", () => {
       "https://www.github.com/my/repository"
     );
   });
+
+  test("Get/set jenkins login preference test", async () => {
+    try {
+      await config.setJenkinsLogin("");
+    } catch {
+      assert.fail("setJenkinsLogin await failed");
+    }
+    assert.strictEqual(config.getJenkinsLogin(), "");
+    try {
+      await config.setJenkinsLogin("jenkinsbot123");
+    } catch {
+      assert.fail("setJenkinsLogin await failed");
+    }
+    assert.strictEqual(
+      config.getJenkinsLogin(),
+      "jenkinsbot123"
+    );
+  });
 });
