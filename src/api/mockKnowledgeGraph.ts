@@ -1,25 +1,42 @@
 export class ContributorObject {
     id: number;
-    username: string;
+    name: string;
     email: string;
     knowledgeScore: number;
-    weightsMap: Map<number, number>;
 
-    constructor(id: number, username: string,  email: string, knowledgeScore: number, weightsMap: Map<number, number>
+    constructor(id: number, name: string,  email: string, knowledgeScore: number
         ){
             this.id = id;
-            this.username = username;
+            this.name = name;
             this.email = email;
             this.knowledgeScore = knowledgeScore;
-            this.weightsMap = weightsMap;
         }
 }
 
-export function mockKnowledgeGraphGETRequest(contributors: number) {
-    let returnObject: ContributorObject[] = [];
+export class Link {
+    source: number;
+    target: number;
+    constructor(source: number, target: number)
+    {
+        this.source = source;
+        this.target = target;
+    }
+}
+
+export async function mockKnowledgeGraphGETRequest(contributors: number){
+    let contributorList: ContributorObject[] = [];
     for (let i = 0; i < contributors; i++)
     {
-        returnObject.push(new ContributorObject(i, i.toString(), i.toString().concat("@gmail.com"), i+5, new Map()));
+        contributorList.push(new ContributorObject(i, "Bob", i.toString().concat("@gmail.com"), i+5));
     }
+    let links: Link[] = [];
+    for (let i = 0; i < contributors; i++)
+    {
+        if (i % 2 === 0 && i > 1)
+        {
+            links.push(new Link(i, i-1));
+        }
+    }
+    let returnObject = {nodes: contributorList, links: links};
     return returnObject;
 }

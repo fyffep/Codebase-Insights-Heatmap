@@ -1,33 +1,32 @@
-import * as vscode from 'vscode';
-import * as api from '../../api/api';
-import axios, { AxiosPromise } from 'axios';
-import { overviewWebviewPanel } from '../webviewFactory';
-import { mockOverview } from './mockOverview';
+import * as vscode from "vscode";
+import * as api from "../../api/api";
+import axios, { AxiosPromise } from "axios";
+import { overviewWebviewPanel } from "../webviewFactory";
+import { mockOverview } from "./mockOverview";
 
-export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
+export function overviewHTML(
+  cssUri: vscode.Uri,
+  scriptUri: vscode.Uri
+): string {
+  let developers: number = api.getNumberOfDevelopers();
+  let sloc: number = api.getSLOC();
+  let inactiveDevs: number = api.getNumberOfInactiveDevelopers();
+  let commits: number = api.getNumberOfTotalCommits();
+  let healthScore: string = api.getOverallCodebaseHealthScore();
 
-    let developers: number = api.getNumberOfDevelopers();
-    let sloc: number = api.getSLOC();
-    let inactiveDevs: number = api.getNumberOfInactiveDevelopers();
-    let commits: number = api.getNumberOfTotalCommits();
-    let healthScore: string = api.getOverallCodebaseHealthScore();
+  //Request entire codebase data
+  api.getDashboardData().then((responseData) => {
+    console.log(responseData);
+    //Send a message to our webview with Codebase data.
+    if (overviewWebviewPanel) {
+      overviewWebviewPanel.webview.postMessage(responseData);
+    } else {
+      console.error("overviewWebviewPanel was undefined");
+    }
+  });
 
-    //Request entire codebase data
-    api.getDashboardData().then(responseData => {
-        console.log(responseData);
-        //Send a message to our webview with Codebase data.
-        if (overviewWebviewPanel != undefined)
-        {
-            overviewWebviewPanel.webview.postMessage(responseData);
-        }
-        else
-        {
-            console.error("overviewWebviewPanel was undefined");
-        }
-    });
-
-    //Use mock dashboard data
-    /*if (overviewWebviewPanel != undefined)
+  //Use mock dashboard data
+  /*if (overviewWebviewPanel != undefined)
     {
         overviewWebviewPanel.webview.postMessage(mockOverview);
     }
@@ -36,8 +35,7 @@ export function overviewHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
         console.error("overviewWebviewPanel was undefined");
     }*/
 
-
-    return `
+  return `
     <!DOCTYPE HTML>
         <HTML>
             <head>
