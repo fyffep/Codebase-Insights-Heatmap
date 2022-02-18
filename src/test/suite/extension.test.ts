@@ -4,6 +4,7 @@ import * as assert from "assert";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import * as mockCodeMap from "../../api/mockCodeMap";
+import { ContributorObject, mockKnowledgeGraphGETRequest } from "../../api/mockKnowledgeGraph";
 import * as config from "../../config/config";
 // import * as myExtension from '../../extension';
 
@@ -59,5 +60,9 @@ suite("Extension Test Suite", () => {
       config.getGitUrl(),
       "https://www.github.com/my/repository"
     );
+  });
+  test("Generate mock knowledge graph", () => {
+    let contributors: ContributorObject[] = mockKnowledgeGraphGETRequest(20);
+    assert.strictEqual(20, contributors.length);
   });
 });

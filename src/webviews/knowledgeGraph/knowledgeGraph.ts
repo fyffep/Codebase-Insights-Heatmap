@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
+import * as mockKnowledgeGraph from '../../api/mockKnowledgeGraph';
 
 export function knowledgeGraphHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri) {
+    //let mockData = mockKnowledgeGraph.
     return `
     <!DOCTYPE HTML>
     <HTML>
