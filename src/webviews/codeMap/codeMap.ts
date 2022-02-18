@@ -21,13 +21,11 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
         <body>
 
             <p> This text should be green </p>
-            <svg width="600" height="600"></svg>
+            <svg width="500" height="500"></svg>
             <p>Look at all these files: ${files}</p>
-            <button><span>Hover me!</span></button>
             <h1> Github URL: ${gitUrl} </p>
         </body>
-        <script src="${scriptUri}">
-        codemap();</script>
+        <script src="${scriptUri}"></script>
     
     </HTML>
     `;

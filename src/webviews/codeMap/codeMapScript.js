@@ -1,7 +1,6 @@
 d3.select("p").style("color","green");
 d3.select("p").append("h1").text("Hello from D3!");
-console.log("This is after saying hello");
-// TODO: use data from outside
+
 data = {
     "path": ".",
     "fileTreeNodeList": [
@@ -896,72 +895,45 @@ data = {
             ]
         }
     ]
-}
+};
 
-  /*var data = {
-	"path": "A1",
-	"fileTreeNodeList": [
-		{
-			"path": "B1",
-			"fileTreeNodeList": [
-				{
-					"path": "C1",
-					"value": 100
-				},
-				{
-					"path": "C2",
-					"value": 300
-				},
-				{
-					"path": "C3",
-					"value": 200
-				}
-			]
-		},
-		{
-			"path": "B2",
-			"value": 200
-		}
-	]
-};*/
+var color = d3.scaleLinear()
+    .domain([-1, 5])
+    .range(["#fdcc8a", "hsl(228,30%,40%)"])
+    .interpolate(d3.interpolateHcl);    
+    
+// var body = d3.select("body").style("background-color", color(-1));    
 
-/* Working basic
 var svg = d3.select("svg"),
     margin = 20,
     diameter = +svg.attr("width"),
     g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-var color = d3.scaleLinear()
-    .domain([-1, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
+// svg.style("background", color(-1));
 
 var pack = d3.pack()
     .size([diameter - margin, diameter - margin])
     .padding(2);
 
-// d3.json("flare.json", function(error, root) {
-//   if (error) throw error;
-
-root = d3.hierarchy(data)
-    .sum(function(d) { return d.value; })
-    .sort(function(a, b) { return b.value - a.value; });
-
+var root = d3.hierarchy(data, (c => {return c.fileTreeNodeList;}))
+    .sum(function(d) { return d.value;})
+    .sort(function(a, b) { return b.value - a.value;});
+    
 var focus = root,
     nodes = pack(root).descendants(),
     view;
 
 var circle = g.selectAll("circle")
-.data(nodes)
-.enter().append("circle")
+    .data(nodes)
+    .enter().append("circle")
     .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
     .style("fill", function(d) { return d.children ? color(d.depth) : null; })
-    .on("hover", function(d) { console.log("Hover over ", d.data.path);})
-    .on("click", function(d) { console.log("click detected"); if (focus !== d) { zoom(d), d3.event.stopPropagation(); console.log("Clicked on different node")} });
-console.log(circle);
+    .on("click", function(event, d) { console.log("clicked", d, focus, focus!== d); if (focus !== d) {zoom(d); event.stopPropagation(); } else {zoom(root); event.stopPropagation();}})
+    .on("mouseover", function(d){ console.log("mouseover", d); });
+
 var text = g.selectAll("text")
-.data(nodes)
-.enter().append("text")
+    .data(nodes)
+    .enter().append("text")
     .attr("class", "label")
     .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
     .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
@@ -969,231 +941,23 @@ var text = g.selectAll("text")
 
 var node = g.selectAll("circle,text");
 
-svg
-    .style("background", color(-1))
-    .on("click", function() { zoom(root); });
-
 zoomTo([root.x, root.y, root.r * 2 + margin]);
 
 function zoom(d) {
-    var focus0 = focus; focus = d;
-
-    var transition = d3.transition()
-        .duration(d3.event.altKey ? 7500 : 750)
-        .tween("zoom", function(d) {
-            var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
-            return function(t) { zoomTo(i(t)); };
-        });
-
-    transition.selectAll("text")
-        .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-        .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
-        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
-}
-
-function zoomTo(v) {
-    var k = diameter / v[2]; view = v;
-    node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
-    circle.attr("r", function(d) { return d.r * k; });
-}
-// });
-*/
-
-/*
-//This one packs 
-
-const width = 640, height = 400;
-const root = d3.pack()     //this one packs data
-    .size([width, height])
-    .padding(3)
-  (d3.hierarchy(data)
-    .sum(d => d.value)
-    .sort((a, b) => b.value - a.value))
-    .padding(10);   //padding between tangents of circles
-
-const color = d3.scaleLinear()
-    .domain([0, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
-
-let focus = root;   //To keep track of focus for the zoom event and on click
-let view;   //To keep track of which view to zoom to. Still unclear on why it's needed
-
-const svg = d3.create("svg")
-.attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-.style("display", "block")
-.style("margin", "0 -14px")
-.style("background", color(0))
-.style("cursor", "pointer")
-.on("click", (event) => {zoom(event, root); console.log("Nooooo");});
-
-if(svg !== null) {
-    console.log("selected svg");
-}
-
-const node = svg.append("g")
-.selectAll("circle")
-.data(root.descendants().slice(1))
-.join("circle")
-  .attr("fill", d => d.children ? color(d.depth) : "white")
-  .attr("pointer-events", d => !d.children ? "none" : null)
-  .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
-  .on("mouseout", function() { d3.select(this).attr("stroke", null); })
-  .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
-
-
-  const label = svg.append("g")
-      .style("font", "10px sans-serif")
-      .attr("pointer-events", "none")
-      .attr("text-anchor", "middle")
-    .selectAll("text")
-    .data(root.descendants())
-    .join("text")
-      .style("fill-opacity", d => d.parent === root ? 1 : 0)
-      .style("display", d => d.parent === root ? "inline" : "none")
-      .text(d => d.data.name);
-
-  zoomTo([root.x, root.y, root.r * 2]);
-
-  function zoomTo(v) {
-    const k = width / v[2];
-
-    view = v;
-
-    label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-    node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-    node.attr("r", d => d.r * k);
-  }
-
-  function zoom(event, d) {
-    const focus0 = focus;
-
     focus = d;
 
-    const transition = svg.transition()
-        .duration(event.altKey ? 7500 : 750)
-        .tween("zoom", d => {
-          const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-          return t => zoomTo(i(t));
-        });
-
-    label
-      .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-      .transition(transition)
-        .style("fill-opacity", d => d.parent === focus ? 1 : 0)
-        .on("start", function(d) { if (d.parent === focus) { this.style.display = "inline"; }})
-        .on("end", function(d) { if (d.parent !== focus){ this.style.display = "none"; }});
-  }
-*/
-
-// const svg = d3.create("svg")
-//     .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-//     .style("display", "block")
-//     .style("margin", "0 -14px")
-//     .style("background", color(0))
-//     .style("cursor", "pointer")
-//     .on("click", (event) => {zoom(event, root); console.log("Nooooo");});
-    
-
-var color = d3.scaleLinear()
-    .domain([-1, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
-// d3.json("flare.json", function(error, root) {
-//   if (error) throw error;
-
-var svg = d3.select("svg"),
-    margin = 20,
-    diameter = +svg.attr("width"),
-    g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
-
-svg
-    // .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
-    // .style("display", "block")
-    .style("margin", "0 -14px")
-    // .style("background", color(0))
-    .style("cursor", "pointer")
-    .on("click", (event) => {
-        // d3.select("p").append("h1").text("Hello from D3!");});
-    zoom(event, root); console.log("Nooooo");});
- 
-
-var pack = d3.pack()     //this one packs data
-    .size([diameter - margin, diameter - margin])
-    // .size([width, height])
-    .padding(2); //3
-
-root = d3.hierarchy(data, (c => {return c.fileTreeNodeList;}))
-    .sum(function(d) { return d.value;})
-    .sort(function(a, b) { return b.value - a.value;});
-
-var focus = root,   //To keep track of focus for the zoom event and on click
-    nodes = pack(root).descendants(),
-    view;   //To keep track of which view to zoom to. Still unclear on why it's needed
-
-
-
-// const node = svg.append("g")
-// .selectAll("circle")
-// .data(root.descendants().slice(1))
-// .join("circle")
-//     .attr("fill", d => d.children ? color(d.depth) : "white")
-//     .attr("pointer-events", d => !d.children ? "none" : null)
-//     .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
-//     .on("mouseout", function() { d3.select(this).attr("stroke", null); })
-//     .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
-
-// here, commented old blocks
-var circle = g.selectAll("circle")
-    .data(nodes)
-// .data(root.descendants().slice(1))
-    .enter().append("circle")
-// .join("circle")
-    .attr("fill", d => d.children ? color(d.depth) : "black")
-    .attr("pointer-events", d => !d.children ? "none" : null)
-    // .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
-    // .on("mouseout", function() { d3.select(this).attr("stroke", null); });
-//     .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
-
-    // .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
-    // .style("fill", function(d) { return d.children ? color(d.depth) : null; })
-    // .on("hover", function(d) { console.log("Hover over ", d.data.path);})
-    // .on("click", function(d) { console.log("click detected"); if (focus !== d) { zoom(d), d3.event.stopPropagation(); console.log("Clicked on different node")} });
-
-console.log(circle);
-
-var text = g.selectAll("text")
-.data(nodes)
-.enter().append("text")
-    .attr("class", "label")
-    .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
-    .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-    .text(function(d) { return d.data.path; });
-
-var node = g.selectAll("circle,text");
-
-svg
-    .style("background", color(-1))
-    .on("click", function() { zoom(root); });
-
-zoomTo([root.x, root.y, root.r * 2 + margin]);
-
-function zoom(d) {
-    var focus0 = focus; focus = d;
-
     var transition = d3.transition()
-        .duration(d3.event.altKey ? 7500 : 750)
+        .duration(d.altKey? 7500: 750)
         .tween("zoom", function(d) {
-            var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+            var i = d3.interpolate(view, [focus.x, focus.y, focus.r * 2 + margin]);
             return function(t) { zoomTo(i(t)); };
         });
 
     transition.selectAll("text")
         .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
         .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
-        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        .on("start", function(d) { if (d.parent === focus) { this.style.display = "inline"; }})
+        .on("end", function(d) { if (d.parent !== focus) { this.style.display = "none"; }});
 }
 
 function zoomTo(v) {
@@ -1201,4 +965,3 @@ function zoomTo(v) {
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
     circle.attr("r", function(d) { return d.r * k; });
 }
-// });
