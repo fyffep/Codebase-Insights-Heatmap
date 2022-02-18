@@ -937,7 +937,7 @@ var text = g.selectAll("text")
     .attr("class", "label")
     .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
     .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-    .text(function(d) { return d.data.name; });
+    .text(function(d) { return d.children ? d.data.path: d.data.filename; });
 
 var node = g.selectAll("circle,text");
 
