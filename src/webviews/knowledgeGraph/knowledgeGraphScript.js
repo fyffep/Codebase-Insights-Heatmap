@@ -4,13 +4,24 @@ var height = svg.attr("height");
 
 var nodes = [];
 var links = [];
+const repelForce = -100;
+const linkLength = 100;
 
+let zoom = d3.zoom().on("zoom", handleZoom);
 
+function handleZoom(e) {
+  d3.select(".nodes").attr("transform", e.transform);
+  d3.select(".links").attr("transform", e.transform);
+}
+
+function initZoom() {
+  d3.select("svg").call(zoom);
+}
 var simulation = d3
   .forceSimulation(nodes)
   .force("charge", d3.forceManyBody().strength(-100))
   .force("center", d3.forceCenter(width / 2, height / 2))
-  .force("link", d3.forceLink().links(links))
+  .force("link", d3.forceLink().links(links).distance(linkLength))
   .on("tick", ticked);
 
 window.addEventListener("message", (event) => {
@@ -19,13 +30,42 @@ window.addEventListener("message", (event) => {
   links = event.data.links;
   //console.log("links" + links);
   simulation = d3
-  .forceSimulation(nodes)
-  .force("charge", d3.forceManyBody().strength(-100))
-  .force("center", d3.forceCenter(width / 2, height / 2))
-  .force("link", d3.forceLink().links(links))
-  .on("tick", ticked);
-
+    .forceSimulation(nodes)
+    .force("charge", d3.forceManyBody().strength(repelForce))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("link", d3.forceLink().links(links).distance(linkLength))
+    .on("tick", ticked);
+  initZoom();
 });
+
+// var circle = d3
+//   .selectAll("circle")
+//   .data(nodes)
+//   .enter()
+//   .append("circle")
+//   .attr("class", function (d) {
+//     return d.parent
+//       ? d.children
+//         ? "node"
+//         : "node node--leaf"
+//       : "node node--root";
+//   })
+//   .style("fill", function (d) {
+//     return d.children ? color(d.depth) : null;
+//   })
+//   .on("click", function (event, d) {
+//     console.log("clicked", d, focus, focus !== d);
+//     if (focus !== d) {
+//       zoom(d);
+//       event.stopPropagation();
+//     } else {
+//       zoom(root);
+//       event.stopPropagation();
+//     }
+//   })
+//   .on("mouseover", function (d) {
+//     console.log("mouseover", d);
+//   });
 
 function updateLinks() {
   var u = d3
@@ -48,6 +88,19 @@ function updateLinks() {
 }
 
 function updateNodes() {
+  u = d3
+    .select(".nodes")
+    .selectAll("circle")
+    .data(nodes)
+    .join("circle")
+    .attr("cx", function (d) {
+      return d.x;
+    })
+    .attr("cy", function (d) {
+      return d.y;
+    })
+    .attr("r", 15)
+    .attr("fill", "red");
   u = d3
     .select(".nodes")
     .selectAll("text")

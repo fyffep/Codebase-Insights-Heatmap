@@ -27,7 +27,7 @@ export async function mockKnowledgeGraphGETRequest(contributors: number){
     let contributorList: ContributorObject[] = [];
     for (let i = 0; i < contributors; i++)
     {
-        contributorList.push(new ContributorObject(i, "Bob", i.toString().concat("@gmail.com"), i+5));
+        contributorList.push(new ContributorObject(i, "developer#"+i.toString(), i.toString().concat("@gmail.com"), i+5));
     }
     let links: Link[] = [];
     for (let i = 0; i < contributors; i++)
