@@ -5,12 +5,6 @@ var height = svg.attr("height");
 var nodes = [];
 var links = [];
 
-window.addEventListener("message", (event) => {
-  nodes = event.data.nodes;
-  //console.log("nodes:" + nodes);
-  links = event.data.links;
-  //console.log("links" + links);
-});
 
 var simulation = d3
   .forceSimulation(nodes)
@@ -18,6 +12,20 @@ var simulation = d3
   .force("center", d3.forceCenter(width / 2, height / 2))
   .force("link", d3.forceLink().links(links))
   .on("tick", ticked);
+
+window.addEventListener("message", (event) => {
+  nodes = event.data.nodes;
+  //console.log("nodes:" + nodes);
+  links = event.data.links;
+  //console.log("links" + links);
+  simulation = d3
+  .forceSimulation(nodes)
+  .force("charge", d3.forceManyBody().strength(-100))
+  .force("center", d3.forceCenter(width / 2, height / 2))
+  .force("link", d3.forceLink().links(links))
+  .on("tick", ticked);
+
+});
 
 function updateLinks() {
   var u = d3
