@@ -99,7 +99,9 @@ function updateNodes() {
     .attr("cy", function (d) {
       return d.y;
     })
-    .attr("r", 15)
+    .attr("r", function (d) {
+      return d.knowledgeScore;
+    })
     .attr("fill", "red");
   u = d3
     .select(".nodes")
