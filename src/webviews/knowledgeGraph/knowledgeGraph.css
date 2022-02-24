@@ -7,3 +7,13 @@
 h1 {
     color: red;
 }
+svg {
+    background-color: #DDDDDD;
+}
+line {
+    stroke: black;
+    fill-opacity: 100%;
+}
+text {
+    text-anchor: middle;
+}

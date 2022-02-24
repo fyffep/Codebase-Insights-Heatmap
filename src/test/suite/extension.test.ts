@@ -64,9 +64,15 @@ suite("Extension Test Suite", () => {
       "https://www.github.com/my/repository"
     );
   });
-  test("Generate mock knowledge graph", () => {
-    let contributors: ContributorObject[] = mockKnowledgeGraphGETRequest(20);
-    assert.strictEqual(20, contributors.length);
+  test("Generate mock knowledge graph", async () => {
+    let response = await mockKnowledgeGraphGETRequest(20);
+    // for (let i = 0; i < response.nodes.length; i++) {
+    //   console.log(response.nodes[i].knowledgeScore);
+    // }
+    // for (let i = 0; i < response.links.length; i++) {
+    //   console.log(response.links[i].source);
+    // }
+    assert.strictEqual(20, response.nodes.length);
   });
 
   test("Get/set jenkins login preference test", async () => {
