@@ -4,7 +4,10 @@ import * as assert from "assert";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import * as mockCodeMap from "../../api/mockCodeMap";
-import { ContributorObject, mockKnowledgeGraphGETRequest } from "../../api/mockKnowledgeGraph";
+import {
+  ContributorObject,
+  mockKnowledgeGraphGETRequest,
+} from "../../api/mockKnowledgeGraph";
 import * as config from "../../config/config";
 // import * as myExtension from '../../extension';
 
@@ -78,10 +81,7 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("setJenkinsLogin await failed");
     }
-    assert.strictEqual(
-      config.getJenkinsLogin(),
-      "jenkinsbot123"
-    );
+    assert.strictEqual(config.getJenkinsLogin(), "jenkinsbot123");
   });
 
   test("Get/set jenkins password preference test", async () => {
@@ -96,9 +96,6 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("setJenkinsPassword await failed");
     }
-    assert.strictEqual(
-      config.getJenkinsPassword(),
-      "jenkinsbot123"
-    );
+    assert.strictEqual(config.getJenkinsPassword(), "jenkinsbot123");
   });
-}
+});
