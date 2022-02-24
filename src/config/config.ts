@@ -38,3 +38,11 @@ export function getJenkinsPassword(): string {
 export async function setJenkinsPassword(password: string): Promise<void> {
   return setPreference("jenkinsPassword", password);
 }
+
+export function getJenkinsURL(): string {
+  return getPreference("jenkinsURL");
+}
+
+export async function setJenkinsURL(URL: string): Promise<void> {
+  return setPreference("jenkinsURL", URL);
+}

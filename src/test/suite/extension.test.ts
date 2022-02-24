@@ -96,4 +96,22 @@ suite("Extension Test Suite", () => {
       "jenkinsbot123"
     );
   });
+
+  test("Get/set jenkins URL preference test", async () => {
+    try {
+      await config.setJenkinsURL("");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
+    assert.strictEqual(config.getJenkinsURL(), "");
+    try {
+      await config.setJenkinsURL("https://www.myjenkinsthing.com");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
+    assert.strictEqual(
+      config.getJenkinsURL(),
+      "https://www.myjenkinsthing.com"
+    );
+  });
 });

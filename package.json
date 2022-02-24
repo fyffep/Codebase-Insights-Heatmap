@@ -75,6 +75,11 @@
           "type": "string",
           "default": "",
           "description": "Password for the associated Jenkins instance"
+        },
+        "codebase-insights.jenkinsURL": {
+          "type": "string",
+          "default": "",
+          "description": "URL for the associated Jenkins instance"
         }
       }
     }
