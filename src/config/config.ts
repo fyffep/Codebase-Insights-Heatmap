@@ -43,6 +43,13 @@ export function getJenkinsURL(): string {
   return getPreference("jenkinsURL");
 }
 
-export async function setJenkinsURL(URL: string): Promise<void> {
-  return setPreference("jenkinsURL", URL);
+export async function setJenkinsURL(url: string): Promise<void> {
+  return setPreference("jenkinsURL", url);
+}
+export function getJenkinsSettings() {
+  return {
+    "login":getJenkinsLogin(),
+    "password":getJenkinsPassword(),
+    "url":getJenkinsURL()
+  };
 }
