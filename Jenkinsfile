@@ -4,7 +4,7 @@ pipeline {
       tools {nodejs "nodejs"}
      stages{
         stage('Clone Git Repo') {
-        /* Checking out to the repository */
+        /* Checking out to th e repository */
             steps{
                 checkout scm
                 echo "Successfully cloned git repository"
