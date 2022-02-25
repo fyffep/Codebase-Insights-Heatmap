@@ -73,6 +73,21 @@
           "type": "string",
           "default": "",
           "description": "URL of the public git repository to analyze"
+        },
+        "codebase-insights.jenkinsLogin": {
+          "type": "string",
+          "default": "",
+          "description": "Login information for the associated Jenkins instance"
+        },
+        "codebase-insights.jenkinsPassword": {
+          "type": "string",
+          "default": "",
+          "description": "Password for the associated Jenkins instance"
+        },
+        "codebase-insights.jenkinsURL": {
+          "type": "string",
+          "default": "",
+          "description": "URL for the associated Jenkins instance"
         }
       }
     }
