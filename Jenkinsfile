@@ -1,6 +1,7 @@
 // demo 
 pipeline {
     agent any
+      tools {nodejs "nodejs"}
      stages{
         stage('Clone Git Repo') {
         /* Checking out to the repository */
