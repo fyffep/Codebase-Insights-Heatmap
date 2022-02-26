@@ -28,8 +28,8 @@ export function knowledgeGraphHTML(
         </head>
         <body>
             <div class="page">
-                <h1> Welcome to the knowledge graph! </h1>
-                <svg id="graph" width="1000" height="750">
+                <h1> Knowledge Graph </h1>
+                <svg id="graph" width="600" height="600">
                     <g class="links"/>
                     <g class="nodes"/>
                 </svg>

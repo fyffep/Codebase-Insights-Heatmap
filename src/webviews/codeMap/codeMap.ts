@@ -32,9 +32,11 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
         </head>
         <body>
 
-            <p> This text should be green </p>
-            <svg width="500" height="500"></svg>
-            <h1> Github URL: ${gitUrl} </p>
+            <h1> Codebase Heatmap </h1>
+            <p><i> Red-hot files are the most active </i></p>
+            <!--p> This text should be green </p-->
+            <svg width="600" height="600"></svg>
+            <!--h1> Github URL: ${gitUrl} </p-->
         </body>
         <script src="${scriptUri}"></script>
     
