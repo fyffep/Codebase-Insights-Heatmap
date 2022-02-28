@@ -138,6 +138,6 @@ function closeNav() {
 }
 function buttonExample() {
   vscode.postMessage({
-    data: "Thanks for pressing that button!"
+    data: "Thanks for pressing that button!",
   });
 }
