@@ -34,6 +34,11 @@ export function knowledgeGraphHTML(
                     <g class="nodes"/>
                 </svg>
             </div>
+            <div id="controlPanel" class="sidepanel">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <button class="controlbtn" onclick="buttonExample()">I'm a button!</button>
+            </div>
+            <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${scriptUri}"/>
     </HTML>

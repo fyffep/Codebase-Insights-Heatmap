@@ -114,6 +114,10 @@ export function createOrShowKnowledgeGraphPanel(context:vscode.ExtensionContext)
         knowledgeGraphWebviewPanel.onDidDispose( () => {
             knowledgeGraphWebviewPanel = undefined;
         });
+        knowledgeGraphWebviewPanel.webview.onDidReceiveMessage(
+        message => {
+            vscode.window.showInformationMessage("Thanks for pressing that button!");
+        });
     }
 }
 
