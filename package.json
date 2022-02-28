@@ -72,7 +72,7 @@
         "codebase-insights.repoURL": {
           "type": "string",
           "default": "",
-          "description": "URL of the public git repository to analyze"
+          "description": "URL of the git repository to analyze"
         },
         "codebase-insights.jenkinsLogin": {
           "type": "string",
