@@ -4,6 +4,10 @@ import * as assert from "assert";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import * as mockCodeMap from "../../api/mockCodeMap";
+import {
+  ContributorObject,
+  mockKnowledgeGraphGETRequest,
+} from "../../api/mockKnowledgeGraph";
 import * as config from "../../config/config";
 // import * as myExtension from '../../extension';
 
@@ -60,6 +64,16 @@ suite("Extension Test Suite", () => {
       "https://www.github.com/my/repository"
     );
   });
+  test("Generate mock knowledge graph", async () => {
+    let response = await mockKnowledgeGraphGETRequest(20);
+    // for (let i = 0; i < response.nodes.length; i++) {
+    //   console.log(response.nodes[i].knowledgeScore);
+    // }
+    // for (let i = 0; i < response.links.length; i++) {
+    //   console.log(response.links[i].source);
+    // }
+    assert.strictEqual(20, response.nodes.length);
+  });
 
   test("Get/set jenkins login preference test", async () => {
     try {
@@ -73,10 +87,7 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("setJenkinsLogin await failed");
     }
-    assert.strictEqual(
-      config.getJenkinsLogin(),
-      "jenkinsbot123"
-    );
+    assert.strictEqual(config.getJenkinsLogin(), "jenkinsbot123");
   });
 
   test("Get/set jenkins password preference test", async () => {
@@ -91,9 +102,64 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("setJenkinsPassword await failed");
     }
+    assert.strictEqual(config.getJenkinsPassword(), "jenkinsbot123");
+  });
+
+  test("Get/set jenkins URL preference test", async () => {
+    try {
+      await config.setJenkinsURL("");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
+    assert.strictEqual(config.getJenkinsURL(), "");
+    try {
+      await config.setJenkinsURL("https://www.myjenkinsthing.com");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
     assert.strictEqual(
-      config.getJenkinsPassword(),
-      "jenkinsbot123"
+      config.getJenkinsURL(),
+      "https://www.myjenkinsthing.com"
     );
+  });
+  test("Get/set all jenkins settings test", async () => {
+    try {
+      await config.setJenkinsURL("");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
+    try {
+      await config.setJenkinsLogin("");
+    } catch {
+      assert.fail("setJenkinsLogin await failed");
+    }
+    try {
+      await config.setJenkinsPassword("");
+    } catch {
+      assert.fail("setJenkinsPassword await failed");
+    }
+    let jenkinsSettingsObject = config.getJenkinsSettings();
+    assert.strictEqual(jenkinsSettingsObject.login, "");
+    assert.strictEqual(jenkinsSettingsObject.password, "");
+    assert.strictEqual(jenkinsSettingsObject.url, "");
+    try {
+      await config.setJenkinsURL("abcdefg.com");
+    } catch {
+      assert.fail("setJenkinsURL await failed");
+    }
+    try {
+      await config.setJenkinsLogin("beegeesfan1234");
+    } catch {
+      assert.fail("setJenkinsLogin await failed");
+    }
+    try {
+      await config.setJenkinsPassword("securepassword123");
+    } catch {
+      assert.fail("setJenkinsPassword await failed");
+    }
+    jenkinsSettingsObject = config.getJenkinsSettings();
+    assert.strictEqual(jenkinsSettingsObject.url, "abcdefg.com");
+    assert.strictEqual(jenkinsSettingsObject.login, "beegeesfan1234");
+    assert.strictEqual(jenkinsSettingsObject.password, "securepassword123");
   });
 });

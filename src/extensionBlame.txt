@@ -1,0 +1,48 @@
+cec11476 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-19 15:13:10 -0500  1) import * as vscode from 'vscode';
+ae26b043 src/extension.ts                                               (Isaiah Sherfick 2022-01-21 10:17:57 -0500  2) import * as webviewFactory from './webviews/webviewFactory';
+ae26b043 src/extension.ts                                               (Isaiah Sherfick 2022-01-21 10:17:57 -0500  3) import { CodebaseInsightsViewProvider } from './treeviews/codeBaseInsightsViewProvider';
+8267395d src/extension.ts                                               (ragatt          2022-01-20 21:32:48 -0500  4) import path = require('path');
+69adaa6d src/extension.ts                                               (ragatt          2022-01-20 13:41:00 -0500  5) 
+c280b69f src/extension.ts                                               (Isaiah Sherfick 2022-01-20 19:01:17 -0500  6) //This function is called when any of the events in package.json.activationEvents are thrown
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500  7) export function activate(context: vscode.ExtensionContext) {
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500  8)   console.log('Codebase Insights extension activated!');
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500  9) 
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500 10)   vscode.window.registerTreeDataProvider(
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500 11)     'codebaseInsightsTree',
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500 12)     new CodebaseInsightsViewProvider()
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500 13)   );
+af189a71 src/extension.ts                                               (Isaiah Sherfick 2022-01-20 13:33:54 -0500 14) 
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 15) 
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 16)   context.subscriptions.push(
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 17)     vscode.commands.registerCommand('codebase-insights.overview', () => {
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 18)       webviewFactory.createOrShowOverviewPanel(context);
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 19)     })
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 20)   );
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 21) 
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 22)   context.subscriptions.push(
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 23)     vscode.commands.registerCommand('codebase-insights.code-map', () => {
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 24)       webviewFactory.createOrShowCodeMapPanel(context);
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 25)     })
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 26)   );
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 27) 
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 28)   context.subscriptions.push(
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 29)     vscode.commands.registerCommand('codebase-insights.knowledge-graph', () => {
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 30)       webviewFactory.createOrShowKnowledgeGraphPanel(context);
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 31)     })
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 32)   );
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 33) 
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 34)   context.subscriptions.push(
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 35)     vscode.commands.registerCommand('codebase-insights.commit-risk-assessment', () => {
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 36)       webviewFactory.createOrShowCommitRiskAssessmentPanel(context);
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 37)     })
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 38)   );
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 39) 
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 40)   context.subscriptions.push(
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 41)     vscode.commands.registerCommand('codebase-insights.insights', () => {
+816cc8a7 src/extension.ts                                               (Isaiah Sherfick 2022-01-28 13:01:51 -0500 42)       webviewFactory.createOrShowInsightsPanel(context);
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 43)     })
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 44)   );
+cec11476 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-19 15:13:10 -0500 45) }
+cec11476 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-19 15:13:10 -0500 46) 
+c280b69f src/extension.ts                                               (Isaiah Sherfick 2022-01-20 19:01:17 -0500 47) //If we need to close resources in the case where the user closes VSCode while our extension is running, this is where to do it
+6e2bc246 vscode-codebase-insights-iu/codebase-insights/src/extension.ts (Behar, Ethan T  2022-01-20 13:06:46 -0500 48) export function deactivate() {}

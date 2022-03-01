@@ -105,5 +105,6 @@ dist
 out/
 .vscode/settings.json
 /out/
-
+out/*
+./out/*
 .vscode_test/

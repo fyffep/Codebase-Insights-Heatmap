@@ -1,6 +1,6 @@
 import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
-import { getGitUrl } from "../config/config";
+import { getGitUrl, getJenkinsSettings } from "../config/config";
 
 //Setup
 const instance = axios.create({
@@ -9,7 +9,6 @@ const instance = axios.create({
 });
 
 //These are all temporary until we get the REST API up
-
 export function getNumberOfDevelopers(): number {
     return randomInt(25,100);
 }
@@ -59,6 +58,8 @@ export function getEntireCodebase(): AxiosPromise<any>
         githubUrl: githubUrlOfUser
     };
     console.log("Requesting analysis of " + githubUrlOfUser);
+    let jenkinsData = getJenkinsSettings();
+    instance.post('/jenkins-simple/',jenkinsData); //Send the Jenkins data
     return instance.post('/analyze/codebase/', urlPayload)
         .then((response) => {
             //Return data from the axios promise
@@ -81,6 +82,27 @@ export function getDashboardData(): AxiosPromise<any>
     };
     console.log("Requesting analysis of " + githubUrlOfUser);
     return instance.post('/analyze/dashboard/', urlPayload)
+        .then((response) => {
+            //Return data from the axios promise
+            return response.data;
+        })
+        .catch(err => {
+            //Handle timeout or error
+            console.error(err);
+            return err;
+        });
+}
+
+
+export function getCodeMapData(): AxiosPromise<any> 
+{
+    //Send request
+    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
+    var urlPayload = {  
+        githubUrl: githubUrlOfUser
+    };
+    console.log("Requesting analysis of " + githubUrlOfUser);
+    return instance.post('/analyze/group-by-package/', urlPayload)
         .then((response) => {
             //Return data from the axios promise
             return response.data;

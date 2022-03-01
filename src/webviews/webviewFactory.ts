@@ -92,7 +92,8 @@ export function createOrShowKnowledgeGraphPanel(context:vscode.ExtensionContext)
         preferredColumn,
         {
             enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/knowledgeGraph'))]
+            localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src/webviews/knowledgeGraph')),
+            vscode.Uri.file(path.join(context.extensionPath, 'resources/d3'))]
         }
         );
 
@@ -105,7 +106,11 @@ export function createOrShowKnowledgeGraphPanel(context:vscode.ExtensionContext)
             );
         const scriptUri = knowledgeGraphWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(cssUri, scriptUri); 
+        const d3OnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'resources/d3', 'd3.min.js')
+            );
+        const d3Uri = knowledgeGraphWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+        knowledgeGraphWebviewPanel.webview.html = htmlFactory.generateKnowledgeGraphHTML(cssUri, scriptUri, d3Uri); 
         knowledgeGraphWebviewPanel.onDidDispose( () => {
             knowledgeGraphWebviewPanel = undefined;
         });

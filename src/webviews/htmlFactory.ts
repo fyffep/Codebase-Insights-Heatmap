@@ -14,8 +14,8 @@ export function generateCodeMapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri,  
 export function generateCommitRiskAssessmentHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return commitRiskAssessment.commitRiskAssessmentHTML(cssUri, scriptUri);
 }
-export function generateKnowledgeGraphHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
-    return knowledgeGraph.knowledgeGraphHTML(cssUri, scriptUri);
+export function generateKnowledgeGraphHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
+    return knowledgeGraph.knowledgeGraphHTML(cssUri, scriptUri, d3Uri);
 }
 export function generateInsightsHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return insights.insightsHTML(cssUri, scriptUri);
