@@ -4,10 +4,10 @@ import axios, { AxiosPromise } from "axios";
 import { overviewWebviewPanel } from "../webviewFactory";
 import { mockOverview } from "./mockOverview";
 
-export function overviewHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
-): string {
+export function overviewHTML(args: Map<string, vscode.Uri>): string {
+  const cssUri = args.get("css");
+  const scriptUri = args.get("script");
+
   let developers: number = api.getNumberOfDevelopers();
   let sloc: number = api.getSLOC();
   let inactiveDevs: number = api.getNumberOfInactiveDevelopers();
