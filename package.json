@@ -1,7 +1,7 @@
 {
   "name": "codebase-insights",
   "displayName": "Codebase Insights",
-  "description": "Codebase Insights will help you understand when a commit will break a build. Additionally, it will help guide your refactoring by evaluating and presenting possible troublesome files within the codebase.",
+  "description": "Codebase Insights analyzes your codebase, provides compact data visualization for high-level overviews of your code, and allows you to garner insights for a deeper understanding of your codebase from a high level.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.62.0",
@@ -17,6 +17,11 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "codebase-insights.settings",
+        "title": "Open Codebase Insights Settings page",
+        "category": "Codebase Insight Tools"
+      },
       {
         "command": "codebase-insights.overview",
         "title": "Open Codebase Insights Overview page",

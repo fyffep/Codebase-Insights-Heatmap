@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export class CodeBaseInsightsView extends vscode.TreeItem {
   constructor(
@@ -8,36 +8,41 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
   ) {
     super(label, collapsibleState);
     this.tooltip = `${this.description}`;
-    this.description = '';
+    this.description = "";
     this.command = this.getCommand(label);
   }
 
   getCommand(label: string) {
     switch (label) {
-      case 'Overview':
+      case "Settings":
         return {
-          title: 'Open Codebase Insights overview page',
-          command: 'codebase-insights.overview',
+          title: "Open Codebase Insights settings page",
+          command: "codebase-insights.settings",
         };
-      case 'Code Map':
+      case "Overview":
         return {
-          title: 'Open Codebase Insights code map page',
-          command: 'codebase-insights.code-map',
+          title: "Open Codebase Insights overview page",
+          command: "codebase-insights.overview",
         };
-      case 'Knowledge Graph':
+      case "Code Map":
         return {
-          title: 'Open Codebase Insights knowledge graph page',
-          command: 'codebase-insights.knowledge-graph',
+          title: "Open Codebase Insights code map page",
+          command: "codebase-insights.code-map",
         };
-      case 'Commit Risk Assessment':
+      case "Knowledge Graph":
         return {
-          title: 'Open Codebase Insights Commit Risk Assessment page',
-          command: 'codebase-insights.commit-risk-assessment',
+          title: "Open Codebase Insights knowledge graph page",
+          command: "codebase-insights.knowledge-graph",
         };
-      case 'Insights':
+      case "Commit Risk Assessment":
         return {
-          title: 'Open Codebase Insights Insights page',
-          command: 'codebase-insights.insights',
+          title: "Open Codebase Insights Commit Risk Assessment page",
+          command: "codebase-insights.commit-risk-assessment",
+        };
+      case "Insights":
+        return {
+          title: "Open Codebase Insights Insights page",
+          command: "codebase-insights.insights",
         };
       default:
       // error
