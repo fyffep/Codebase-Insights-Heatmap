@@ -2,6 +2,7 @@ import { settings } from "cluster";
 import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
+import * as config from "../config/config";
 
 //Webviews -- use these for message passing.
 export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
@@ -54,6 +55,16 @@ export function createOrShowSettingsPanel(
     );
     settingsWebviewPanel.onDidDispose(() => {
       settingsWebviewPanel = undefined;
+    });
+    settingsWebviewPanel.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "updateGitUrl":
+          config.setGitUrl(message.data);
+          vscode.window.showInformationMessage("Git url updated!");
+          break;
+        default:
+          break;
+      }
     });
   }
 }
