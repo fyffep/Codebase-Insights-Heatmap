@@ -2,11 +2,11 @@ import * as vscode from "vscode";
 import * as mockKnowledgeGraph from "../../api/mockKnowledgeGraph";
 import { knowledgeGraphWebviewPanel } from "../webviewFactory";
 
-export function knowledgeGraphHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri,
-  d3Uri: vscode.Uri
-) {
+export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
+  const cssUri = args.get("css");
+  const d3Uri = args.get("d3");
+  const scriptUri = args.get("script");
+
   mockKnowledgeGraph.mockKnowledgeGraphGETRequest(46).then((responseData) => {
     console.log(responseData);
     if (knowledgeGraphWebviewPanel) {
