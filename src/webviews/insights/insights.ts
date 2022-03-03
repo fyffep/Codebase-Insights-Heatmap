@@ -1,7 +1,9 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-export function insightsHTML(cssUri:vscode.Uri, scriptUri: vscode.Uri): string {
-    return `
+export function insightsHTML(args: Map<string, vscode.Uri>): string {
+  const cssUri = args.get("css");
+  const scriptUri = args.get("script");
+  return `
     <!DOCTYPE HTML>
     <HTML>
         <head>

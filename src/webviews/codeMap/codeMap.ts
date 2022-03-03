@@ -1,28 +1,31 @@
-import path = require('path');
-import * as vscode from 'vscode';
-import * as mockCodeMap from '../../api/mockCodeMap';
+import path = require("path");
+import * as vscode from "vscode";
+import * as mockCodeMap from "../../api/mockCodeMap";
 import { codeMapWebviewPanel } from "../webviewFactory";
 import * as api from "../../api/api";
-import * as config from '../../config/config';
+import * as config from "../../config/config";
 
-export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
+export function codemapHTML(args: Map<string, vscode.Uri>): string {
+  const d3Uri = args.get("d3");
+  const cssUri = args.get("css");
+  const scriptUri = args.get("script");
 
-    let width = 1400;
-    let height = 750;
-    let files = mockCodeMap.mockCodeMapGETRequest(1, ".java");
-    let gitUrl = config.getGitUrl();
-    console.log(gitUrl);
+  let width = 1400;
+  let height = 750;
+  let files = mockCodeMap.mockCodeMapGETRequest(1, ".java");
+  let gitUrl = config.getGitUrl();
+  console.log(gitUrl);
 
-    //Request entire codebase data
-    api.getCodeMapData().then((responseData) => {
+  //Request entire codebase data
+  api.getCodeMapData().then((responseData) => {
     //Send a message to our webview with Codebase data.
     if (codeMapWebviewPanel) {
-        codeMapWebviewPanel.webview.postMessage(responseData);
+      codeMapWebviewPanel.webview.postMessage(responseData);
     } else {
-        console.error("codeMapWebviewPanel was undefined");
+      console.error("codeMapWebviewPanel was undefined");
     }
   });
-    return `
+  return `
     <!DOCTYPE HTML>
     <HTML>
         <head>
