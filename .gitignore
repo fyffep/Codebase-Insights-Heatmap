@@ -107,4 +107,4 @@ out/
 /out/
 out/*
 ./out/*
-.vscode_test/
+.vscode-test/*

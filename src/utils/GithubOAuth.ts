@@ -39,7 +39,7 @@ export default class GithubOAuth {
 
 
     public checkOAuthStatus(context: vscode.ExtensionContext): boolean {
-        return context.globalState.get(GithubOAuth.accessTokenKey) != undefined;
+        return context.globalState.get(GithubOAuth.accessTokenKey) !== undefined;
     }
 
 
