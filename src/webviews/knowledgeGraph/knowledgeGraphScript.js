@@ -128,16 +128,3 @@ function ticked() {
   updateNodes();
   updateLinks();
 }
-
-//Stuff for the control panel
-function openNav() {
-  document.getElementById("controlPanel").style.width = "250px";
-}
-function closeNav() {
-  document.getElementById("controlPanel").style.width = "0";
-}
-function buttonExample() {
-  vscode.postMessage({
-    data: "Thanks for pressing that button!",
-  });
-}
