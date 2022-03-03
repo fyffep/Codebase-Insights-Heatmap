@@ -5,7 +5,8 @@ import { knowledgeGraphWebviewPanel } from "../webviewFactory";
 export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
   const cssUri = args.get("css");
   const d3Uri = args.get("d3");
-  const scriptUri = args.get("script");
+  const knowledgeGraphScriptUri = args.get("knowledgeGraphScript");
+  const controlPanelScriptUri = args.get("controlPanelScript");
 
   mockKnowledgeGraph.mockKnowledgeGraphGETRequest(46).then((responseData) => {
     console.log(responseData);
@@ -34,8 +35,14 @@ export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
                     <g class="nodes"/>
                 </svg>
             </div>
+            <div id="controlPanel" class="sidepanel">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <button class="controlbtn" onclick="buttonExample()">I'm a button!</button>
+            </div>
+            <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
-        <script src="${scriptUri}"/>
+        <script src="${controlPanelScriptUri}"/>
+        <script src="${knowledgeGraphScriptUri}"/>
     </HTML>
     `;
 }

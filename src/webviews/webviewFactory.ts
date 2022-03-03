@@ -141,15 +141,25 @@ export function createOrShowKnowledgeGraphPanel(
     );
     const cssUri =
       knowledgeGraphWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
-    const scriptOnDiskPath = vscode.Uri.file(
+    const knowledgeGraphScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
         "src/webviews/knowledgeGraph",
         "knowledgeGraphScript.js"
       )
     );
-    const scriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+    const knowledgeGraphScriptUri =
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(knowledgeGraphScriptOnDiskPath);
+    
+    const controlPanelScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/knowledgeGraph",
+        "controlPanel.js"
+      )
+    );
+    const controlPanelScriptUri =
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(controlPanelScriptOnDiskPath);
 
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
@@ -158,13 +168,17 @@ export function createOrShowKnowledgeGraphPanel(
 
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
-    args.set("script", scriptUri);
+    args.set("knowledgeGraphScript", knowledgeGraphScriptUri);
+    args.set("controlPanelScript", controlPanelScriptUri);
     args.set("d3", d3Uri);
 
     knowledgeGraphWebviewPanel.webview.html =
       htmlFactory.generateKnowledgeGraphHTML(args);
     knowledgeGraphWebviewPanel.onDidDispose(() => {
       knowledgeGraphWebviewPanel = undefined;
+    });
+    knowledgeGraphWebviewPanel.webview.onDidReceiveMessage((message) => {
+      vscode.window.showInformationMessage("Thanks for pressing that button!");
     });
   }
 }

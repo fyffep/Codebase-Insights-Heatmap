@@ -165,8 +165,5 @@ export default class GithubOAuth {
         //     vscode.window.showErrorMessage("Unable to fetch access token");
         //     return;
         // }
-
     }
-
 }
-

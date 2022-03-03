@@ -1,3 +1,5 @@
+const vscode = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
+
 const svg = d3.select("svg");
 var width = svg.attr("width");
 var height = svg.attr("height");
