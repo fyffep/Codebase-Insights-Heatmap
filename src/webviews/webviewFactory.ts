@@ -1,8 +1,10 @@
 import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
+import * as config from "../config/config";
 
 //Webviews -- use these for message passing.
+export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
 export let overviewWebviewPanel: vscode.WebviewPanel | undefined;
 export let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
 export let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
@@ -10,6 +12,62 @@ export let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
 export let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
+
+export function createOrShowSettingsPanel(
+  context: vscode.ExtensionContext
+): void {
+  safelyDisposeAllButSettings();
+  if (settingsWebviewPanel) {
+    settingsWebviewPanel.reveal(preferredColumn);
+  } else {
+    settingsWebviewPanel = vscode.window.createWebviewPanel(
+      "settingsPage",
+      "Settings",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(context.extensionPath, "src/webviews/settings")
+          ),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(context.extensionPath, "src/webviews/settings", "settings.css")
+    );
+    const cssUri = settingsWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const scriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/settings",
+        "settingsScript.js"
+      )
+    );
+    const scriptUri =
+      settingsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css",cssUri);
+    args.set("script",scriptUri);
+
+    settingsWebviewPanel.webview.html = htmlFactory.generateSettingsHTML(args);
+    settingsWebviewPanel.onDidDispose(() => {
+      settingsWebviewPanel = undefined;
+    });
+    settingsWebviewPanel.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "updateGitUrl":
+          config.setGitUrl(message.data);
+          vscode.window.showInformationMessage("Git url updated!");
+          break;
+        default:
+          break;
+      }
+    });
+  }
+}
 
 export function createOrShowOverviewPanel(
   context: vscode.ExtensionContext
@@ -241,7 +299,7 @@ export function createOrShowCommitRiskAssessmentPanel(
 export function createOrShowInsightsPanel(
   context: vscode.ExtensionContext
 ): void {
-  safelyDisposeAllButInsightsPanel();
+  safelyDisposeAllButInsights();
   if (insightsWebviewPanel) {
     insightsWebviewPanel.reveal(preferredColumn);
   } else {
@@ -297,6 +355,7 @@ function safelyDisposeAllButOverview(): void {
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
 
 function safelyDisposeAllButCodeMap(): void {
@@ -304,6 +363,7 @@ function safelyDisposeAllButCodeMap(): void {
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
 
 function safelyDisposeAllButKnowledgeGraph(): void {
@@ -311,6 +371,7 @@ function safelyDisposeAllButKnowledgeGraph(): void {
   safelyDisposeWebviewPanel(codeMapWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
 
 function safelyDisposeAllButCommitRiskAssessment(): void {
@@ -318,11 +379,22 @@ function safelyDisposeAllButCommitRiskAssessment(): void {
   safelyDisposeWebviewPanel(codeMapWebviewPanel);
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
 
-function safelyDisposeAllButInsightsPanel(): void {
+function safelyDisposeAllButInsights(): void {
   safelyDisposeWebviewPanel(overviewWebviewPanel);
   safelyDisposeWebviewPanel(codeMapWebviewPanel);
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
+
+function safelyDisposeAllButSettings(): void {
+  safelyDisposeWebviewPanel(overviewWebviewPanel);
+  safelyDisposeWebviewPanel(codeMapWebviewPanel);
+  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(insightsWebviewPanel);
+}
+

@@ -1,4 +1,3 @@
-
 import axios, { AxiosAdapter, AxiosInstance } from "axios";
 import * as vscode from "vscode";
 export default class GithubOAuth {

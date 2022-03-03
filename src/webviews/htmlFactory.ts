@@ -3,6 +3,7 @@ import * as codeMap from "./codeMap/codeMap";
 import * as knowledgeGraph from "./knowledgeGraph/knowledgeGraph";
 import * as insights from "./insights/insights";
 import * as commitRiskAssessment from "./commitRiskAssessment/commitRiskAssessment";
+import * as settings from "./settings/settings";
 import * as vscode from "vscode";
 
 //args maps names to external script/css files
@@ -25,4 +26,7 @@ export function generateKnowledgeGraphHTML(
 }
 export function generateInsightsHTML(args: Map<string, vscode.Uri>): string {
   return insights.insightsHTML(args);
+}
+export function generateSettingsHTML(args: Map<string, vscode.Uri>): string {
+  return settings.settingsHTML(args);
 }

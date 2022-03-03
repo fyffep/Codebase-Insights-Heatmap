@@ -1,8 +1,9 @@
-import * as vscode from 'vscode';
-import { CodeBaseInsightsView } from './codeBaseInsightsView';
+import * as vscode from "vscode";
+import { CodeBaseInsightsView } from "./codeBaseInsightsView";
 
 export class CodebaseInsightsViewProvider
-  implements vscode.TreeDataProvider<CodeBaseInsightsView> {
+  implements vscode.TreeDataProvider<CodeBaseInsightsView>
+{
   getTreeItem(element: CodeBaseInsightsView) {
     return element;
   }
@@ -15,32 +16,37 @@ export class CodebaseInsightsViewProvider
 
   private getViews(): CodeBaseInsightsView[] {
     let views = [];
-    let overview = new CodeBaseInsightsView(
-      'Overview',
+    let settings = new CodeBaseInsightsView(
+      "Settings",
       vscode.TreeItemCollapsibleState.None,
-      'A broad overview of your codebase to get a quick peek at your project'
+      "Quick place to update the relevant settings for Codebase Insights"
+    );
+    let overview = new CodeBaseInsightsView(
+      "Overview",
+      vscode.TreeItemCollapsibleState.None,
+      "A broad overview of your codebase to get a quick peek at your project"
     );
     let map = new CodeBaseInsightsView(
-      'Code Map',
+      "Code Map",
       vscode.TreeItemCollapsibleState.None,
-      'A configurable heatmap for viewing your codebase graphically and analyzing various metrics as a gradient'
+      "A configurable heatmap for viewing your codebase graphically and analyzing various metrics as a gradient"
     );
     let knowledge = new CodeBaseInsightsView(
-      'Knowledge Graph',
+      "Knowledge Graph",
       vscode.TreeItemCollapsibleState.None,
-      'A graph showing the areas where each contributor on your project has knowledge'
+      "A graph showing the areas where each contributor on your project has knowledge"
     );
     let risk = new CodeBaseInsightsView(
-      'Commit Risk Assessment',
+      "Commit Risk Assessment",
       vscode.TreeItemCollapsibleState.None,
-      'View your changes currently staged for commit and assess the potential risks associated with your changes'
+      "View your changes currently staged for commit and assess the potential risks associated with your changes"
     );
     let insights = new CodeBaseInsightsView(
-      'Insights',
+      "Insights",
       vscode.TreeItemCollapsibleState.None,
-      'Create custom queries to analyze your codebase'
+      "Create custom queries to analyze your codebase"
     );
-    views = [overview, map, knowledge, risk, insights];
+    views = [settings, overview, map, knowledge, risk, insights];
     return views;
   }
 }
