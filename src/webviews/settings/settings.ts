@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
 import * as config from "../../config/config";
 
-export function settingsHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
-): string {
+export function settingsHTML(args: Map<string, vscode.Uri>): string {
+  const cssUri = args.get("css");
+  const scriptUri = args.get("script");
   let currentGitRepo = config.getGitUrl();
   return `
     <!DOCTYPE HTML>

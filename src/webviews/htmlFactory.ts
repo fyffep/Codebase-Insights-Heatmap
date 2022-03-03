@@ -6,41 +6,27 @@ import * as commitRiskAssessment from "./commitRiskAssessment/commitRiskAssessme
 import * as settings from "./settings/settings";
 import * as vscode from "vscode";
 
-export function generateOverviewHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
-): string {
-  return overview.overviewHTML(cssUri, scriptUri);
+//args maps names to external script/css files
+//i.e. args.get("d3") === d3Uri: vscode.Uri
+export function generateOverviewHTML(args: Map<string, vscode.Uri>): string {
+  return overview.overviewHTML(args);
 }
-export function generateCodeMapHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri,
-  d3Uri: vscode.Uri
-): string {
-  return codeMap.codemapHTML(cssUri, scriptUri, d3Uri);
+export function generateCodeMapHTML(args: Map<string, vscode.Uri>): string {
+  return codeMap.codemapHTML(args);
 }
 export function generateCommitRiskAssessmentHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
+  args: Map<string, vscode.Uri>
 ): string {
-  return commitRiskAssessment.commitRiskAssessmentHTML(cssUri, scriptUri);
+  return commitRiskAssessment.commitRiskAssessmentHTML(args);
 }
 export function generateKnowledgeGraphHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri,
-  d3Uri: vscode.Uri
+  args: Map<string, vscode.Uri>
 ): string {
-  return knowledgeGraph.knowledgeGraphHTML(cssUri, scriptUri, d3Uri);
+  return knowledgeGraph.knowledgeGraphHTML(args);
 }
-export function generateInsightsHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
-): string {
-  return insights.insightsHTML(cssUri, scriptUri);
+export function generateInsightsHTML(args: Map<string, vscode.Uri>): string {
+  return insights.insightsHTML(args);
 }
-export function generateSettingsHTML(
-  cssUri: vscode.Uri,
-  scriptUri: vscode.Uri
-): string {
-  return settings.settingsHTML(cssUri, scriptUri);
+export function generateSettingsHTML(args: Map<string, vscode.Uri>): string {
+  return settings.settingsHTML(args);
 }

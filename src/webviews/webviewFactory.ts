@@ -1,4 +1,3 @@
-import { settings } from "cluster";
 import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
@@ -49,10 +48,11 @@ export function createOrShowSettingsPanel(
     const scriptUri =
       settingsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-    settingsWebviewPanel.webview.html = htmlFactory.generateSettingsHTML(
-      cssUri,
-      scriptUri
-    );
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css",cssUri);
+    args.set("script",scriptUri);
+
+    settingsWebviewPanel.webview.html = htmlFactory.generateSettingsHTML(args);
     settingsWebviewPanel.onDidDispose(() => {
       settingsWebviewPanel = undefined;
     });
@@ -104,10 +104,11 @@ export function createOrShowOverviewPanel(
     const scriptUri =
       overviewWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-    overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(
-      cssUri,
-      scriptUri
-    );
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
+    overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(args);
     overviewWebviewPanel.onDidDispose(() => {
       overviewWebviewPanel = undefined;
     });
@@ -155,11 +156,12 @@ export function createOrShowCodeMapPanel(
     );
     const d3Uri = codeMapWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
 
-    codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(
-      cssUri,
-      scriptUri,
-      d3Uri
-    );
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+    args.set("d3", d3Uri);
+
+    codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(args);
     codeMapWebviewPanel.onDidDispose(() => {
       codeMapWebviewPanel = undefined;
     });
@@ -197,24 +199,44 @@ export function createOrShowKnowledgeGraphPanel(
     );
     const cssUri =
       knowledgeGraphWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
-    const scriptOnDiskPath = vscode.Uri.file(
+    const knowledgeGraphScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
         "src/webviews/knowledgeGraph",
         "knowledgeGraphScript.js"
       )
     );
-    const scriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+    const knowledgeGraphScriptUri =
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(knowledgeGraphScriptOnDiskPath);
+    
+    const controlPanelScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/knowledgeGraph",
+        "controlPanel.js"
+      )
+    );
+    const controlPanelScriptUri =
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(controlPanelScriptOnDiskPath);
 
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
     const d3Uri = knowledgeGraphWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("knowledgeGraphScript", knowledgeGraphScriptUri);
+    args.set("controlPanelScript", controlPanelScriptUri);
+    args.set("d3", d3Uri);
+
     knowledgeGraphWebviewPanel.webview.html =
-      htmlFactory.generateKnowledgeGraphHTML(cssUri, scriptUri, d3Uri);
+      htmlFactory.generateKnowledgeGraphHTML(args);
     knowledgeGraphWebviewPanel.onDidDispose(() => {
       knowledgeGraphWebviewPanel = undefined;
+    });
+    knowledgeGraphWebviewPanel.webview.onDidReceiveMessage((message) => {
+      vscode.window.showInformationMessage("Thanks for pressing that button!");
     });
   }
 }
@@ -262,8 +284,12 @@ export function createOrShowCommitRiskAssessmentPanel(
     const scriptUri =
       commitRiskAssessmentWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
     commitRiskAssessmentWebviewPanel.webview.html =
-      htmlFactory.generateCommitRiskAssessmentHTML(cssUri, scriptUri);
+      htmlFactory.generateCommitRiskAssessmentHTML(args);
     commitRiskAssessmentWebviewPanel.onDidDispose(() => {
       commitRiskAssessmentWebviewPanel = undefined;
     });
@@ -305,10 +331,11 @@ export function createOrShowInsightsPanel(
     const scriptUri =
       insightsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
-    insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(
-      cssUri,
-      scriptUri
-    );
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
+    insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(args);
     insightsWebviewPanel.onDidDispose(() => {
       insightsWebviewPanel = undefined;
     });
@@ -321,14 +348,6 @@ function safelyDisposeWebviewPanel(
   if (webview) {
     webview.dispose();
   }
-}
-
-function safelyDisposeAllButSettings(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
 }
 
 function safelyDisposeAllButOverview(): void {
@@ -370,3 +389,12 @@ function safelyDisposeAllButInsights(): void {
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
 }
+
+function safelyDisposeAllButSettings(): void {
+  safelyDisposeWebviewPanel(overviewWebviewPanel);
+  safelyDisposeWebviewPanel(codeMapWebviewPanel);
+  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(insightsWebviewPanel);
+}
+
