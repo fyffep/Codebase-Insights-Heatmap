@@ -34,5 +34,5 @@ jobs:
     
     - name: Execute Tests
       run: |
-        npm run test
+        xvfb-run -a npm test
     
