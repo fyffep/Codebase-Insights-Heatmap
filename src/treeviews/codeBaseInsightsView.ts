@@ -45,7 +45,10 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           command: "codebase-insights.insights",
         };
       default:
-      // error
+        return {
+          title: "Open Codebase Insights settings page",
+          command: "codebase-insights.settings",
+        };
     }
   }
 }
