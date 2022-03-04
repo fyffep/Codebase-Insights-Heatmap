@@ -1,63 +1,110 @@
 .page {
-    text-align: center;
-    text-justify: left;
-    padding: 10%;
-    padding-top: 2%;
-    padding-bottom: 2%;
+  text-align: center;
+  text-justify: left;
+  padding: 10%;
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 h1 {
-    color: orange;
-    font-size: 400;
+  color: orange;
+  font-size: 400;
 }
 canvas {
-    background-color: white;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+  background-color: white;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 circle {
-    fill: indianred;
-    opacity: 0.3;
-    stroke: white;
-  }
-  text {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-    fill: white;
-    font-size: 10px;
-    text-anchor: middle;
-  }
-
+  fill: indianred;
+  opacity: 0.3;
+  stroke: white;
+}
+text {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  fill: white;
+  font-size: 10px;
+  text-anchor: middle;
+}
 
 .node {
-    cursor: pointer;
-  }
-  
-  .node:hover {
-    stroke: #000;
-    stroke-width: 1.5px;
-  }
-  
-  .node--leaf {
-    fill: white;
-  }
-  
-  .label {
-    font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-anchor: middle;
-    /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
-  }
-  
-  .label,
-  .node--root,
-  .node--leaf {
-    pointer-events: none;
-  }
-  
+  cursor: pointer;
+}
 
-  circle:hover {
-      stroke:black;
-  }
+.node:hover {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
 
+.node--leaf {
+  fill: white;
+}
+
+.label {
+  font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-anchor: middle;
+  /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
+}
+
+.label,
+.node--root,
+.node--leaf {
+  pointer-events: none;
+}
+
+circle:hover {
+  stroke: black;
+}
+
+.sidepanel {
+  height: 600px;
+  width: 0px; /*updated by our js*/
+  position: fixed;
+  z-index: 1; /*keeps it on top of other content*/
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden; /*disables horizontal scrolling*/
+  padding-top: 60px;
+  transition: 0.25s;
+}
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+.controlbtn {
+  /*style stuff*/
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #dddddd;
+  color: #222;
+  padding: 10px;
+  border: none;
+
+  /*centers the button within the div*/
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
