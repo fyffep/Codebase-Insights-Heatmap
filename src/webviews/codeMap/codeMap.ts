@@ -8,7 +8,8 @@ import * as config from "../../config/config";
 export function codemapHTML(args: Map<string, vscode.Uri>): string {
   const d3Uri = args.get("d3");
   const cssUri = args.get("css");
-  const scriptUri = args.get("script");
+  const codeMapScriptUri = args.get("codeMapScript");
+  const controlPanelScript = args.get("controlPanel");
 
   let width = 1400;
   let height = 750;
@@ -40,8 +41,14 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <!--p> This text should be green </p-->
             <svg width="600" height="600"></svg>
             <!--h1> Github URL: ${gitUrl} </p-->
+            <div id="controlPanel" class="sidepanel">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <button class="controlbtn" onclick="buttonExample()">I'm a button!</button>
+            </div>
+            <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
-        <script src="${scriptUri}"></script>
+        <script src="${controlPanelScript}"></script>
+        <script src="${codeMapScriptUri}"></script>
     
     </HTML>
     `;

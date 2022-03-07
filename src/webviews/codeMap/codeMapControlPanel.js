@@ -3,7 +3,6 @@ const vscode = acquireVsCodeApi(); //allows us to use message passing back to th
 //Stuff for the control panel
 function openNav() {
   let controlPanel = document.getElementById("controlPanel");
-  console.log(controlPanel.style.width);
   if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
     //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
     controlPanel.style.width = "250px";

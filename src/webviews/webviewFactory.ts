@@ -49,8 +49,8 @@ export function createOrShowSettingsPanel(
       settingsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
     let args: Map<string, vscode.Uri> = new Map();
-    args.set("css",cssUri);
-    args.set("script",scriptUri);
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
 
     settingsWebviewPanel.webview.html = htmlFactory.generateSettingsHTML(args);
     settingsWebviewPanel.onDidDispose(() => {
@@ -151,6 +151,17 @@ export function createOrShowCodeMapPanel(
     const scriptUri =
       codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
+    const controlPanelScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/codeMap",
+        "codeMapControlPanel.js"
+      )
+    );
+    const controlPanelScriptUri = codeMapWebviewPanel.webview.asWebviewUri(
+      controlPanelScriptOnDiskPath
+    );
+
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
@@ -158,12 +169,16 @@ export function createOrShowCodeMapPanel(
 
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
-    args.set("script", scriptUri);
+    args.set("codeMapScript", scriptUri);
+    args.set("controlPanel", controlPanelScriptUri);
     args.set("d3", d3Uri);
 
     codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(args);
     codeMapWebviewPanel.onDidDispose(() => {
       codeMapWebviewPanel = undefined;
+    });
+    codeMapWebviewPanel.webview.onDidReceiveMessage((message) => {
+      vscode.window.showInformationMessage(message.data);
     });
   }
 }
@@ -207,8 +222,10 @@ export function createOrShowKnowledgeGraphPanel(
       )
     );
     const knowledgeGraphScriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(knowledgeGraphScriptOnDiskPath);
-    
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(
+        knowledgeGraphScriptOnDiskPath
+      );
+
     const controlPanelScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
@@ -217,7 +234,9 @@ export function createOrShowKnowledgeGraphPanel(
       )
     );
     const controlPanelScriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(controlPanelScriptOnDiskPath);
+      knowledgeGraphWebviewPanel.webview.asWebviewUri(
+        controlPanelScriptOnDiskPath
+      );
 
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
@@ -236,7 +255,7 @@ export function createOrShowKnowledgeGraphPanel(
       knowledgeGraphWebviewPanel = undefined;
     });
     knowledgeGraphWebviewPanel.webview.onDidReceiveMessage((message) => {
-      vscode.window.showInformationMessage("Thanks for pressing that button!");
+      vscode.window.showInformationMessage(message.data);
     });
   }
 }
@@ -397,4 +416,3 @@ function safelyDisposeAllButSettings(): void {
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
 }
-
