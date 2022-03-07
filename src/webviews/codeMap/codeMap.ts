@@ -5,7 +5,7 @@ import { codeMapWebviewPanel } from "../webviewFactory";
 import * as api from "../../api/api";
 import * as config from '../../config/config';
 
-export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
+export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, radarScriptUri: vscode.Uri, d3Uri: vscode.Uri): string {
 
     let width = 1400;
     let height = 750;
@@ -34,10 +34,10 @@ export function codemapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, d3Uri: vs
 
             <p> This text should be green </p>
             <svg width="500" height="500"></svg>
+            <div class="radarChart"></div>
             <h1> Github URL: ${gitUrl} </p>
         </body>
         <script src="${scriptUri}"></script>
-    
     </HTML>
     `;
 }

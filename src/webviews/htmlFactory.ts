@@ -8,8 +8,8 @@ import * as vscode from 'vscode';
 export function generateOverviewHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return overview.overviewHTML(cssUri, scriptUri);
 }
-export function generateCodeMapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri,  d3Uri: vscode.Uri): string {
-    return codeMap.codemapHTML(cssUri, scriptUri, d3Uri);
+export function generateCodeMapHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri, radarScriptUri: vscode.Uri,  d3Uri: vscode.Uri): string {
+    return codeMap.codemapHTML(cssUri, scriptUri, radarScriptUri, d3Uri);
 }
 export function generateCommitRiskAssessmentHTML(cssUri: vscode.Uri, scriptUri: vscode.Uri): string {
     return commitRiskAssessment.commitRiskAssessmentHTML(cssUri, scriptUri);

@@ -68,13 +68,16 @@ export function createOrShowCodeMapPanel(context:vscode.ExtensionContext): void 
             path.join(context.extensionPath, 'src/webviews/codeMap', 'codeMapScript.js')
             );
         const scriptUri = codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+        const radarScriptOnDiskPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'src/webviews/codeMap', 'radarChartScript.js')
+            );
+        const radarScriptUri = codeMapWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
 
         const d3OnDiskPath = vscode.Uri.file(
             path.join(context.extensionPath, 'resources/d3', 'd3.min.js')
             );
         const d3Uri = codeMapWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
-
-        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri, scriptUri, d3Uri); 
+        codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(cssUri, scriptUri, radarScriptUri, d3Uri); 
         codeMapWebviewPanel.onDidDispose( () => {
             codeMapWebviewPanel = undefined;
         });

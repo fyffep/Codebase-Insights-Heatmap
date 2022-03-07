@@ -5,10 +5,12 @@
     padding-top: 2%;
     padding-bottom: 2%;
 }
+
 h1 {
     color: orange;
     font-size: 400;
 }
+
 canvas {
     background-color: white;
     padding-left: 0;
@@ -22,42 +24,52 @@ circle {
     fill: indianred;
     opacity: 0.3;
     stroke: white;
-  }
-  text {
+}
+
+text {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     fill: white;
     font-size: 10px;
     text-anchor: middle;
-  }
-
+}
 
 .node {
     cursor: pointer;
-  }
+}
   
-  .node:hover {
+.node:hover {
     stroke: #000;
     stroke-width: 1.5px;
-  }
+}
   
-  .node--leaf {
+.node--leaf {
     fill: white;
-  }
+}
   
-  .label {
+.label {
     font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-anchor: middle;
     /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
-  }
+}
   
-  .label,
-  .node--root,
-  .node--leaf {
-    pointer-events: none;
-  }
-  
+.label,
+.node--root {
+    pointer-events: none; 
+}
 
-  circle:hover {
-      stroke:black;
-  }
+.node--leaf {
+    pointer-events: mouseover; 
+}
 
+circle:hover {
+    stroke:black;
+}
+
+.legend {
+    font-family: 'Raleway', sans-serif;
+    fill: #333333;
+}
+
+.tooltip {
+    fill: #333333;
+}
