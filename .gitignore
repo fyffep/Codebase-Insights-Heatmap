@@ -52,7 +52,7 @@ typings/
 
 # Optional eslint cache
 .eslintcache
-
+     
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/
@@ -105,5 +105,6 @@ dist
 out/
 .vscode/settings.json
 /out/
+out/*
 ./out/*
-.vscode_test/
+.vscode-test/*

@@ -11,6 +11,7 @@ export let mockOverview = {
         "Conversation.java",
         "InsurancePackage.java"
     ],
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     "HEAT_METRIC_OPTIONS": [
         "Overall Heat",
         "File Size",
