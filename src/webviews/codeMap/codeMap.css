@@ -6,6 +6,11 @@
   padding-bottom: 2%;
 }
 
+svg {
+  display: block;
+  margin: auto;
+}
+
 h1 {
   color: orange;
   font-size: 400;

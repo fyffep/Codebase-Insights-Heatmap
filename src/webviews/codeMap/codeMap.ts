@@ -39,7 +39,7 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <h1> Codebase Heatmap </h1>
             <p><i> Red-hot files are the most active </i></p>
             <!--p> This text should be green </p-->
-            <svg width="600" height="600"></svg>
+            <svg width="800" height="1000"></svg>
             <div class="radarChart"></div>
             <!--h1> Github URL: ${gitUrl} </p-->
             <div id="controlPanel" class="sidepanel">
