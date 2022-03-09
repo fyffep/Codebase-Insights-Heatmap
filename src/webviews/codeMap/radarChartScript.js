@@ -5,9 +5,7 @@
 //////////Updated for d3.js v4 by Ingo Kleiber //////////
 /////////// Inspired by the code of alangrafu ///////////
 /////////////////////////////////////////////////////////
-d3.select("p").style("color","green");
-d3.select("p").append("h1").text("Hello from D3!");
-function RadarChart(id, data, options) {
+function radarChart(id, data, options) {
 	var cfg = {
 	 w: 600,				//Width of the circle
 	 h: 600,				//Height of the circle
@@ -34,8 +32,8 @@ function RadarChart(id, data, options) {
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 		
-	var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
-		total = allAxis.length,					//The number of different axes
+	var allAxis = (data[0].map(function(i, j){return i.axis;})),	//Names of each axis
+		total = allAxis.length,					//The number of gi different axes
 		radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
 		// Format = d3.format('%'),			 	//Percentage formatting
 		angleSlice = Math.PI * 2 / total;		//The width in radians of each "slice"
@@ -276,57 +274,52 @@ function RadarChart(id, data, options) {
 }//RadarChart
 
 
-      
-      /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
-      /* Updated for d3.js v4 by Ingo Kleiber <ingo@kleiber.me> */
-      
-			////////////////////////////////////////////////////////////// 
-			//////////////////////// Set-Up ////////////////////////////// 
-			////////////////////////////////////////////////////////////// 
+//////////////////////////////////////////////////////////////
+//////////////////////// Set-Up //////////////////////////////
+//////////////////////////////////////////////////////////////
 
-			var margin = {top: 100, right: 100, bottom: 100, left: 100},
-				width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
-				height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
-					
-			////////////////////////////////////////////////////////////// 
-			////////////////////////// Data ////////////////////////////// 
-			////////////////////////////////////////////////////////////// 
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+        width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+        height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+            
+    ////////////////////////////////////////////////////////////// 
+    ////////////////////////// Data ////////////////////////////// 
+    ////////////////////////////////////////////////////////////// 
 
-			var data = [
-					  [//Base
-						{axis:"Val1",value:0.22},
-						{axis:"Val2",value:0.28},
-						{axis:"Val3",value:0.29},
-						{axis:"Val4",value:0.17},
-						{axis:"Val5",value:0.22},
-						{axis:"Val6",value:0.02}		
-					  ],[//CompareTo
+    var data = [
+                [//Base
+                {axis:"Val1",value:0.22},
+                {axis:"Val2",value:0.28},
+                {axis:"Val3",value:0.29},
+                {axis:"Val4",value:0.17},
+                {axis:"Val5",value:0.22},
+                {axis:"Val6",value:0.02}		
+                ],[//CompareTo
 
-						{axis:"Val1",value:0.27},
-						{axis:"Val2",value:0.16},
-						{axis:"Val3",value:0.35},
-						{axis:"Val4",value:0.13},
-						{axis:"Val5",value:0.20},
-						{axis:"Val6",value:0.13}
-					  ]
-					];
-			////////////////////////////////////////////////////////////// 
-			//////////////////// Draw the Chart ////////////////////////// 
-			////////////////////////////////////////////////////////////// 
+                {axis:"Val1",value:0.27},
+                {axis:"Val2",value:0.16},
+                {axis:"Val3",value:0.35},
+                {axis:"Val4",value:0.13},
+                {axis:"Val5",value:0.20},
+                {axis:"Val6",value:0.13}
+                ]
+            ];
+    ////////////////////////////////////////////////////////////// 
+    //////////////////// Draw the Chart ////////////////////////// 
+    ////////////////////////////////////////////////////////////// 
 
-            var color = d3.scaleOrdinal()
-                .range(["#EDC951","#CC333F","#00A0B0"]);
-				
-			var radarChartOptions = {
-			  w: width,
-			  h: height,
-			  margin: margin,
-			  maxValue: 0.5,
-			  levels: 5,
-			  roundStrokes: true,
-			  color: color
-			};
-			//Call function to draw the Radar chart
-
-
-RadarChart(".radarChart", data, radarChartOptions);
+    var color = d3.scaleOrdinal()
+        .range(["#EDC951","#CC333F","#00A0B0"]);
+        
+    var radarChartOptions = {
+        w: width,
+        h: height,
+        margin: margin,
+        maxValue: 0.5,
+        levels: 5,
+        roundStrokes: true,
+        color: color
+    };
+    //Call function to draw the Radar chart
+radarChart(".radarChart", data, radarChartOptions);
+console.log("HDFJSALDHKJSAHDKLASHADSL");

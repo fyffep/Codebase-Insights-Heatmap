@@ -10,6 +10,7 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
   const cssUri = args.get("css");
   const codeMapScriptUri = args.get("codeMapScript");
   const controlPanelScript = args.get("controlPanel");
+  const radarChartScript = args.get("radarChart");
 
   let width = 1400;
   let height = 750;
@@ -48,6 +49,7 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${controlPanelScript}"></script>
+        <script src="${radarChartScript}"></script>
         <script src="${codeMapScriptUri}"></script>
     </HTML>
     `;
