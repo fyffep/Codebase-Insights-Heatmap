@@ -10,6 +10,7 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
   const cssUri = args.get("css");
   const codeMapScriptUri = args.get("codeMapScript");
   const controlPanelScript = args.get("controlPanel");
+  const radarChartScript = args.get("radarChart");
 
   let width = 1400;
   let height = 750;
@@ -35,11 +36,11 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <script src="${d3Uri}"></script>
         </head>
         <body>
-
             <h1> Codebase Heatmap </h1>
             <p><i> Red-hot files are the most active </i></p>
             <!--p> This text should be green </p-->
-            <svg width="600" height="600"></svg>
+            <svg width="800" height="1000"></svg>
+            <div class="radarChart"></div>
             <!--h1> Github URL: ${gitUrl} </p-->
             <div id="controlPanel" class="sidepanel">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -48,8 +49,8 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${controlPanelScript}"></script>
+        <script src="${radarChartScript}"></script>
         <script src="${codeMapScriptUri}"></script>
-    
     </HTML>
     `;
 }

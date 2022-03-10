@@ -89,32 +89,8 @@ export function createOrShowOverviewPanel(
         ],
       }
     );
-
-    const cssOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/overview", "overview.css")
-    );
-    const cssUri = overviewWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
-    const scriptOnDiskPath = vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "src/webviews/overview",
-        "overviewScript.js"
-      )
-    );
-    const scriptUri =
-      overviewWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
-
-    let args: Map<string, vscode.Uri> = new Map();
-    args.set("css", cssUri);
-    args.set("script", scriptUri);
-
-    overviewWebviewPanel.webview.html = htmlFactory.generateOverviewHTML(args);
-    overviewWebviewPanel.onDidDispose(() => {
-      overviewWebviewPanel = undefined;
-    });
   }
 }
-
 export function createOrShowCodeMapPanel(
   context: vscode.ExtensionContext
 ): void {
@@ -162,6 +138,17 @@ export function createOrShowCodeMapPanel(
       controlPanelScriptOnDiskPath
     );
 
+    const radarChartScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/codeMap",
+        "radarChartScript.js"
+      )
+    );
+    const radarChartScriptUri = codeMapWebviewPanel.webview.asWebviewUri(
+      radarChartScriptOnDiskPath
+    );
+
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
@@ -172,6 +159,7 @@ export function createOrShowCodeMapPanel(
     args.set("codeMapScript", scriptUri);
     args.set("controlPanel", controlPanelScriptUri);
     args.set("d3", d3Uri);
+    args.set("radarChart", radarChartScriptUri);
 
     codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(args);
     codeMapWebviewPanel.onDidDispose(() => {
