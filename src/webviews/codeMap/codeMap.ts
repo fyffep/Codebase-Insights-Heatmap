@@ -39,6 +39,13 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <h1> Codebase Heatmap </h1>
             <p><i> Red-hot files are the most active </i></p>
             <!--p> This text should be green </p-->
+            <!--input class="searchBox" type="text" value="" name="searchBox" placeholder="Path"/-->
+            <!--form autocomplete="off"-->
+              <div class="autocomplete" style="width:300px;">
+                <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Path"/>
+              </div>
+              <!--input type="submit"-->
+            <!--/form-->
             <svg width="800" height="1000"></svg>
             <div class="radarChart"></div>
             <!--h1> Github URL: ${gitUrl} </p-->
