@@ -79,6 +79,11 @@
           "default": "",
           "description": "URL of the git repository to analyze"
         },
+        "codebase-insights.githubActionsWorkflowId": {
+          "type": "string",
+          "default": "",
+          "description": "Workflow ID for Github Actions"
+        },
         "codebase-insights.jenkinsLogin": {
           "type": "string",
           "default": "",
