@@ -125,18 +125,23 @@ window.addEventListener("message", (event) => {
     transition
       .selectAll("text")
       .filter(function (d) {
+        if(d && d.parent) {
+          console.log("This is getting hit",d);
         return d.parent === focus || this.style.display === "inline";
+        }
       })
       .style("fill-opacity", function (d) {
-        return d.parent === focus ? 1 : 0;
+        if(d && d.parent) {
+          return d.parent === focus ? 1 : 0;
+        }
       })
       .on("start", function (d) {
-        if (d.parent === focus) {
+        if (d && d.parent && d.parent === focus) {
           this.style.display = "inline";
         }
       })
       .on("end", function (d) {
-        if (d.parent !== focus) {
+        if (d && d.parent && d.parent !== focus) {
           this.style.display = "none";
         }
       });
