@@ -165,4 +165,18 @@ export default class GithubOAuth {
         //     return;
         // }
     }
+
+    public async copyUserCodeToClipboard() {
+        if (!this.userCode || !this.deviceCode) {
+            try {
+                await this.fetchDeviceAndUserCode();
+            } catch (ex) {
+                console.log(ex);
+                vscode.window.showErrorMessage("Unable to connect to GitHub.");
+                return;
+            }
+        }
+
+        await vscode.env.clipboard.writeText(this.userCode);
+    }
 }

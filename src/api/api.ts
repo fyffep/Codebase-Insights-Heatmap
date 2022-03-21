@@ -113,3 +113,13 @@ export function getCodeMapData(): AxiosPromise<any>
             return err;
         });
 }
+
+
+export function postCredentials(payload:any): void 
+{
+    console.log("Sending credentials update...");
+    console.log(payload); //TEMP
+    instance.post('/analyze/initiate/', payload).then((response) => {
+        console.log("Finished codebase analysis after credentials update.");
+    });
+}

@@ -2,6 +2,8 @@ import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
 import * as config from "../config/config";
+import GithubOAuth from "../utils/GithubOAuth";
+import { postCredentials } from "../api/api";
 
 //Webviews -- use these for message passing.
 export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
@@ -56,11 +58,19 @@ export function createOrShowSettingsPanel(
     settingsWebviewPanel.onDidDispose(() => {
       settingsWebviewPanel = undefined;
     });
-    settingsWebviewPanel.webview.onDidReceiveMessage((message) => {
+    settingsWebviewPanel.webview.onDidReceiveMessage(async (message) => {
       switch (message.command) {
-        case "updateGitUrl":
-          config.setGitUrl(message.data);
-          vscode.window.showInformationMessage("Git url updated!");
+        case "alert":
+          vscode.window.showInformationMessage(message.data);
+          break;
+        case "copyGitUserCode":
+          GithubOAuth.instance.copyUserCodeToClipboard(); //FIXME... userCode is undefined while GitHub Oauth is broken
+          vscode.window.showInformationMessage("Copied to clipboard!");
+          break;
+        case "submitSettingsChange":
+          const payload = message.data;
+          config.setGitUrl(payload["gitHubUrl"]); //save GitHub URL locally
+          postCredentials(payload);
           break;
         default:
           break;
