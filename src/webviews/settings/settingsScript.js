@@ -1,14 +1,8 @@
-const vscode = acquireVsCodeApi();
-/*function updateGitUrl() {
-  let newUrl = document.getElementById("inputGitUrl").value;
-  console.log(newUrl);
-  let currentGitRepo = document.getElementById("currentGitRepo");
-  currentGitRepo.textContent = "Current git repo: " + newUrl;
-  vscode.postMessage({
-    command: "updateGitUrl",
-    data: newUrl,
-  });
-}*/
+/*
+ * This file uses submitCredentials() to send all data from the form controls to the API.
+ * Other functions are used to show/hide controls.
+ */
+
 
 function openGitHubAuthWindow()
 {
@@ -26,10 +20,12 @@ function copyGitHubAuthCode()
 ////// CI Tool Controls to Submit API Key & Other Inputs //////
 const groupGitHubActions = document.getElementById("groupGitHubActions");
 const groupJenkins = document.getElementById("groupJenkins");
-var toolChosen = "NONE";
+const groupNoCI = document.getElementById("groupNoCI");
+var ciToolChosen = "NONE";
 function hideAllCIGroups() {
   groupGitHubActions.hidden = true;
   groupJenkins.hidden = true;
+  groupNoCI.hidden = true;
 }
 hideAllCIGroups();
 
@@ -37,18 +33,19 @@ hideAllCIGroups();
 document.getElementById("imgChooseGitHubActions").addEventListener("click", function (e) {
   hideAllCIGroups();
   groupGitHubActions.hidden = false;
-  toolChosen = "GitHub Actions";
+  ciToolChosen = "GitHub Actions";
 });
 //Select GitHub Actions as CI
 document.getElementById("imgChooseJenkins").addEventListener("click", function (e) {
   hideAllCIGroups();
   groupJenkins.hidden = false;
-  toolChosen = "Jenkins";
+  ciToolChosen = "Jenkins";
 });
 //Select No CI
 document.getElementById("imgChooseNoCI").addEventListener("click", function (e) {
   hideAllCIGroups();
-  toolChosen = "NONE";
+  groupNoCI.hidden = false;
+  ciToolChosen = "NONE";
 });
 
 
@@ -59,34 +56,73 @@ function submitCredentials()
   var payload = {};
 
   //Extract GitHub repo URL from form control into payload object
-  let gitHubUrl = document.getElementById("inputGitUrl").value;
-  payload["gitHubUrl"] = gitHubUrl;
+  let githubUrl = document.getElementById("inputGitUrl").value;
+  payload["githubUrl"] = githubUrl;
+  let branchName = document.getElementById("inputBranchName").value;
+  payload["branchName"] = branchName; //OPTIONAL
+
+  let githubOAuthToken = "FIXME"; //FIXME!
+  payload["githubOAuthToken"] = githubOAuthToken;
+
+  
+  //Validate
+  if (isEmpty(githubUrl)) {
+    vscode.postMessage({
+      command: "alert",
+      data: "Required: GitHub URL"
+    });
+    return;
+  }
+  if (isEmpty(githubOAuthToken)) {
+    vscode.postMessage({
+      command: "alert",
+      data: "Required: Sign in with GitHub"
+    });
+    return;
+  }
 
   //Extract CI tool info from form controls into payload object
-  payload["toolChosen"] = toolChosen;
-  switch (toolChosen)
+  payload["ciToolChosen"] = ciToolChosen;
+  switch (ciToolChosen)
   {
     case "GitHub Actions":
     {
-      const apiKey = document.getElementById("inputApiKey_GitHubActions").value;
-
-      //TODO validate
-      
-      payload["apiKey"] = apiKey;
+      //Nothing more needed
       break;
     }
     case "Jenkins":
     {
       const jobUrl = document.getElementById("inputCI_URL_Jenkins").value;
+      const ciUsername = document.getElementById("inputCI_Username_Jenkins").value;
       const apiKey = document.getElementById("inputApiKey_Jenkins").value;
 
-      //TODO validate
+      //Validate
+      if (isEmpty(jobUrl) || isEmpty(ciUsername) || isEmpty(apiKey)) {
+        vscode.postMessage({
+          command: "alert",
+          data: "Required field(s) missing"
+        });
+        return;
+      }
 
       payload["jobUrl"] = jobUrl;
+      payload["ciUsername"] = ciUsername;
       payload["apiKey"] = apiKey;
       break;
     }
-    //Default: No CI. Nothing special is needed.
+    case "NONE":
+    {
+      //No CI. Nothing special is needed.
+      break;
+    }
+    default:
+    {
+      //No selection made, show error
+      vscode.postMessage({
+        command: "alert",
+        data: "Please select your CI tool"
+      });
+    }
   }
 
   //Make API call(s)
@@ -96,18 +132,6 @@ function submitCredentials()
   });
 }
 
-
-
-/*var groupGitHubAuth = document.getElementById("groupGitHubAuth");
-groupGitHubAuth.hidden = true;
-//Select YES - Git repo is public
-document.getElementById("isPublicYes").addEventListener("click", function (e) {
-  //Hide authorization controls
-  groupGitHubAuth.hidden = true;
-});
-
-//Select NO - Git repo is not public
-document.getElementById("isPublicNo").addEventListener("click", function (e) {
-  //Show authorization controls
-  groupGitHubAuth.hidden = false;
-});*/
+function isEmpty(str) {
+  return (!str || str.length === 0 );
+}
