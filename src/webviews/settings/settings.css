@@ -3,28 +3,75 @@
   text-justify: left;
   padding: 10%;
   padding-top: 2%;
+  font-size: 18px;
 }
 h1 {
   color: #ccc;
 }
-.noteAboutPrivateRepositories {
-  visibility: hidden;
-}
-.inputSubmit {
+button {
   background-color: darkcyan;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Trebuchet MS", sans-serif;
+  padding: 6px 18px 6px 18px;
+  border: 0px;
+  border-radius: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+table {
+  max-width: 100%;
+}
+
+
+
+.inputSubmit {
+  background-color: #15bd15;
   color: white;
   font-size: 24px;
   font-weight: bold;
   font-family: "Trebuchet MS", sans-serif;
-  padding: 8px;
+  padding: 8px 24px 8px 24px;
+  border: 2px solid #0f960f;
   border-radius: 16px;
+}
+.tdLogo {
+  border: 2.5px solid #cccccc;
+}
+
+.inputTextField {
+  width: 28rem;
+  background-color: #252525;
+  border-radius: 4px;
+  color: white;
+  font-size: 24px;
+  font-family: "Trebuchet MS", sans-serif;
+}
+::placeholder {
+  color: #eee;
+  opacity: 0.55;
+  font-size: 18px;
+}
+
+.innerDivToCenter {
+  display: table;
+  margin: 0 auto;
 }
 
 
-
-
-
-
+.spacer-large {
+  margin-bottom: 6rem;
+}
+.spacer-normal {
+  margin-bottom: 4rem;
+}
+.spacer-mini {
+  margin-bottom: 0.5rem;
+}
+.spacer-xs {
+  margin-bottom: 0.1rem;
+}
 
 
 

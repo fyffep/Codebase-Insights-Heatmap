@@ -36,6 +36,21 @@ export function createOrShowSettingsPanel(
       }
     );
 
+    //Image paths
+    const jenkinsLogoOnDiskPath = vscode.Uri.file(
+      path.join(context.extensionPath, "src/webviews/settings", "jenkinsLogo.png")
+    );
+    const jenkinsLogoUri = settingsWebviewPanel.webview.asWebviewUri(jenkinsLogoOnDiskPath);
+    const githubActionsLogoOnDiskPath = vscode.Uri.file(
+      path.join(context.extensionPath, "src/webviews/settings", "githubActionsLogo.png")
+    );
+    const githubActionsLogoUri = settingsWebviewPanel.webview.asWebviewUri(githubActionsLogoOnDiskPath);
+    const noCILogoOnDiskPath = vscode.Uri.file(
+      path.join(context.extensionPath, "src/webviews/settings", "noCILogo.png")
+    );
+    const noCILogoUri = settingsWebviewPanel.webview.asWebviewUri(noCILogoOnDiskPath);
+
+    //CSS & vanilla JS
     const cssOnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "src/webviews/settings", "settings.css")
     );
@@ -53,6 +68,9 @@ export function createOrShowSettingsPanel(
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
     args.set("script", scriptUri);
+    args.set("jenkinsLogo", jenkinsLogoUri);
+    args.set("githubActionsLogo", githubActionsLogoUri);
+    args.set("noCILogo", noCILogoUri);
 
     settingsWebviewPanel.webview.html = htmlFactory.generateSettingsHTML(args);
     settingsWebviewPanel.onDidDispose(() => {
