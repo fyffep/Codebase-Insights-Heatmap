@@ -242,18 +242,6 @@ export function createOrShowKnowledgeGraphPanel(
         knowledgeGraphScriptOnDiskPath
       );
 
-    const controlPanelScriptOnDiskPath = vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "src/webviews/knowledgeGraph",
-        "controlPanel.js"
-      )
-    );
-    const controlPanelScriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(
-        controlPanelScriptOnDiskPath
-      );
-
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
@@ -262,7 +250,6 @@ export function createOrShowKnowledgeGraphPanel(
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
     args.set("knowledgeGraphScript", knowledgeGraphScriptUri);
-    args.set("controlPanelScript", controlPanelScriptUri);
     args.set("d3", d3Uri);
 
     knowledgeGraphWebviewPanel.webview.html =
