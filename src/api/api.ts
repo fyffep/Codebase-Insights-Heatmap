@@ -140,3 +140,25 @@ export function postCredentials(payload:any, webviewPanel: vscode.WebviewPanel |
         }
     });
 }
+
+
+
+export function getKnowledgeGraph(): AxiosPromise<any> 
+{
+    //Send request
+    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
+    var urlPayload = {  
+        githubUrl: githubUrlOfUser
+    };
+    console.log("Requesting knowledge graph for " + githubUrlOfUser);
+    return instance.post('/knowledge/graph/', urlPayload)
+        .then((response) => {
+            //Return data from the axios promise
+            return response.data;
+        })
+        .catch(err => {
+            //Handle timeout or error
+            console.error(err);
+            return null;
+        });
+}
