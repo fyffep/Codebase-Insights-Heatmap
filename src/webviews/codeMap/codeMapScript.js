@@ -177,13 +177,13 @@ window.addEventListener("message", (event) => {
     transition
       .selectAll("text")
       .filter(function (d) {
-        if (d && d.parent) {
-          console.log("This is getting hit", d);
-          return d.parent === focus || this.style.display === "inline";
+        if(d && d.parent) {
+          console.log("This is getting hit",d);
+        return d.parent === focus || this.style.display === "inline";
         }
       })
       .style("fill-opacity", function (d) {
-        if (d && d.parent) {
+        if(d && d.parent) {
           return d.parent === focus ? 1 : 0;
         }
       })
