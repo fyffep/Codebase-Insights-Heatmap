@@ -76,17 +76,17 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                 <table maxWidth="100%">
                     <tr>
                         <td class="tdLogo">
-                            <img id="imgChooseGitHubActions" 
+                            <img id="imgChooseGitHubActions" class="innerDivToCenter"
                                 src="${githubActionsLogoUri}"
                             />
                         </td>
                         <td class="tdLogo">
-                            <img id="imgChooseJenkins" 
+                            <img id="imgChooseJenkins" class="innerDivToCenter"
                                 src="${jenkinsLogoUri}"
                             />
                         </td>
                         <td class="tdLogo">
-                            <img id="imgChooseNoCI" 
+                            <img id="imgChooseNoCI" class="innerDivToCenter"
                                 src="${noCILogoUri}"
                             />
                         </td>
@@ -102,8 +102,6 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                 <div class="row" id="groupJenkins">
                     <h2>Jenkins</h2>
                     <p>We'll need your job URL and API key. We use this to identify which files caused build failures.</p>
-                    <br></br>
-                    
                     <table>
                         <tr>
                             <td>
@@ -140,6 +138,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
 
                 <table style="width: 100%;">
                     <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Update Account">
+                    <h4 id="hUpdatingAccount">We're now analyzing your codebase...</h4>
                 </table>
             </div>
         </body>

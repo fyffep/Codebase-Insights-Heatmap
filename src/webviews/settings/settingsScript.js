@@ -3,6 +3,7 @@
  * Other functions are used to show/hide controls.
  */
 
+const vscode = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
 
 function openGitHubAuthWindow()
 {
@@ -16,6 +17,10 @@ function copyGitHubAuthCode()
   });
 }
 
+
+//Updating account message
+const hUpdatingAccount = document.getElementById("hUpdatingAccount");
+hUpdatingAccount.hidden = true;
 
 ////// CI Tool Controls to Submit API Key & Other Inputs //////
 const groupGitHubActions = document.getElementById("groupGitHubActions");
@@ -100,7 +105,7 @@ function submitCredentials()
       if (isEmpty(jobUrl) || isEmpty(ciUsername) || isEmpty(apiKey)) {
         vscode.postMessage({
           command: "alert",
-          data: "Required field(s) missing"
+          data: "Required field(s) for Jenkins missing"
         });
         return;
       }
@@ -130,8 +135,27 @@ function submitCredentials()
     command: "submitSettingsChange",
     data: payload
   });
+  //Show msg to indicate API is doing its work
+  hUpdatingAccount.hidden = false;
 }
 
 function isEmpty(str) {
   return (!str || str.length === 0 );
 }
+
+
+
+
+//Handle message passing
+window.addEventListener("message", (event) => {
+  if (event.data.command === "api-status-message")
+  {
+    //Show message sent by TS file
+    hUpdatingAccount.innerHTML = event.data.data;
+  }
+  else
+  {
+    console.error('Unrecognized message passed to settings script:');
+    console.error(event);
+  }
+});

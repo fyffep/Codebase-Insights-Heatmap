@@ -87,8 +87,8 @@ export function createOrShowSettingsPanel(
           break;
         case "submitSettingsChange":
           const payload = message.data;
-          config.setGitUrl(payload["gitHubUrl"]); //save GitHub URL locally
-          postCredentials(payload);
+          config.setGitUrl(payload["githubUrl"]); //save GitHub URL locally
+          postCredentials(payload, settingsWebviewPanel);
           break;
         default:
           break;

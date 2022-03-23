@@ -1,3 +1,4 @@
+import * as vscode from "vscode";
 import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
 import { getGitUrl, getJenkinsSettings } from "../config/config";
@@ -115,11 +116,27 @@ export function getCodeMapData(): AxiosPromise<any>
 }
 
 
-export function postCredentials(payload:any): void 
+export function postCredentials(payload:any, webviewPanel: vscode.WebviewPanel | undefined): void 
 {
     console.log("Sending credentials update...");
     console.log(payload); //TEMP
-    instance.post('/analyze/initiate/', payload).then((response) => {
+    instance.post('/analyze/initiate/', payload).then((response) => { //post to the server
         console.log("Finished codebase analysis after credentials update.");
+        //Show success message in webview
+        if (webviewPanel) {
+            webviewPanel.webview.postMessage({
+                "command": "api-status-message",
+                "data": "✔ Analysis Complete"
+            });
+        }
+    }).catch((errorResponse) => {
+        console.log(errorResponse);
+        //Show error message in webview
+        if (webviewPanel) {
+            webviewPanel.webview.postMessage({
+                "command": "api-status-message",
+                "data": "Something went wrong with your analysis"
+            });
+        }
     });
 }

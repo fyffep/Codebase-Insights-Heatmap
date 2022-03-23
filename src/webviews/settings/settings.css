@@ -36,8 +36,20 @@ table {
   border: 2px solid #0f960f;
   border-radius: 16px;
 }
+
 .tdLogo {
   border: 2.5px solid #cccccc;
+}
+.tdLogo:hover {
+  background-color: #666;
+}
+.imgLogo {
+  width: 100%;
+  height: auto;
+}
+
+#hUpdatingAccount {
+  text-align: center;
 }
 
 .inputTextField {
