@@ -79,25 +79,30 @@
           "default": "",
           "description": "URL of the git repository to analyze"
         },
+        "codebase-insights.branchName": {
+          "type": "string",
+          "default": "master",
+          "description": "The name of the GitHub branch to analyze"
+        },
         "codebase-insights.githubActionsWorkflowId": {
           "type": "string",
           "default": "",
           "description": "Workflow ID for Github Actions"
         },
-        "codebase-insights.jenkinsLogin": {
+        "codebase-insights.ciUsername": {
           "type": "string",
           "default": "",
           "description": "Login information for the associated Jenkins instance"
         },
-        "codebase-insights.jenkinsPassword": {
+        "codebase-insights.apiKey": {
           "type": "string",
           "default": "",
           "description": "Password for the associated Jenkins instance"
         },
-        "codebase-insights.jenkinsURL": {
+        "codebase-insights.jobUrl": {
           "type": "string",
           "default": "",
-          "description": "URL for the associated Jenkins instance"
+          "description": "URL to the Jenkins instance, including the name of the job to analyze"
         }
       }
     }

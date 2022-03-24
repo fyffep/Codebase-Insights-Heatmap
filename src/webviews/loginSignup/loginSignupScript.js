@@ -76,6 +76,13 @@ function submitCredentials()
     });
     return;
   }
+  if (isEmpty(githubOAuthToken)) {
+    vscode.postMessage({
+      command: "alert",
+      data: "Required: Sign in with GitHub"
+    });
+    return;
+  }
 
   //Extract CI tool info from form controls into payload object
   payload["ciToolChosen"] = ciToolChosen;

@@ -14,7 +14,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
   let jenkinsApiKey = config.getApiKey();
 
   //TODO Check if the OAuth Details are already set
-  let gitOAuthToken = ""; //TODO MOVE TO OWN WEBVIEW
+  let gitOAuthToken = config.getApiKey(); //QUICK FIX
   var hasAccessToken = gitOAuthToken && gitOAuthToken !== "";
 
   return `

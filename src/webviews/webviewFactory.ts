@@ -6,6 +6,7 @@ import GithubOAuth from "../utils/GithubOAuth";
 import { postCredentials } from "../api/api";
 
 //Webviews -- use these for message passing.
+export let loginSignupWebviewPanel: vscode.WebviewPanel | undefined;
 export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
 export let overviewWebviewPanel: vscode.WebviewPanel | undefined;
 export let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
@@ -81,13 +82,22 @@ export function createOrShowSettingsPanel(
         case "alert":
           vscode.window.showInformationMessage(message.data);
           break;
-        case "copyGitUserCode":
-          GithubOAuth.instance.copyUserCodeToClipboard(); //FIXME... userCode is undefined while GitHub Oauth is broken
+        case "copyGitHubAuthCode":
+          GithubOAuth.instance.copyUserCodeToClipboard();
           vscode.window.showInformationMessage("Copied to clipboard!");
+          break;
+        case "openGitHubAuthWindow":
+          GithubOAuth.instance.openGitHubAuthWindow();
           break;
         case "submitSettingsChange":
           const payload = message.data;
-          config.setGitUrl(payload["githubUrl"]); //save GitHub URL locally
+          //Save inputs locally
+          config.setGitUrl(payload["githubUrl"]); 
+          config.setBranchName(payload["branchName"]);
+          config.setJobUrl(payload["jobUrl"]); 
+          config.setCiUsername(payload["ciUsername"]); 
+          config.setApiKey(payload["apiKey"]); 
+          //Send to API
           postCredentials(payload, settingsWebviewPanel);
           break;
         default:

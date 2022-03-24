@@ -151,8 +151,7 @@ export default class GithubOAuth {
             openVerificationPage)
             .then(() => {
                 // open URL 
-                vscode.env.openExternal(vscode.Uri.parse("https://github.com/login/device"));
-
+                this.openGitHubAuthWindow();
             });
 
 
@@ -178,5 +177,9 @@ export default class GithubOAuth {
         }
 
         await vscode.env.clipboard.writeText(this.userCode);
+    }
+
+    public openGitHubAuthWindow() {
+        vscode.env.openExternal(vscode.Uri.parse("https://github.com/login/device"));
     }
 }
