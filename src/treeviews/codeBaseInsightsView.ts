@@ -14,6 +14,11 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
 
   getCommand(label: string) {
     switch (label) {
+      case "Login / Signup":
+        return {
+          title: "Open Codebase Insights login/signup page",
+          command: "codebase-insights.loginSignup",
+        };
       case "Settings":
         return {
           title: "Open Codebase Insights settings page",

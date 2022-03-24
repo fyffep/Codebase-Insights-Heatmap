@@ -44,7 +44,7 @@
       },
       {
         "command": "codebase-insights.insights",
-        "title": "Open Codebase Insights Insights page",
+        "title": "Open Codebase Insights 'Insights' page",
         "category": "Codebase Insight Tools"
       },
       {
@@ -52,6 +52,11 @@
         "title": "Authenticate GitHub Access",
         "category": "Codebase Insight Tools",
         "scope": "application"
+      },
+      {
+        "command": "codebase-insights.loginSignup",
+        "title": "Open Codebase Insights Login / Signup page",
+        "category": "Codebase Insight Tools"
       }
     ],
     "viewsContainers": {

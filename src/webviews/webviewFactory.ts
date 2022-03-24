@@ -16,6 +16,61 @@ export let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
+export function createOrShowLoginSignupPanel(
+  context: vscode.ExtensionContext
+): void {
+  safelyDisposeAllButLoginSignup();
+  if (loginSignupWebviewPanel) {
+    loginSignupWebviewPanel.reveal(preferredColumn);
+  } else {
+    loginSignupWebviewPanel = vscode.window.createWebviewPanel(
+      "loginSignupPage",
+      "Login / Signup",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(
+              context.extensionPath,
+              "src/webviews/loginSignup"
+            )
+          ),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/loginSignup",
+        "loginSignup.css"
+      )
+    );
+    const cssUri =
+      loginSignupWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const scriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "src/webviews/loginSignup",
+        "loginSignupScript.js"
+      )
+    );
+    const scriptUri =
+      loginSignupWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
+    loginSignupWebviewPanel.webview.html =
+      htmlFactory.generateLoginSignupHTML(args);
+    loginSignupWebviewPanel.onDidDispose(() => {
+      loginSignupWebviewPanel = undefined;
+    });
+  }
+}
+
 export function createOrShowSettingsPanel(
   context: vscode.ExtensionContext
 ): void {
@@ -388,6 +443,7 @@ function safelyDisposeAllButOverview(): void {
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
 }
 
 function safelyDisposeAllButCodeMap(): void {
@@ -396,6 +452,7 @@ function safelyDisposeAllButCodeMap(): void {
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
 }
 
 function safelyDisposeAllButKnowledgeGraph(): void {
@@ -404,6 +461,7 @@ function safelyDisposeAllButKnowledgeGraph(): void {
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
 }
 
 function safelyDisposeAllButCommitRiskAssessment(): void {
@@ -412,6 +470,7 @@ function safelyDisposeAllButCommitRiskAssessment(): void {
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
 }
 
 function safelyDisposeAllButInsights(): void {
@@ -420,6 +479,7 @@ function safelyDisposeAllButInsights(): void {
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(settingsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
 }
 
 function safelyDisposeAllButSettings(): void {
@@ -428,4 +488,14 @@ function safelyDisposeAllButSettings(): void {
   safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
   safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
   safelyDisposeWebviewPanel(insightsWebviewPanel);
+  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+}
+
+function safelyDisposeAllButLoginSignup(): void {
+  safelyDisposeWebviewPanel(overviewWebviewPanel);
+  safelyDisposeWebviewPanel(codeMapWebviewPanel);
+  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
+  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
+  safelyDisposeWebviewPanel(insightsWebviewPanel);
+  safelyDisposeWebviewPanel(settingsWebviewPanel);
 }

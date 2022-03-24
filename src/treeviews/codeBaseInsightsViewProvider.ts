@@ -16,6 +16,11 @@ export class CodebaseInsightsViewProvider
 
   private getViews(): CodeBaseInsightsView[] {
     let views = [];
+    let loginSignup = new CodeBaseInsightsView(
+      "Login / Signup",
+      vscode.TreeItemCollapsibleState.None,
+      "Login or signup for Codebase Insights"
+    );
     let settings = new CodeBaseInsightsView(
       "Settings",
       vscode.TreeItemCollapsibleState.None,
@@ -46,7 +51,7 @@ export class CodebaseInsightsViewProvider
       vscode.TreeItemCollapsibleState.None,
       "Create custom queries to analyze your codebase"
     );
-    views = [settings, overview, map, knowledge, risk, insights];
+    views = [loginSignup, settings, overview, map, knowledge, risk, insights];
     return views;
   }
 }
