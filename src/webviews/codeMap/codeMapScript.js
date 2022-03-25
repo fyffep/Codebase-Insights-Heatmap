@@ -3,30 +3,27 @@ d3.select("p").append("h1").text("Hello from D3!");
 
 window.addEventListener("message", (event) => {
   data = event.data; // The JSON data our extension sent
-  console.log(data);
+  console.log("Received data:", data);
 
+  let PATH_SEPARATOR = "/";
   var childrenList = [];
 
   function updateChildren() {
     childrenList.splice(0, childrenList.length);
     let rootChildren = rootCpy.children;
     for (childData of rootChildren) {
-      console.log("child data:", childData);
       if (!childData.data.filename) {
         childrenList.push(childData.data.path);
       }
     }
-    console.log("Children List:", childrenList);
     autocomplete(document.getElementById("searchBox"), childrenList);
   }
 
   var searchBox = d3.select(".searchBox");
   function traverseData(path) {
     rootCpy = root;
-    console.log("THIS IS ROOT COPY", rootCpy);
-    let pSplit = path.split("/");
+    let pSplit = path.split(PATH_SEPARATOR);
     for (let i = 0; i < pSplit.length; i++) {
-      console.log(i, pSplit[i]);
       let pathFound = false;
 
       if (rootCpy.children) {
@@ -44,11 +41,7 @@ window.addEventListener("message", (event) => {
           break;
         }
       }
-      if (!pathFound) {
-        break;
-      }
     }
-    console.log("Zooming to set path");
     zoom(rootCpy);
   }
   searchBox.on("keypress", function (d) {
@@ -122,13 +115,12 @@ window.addEventListener("message", (event) => {
       if (d.children) {
         return "#777777";
       }
-      let latestCommit = d.data.latestCommitInTreeWalk;
-      let heatVal = d.data.commitHashToHeatObjectMap[latestCommit].overallHeat;
-      console.log(heatVal);
+      // let latestCommit = d.data.latestCommitInTreeWalk;
+      let heatVal = d.data.latestHeatObject.overallHeat;
+      // let heatVal = d.data.commitHashToHeatObjectMap[latestCommit].overallHeat;
       return color(heatVal);
     })
     .on("click", function (event, d) {
-      console.log("clicked", d, focus, focus !== d);
       if (focus !== d) {
         zoom(d);
         event.stopPropagation();
@@ -138,7 +130,6 @@ window.addEventListener("message", (event) => {
       }
     })
     .on("mouseover", function (d) {
-      console.log("mouseover", d);
     });
 
   var text = g
@@ -178,7 +169,6 @@ window.addEventListener("message", (event) => {
       .selectAll("text")
       .filter(function (d) {
         if (d && d.parent) {
-          console.log("This is getting hit", d);
           return d.parent === focus || this.style.display === "inline";
         }
       })
@@ -233,13 +223,10 @@ window.addEventListener("message", (event) => {
       /*append the DIV element as a child of the autocomplete container:*/
       this.parentNode.appendChild(a);
       /*for each item in the array...*/
-      console.log("This is inside autocomplete ", childrenList);
-      console.log("This is val:", val);
       var valCut = val.substr(
-        val.lastIndexOf("/") === 0 ? 0 : val.lastIndexOf("/") + 1,
+        val.lastIndexOf(PATH_SEPARATOR) === 0 ? 0 : val.lastIndexOf(PATH_SEPARATOR) + 1,
         val.length
       );
-      console.log("This is valCut:", valCut);
       for (i = 0; i < childrenList.length; i++) {
         //arr.length
         /*check if the item starts with the same letters as the text field value:*/
@@ -260,13 +247,8 @@ window.addEventListener("message", (event) => {
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function (e) {
             /*insert the value for the autocomplete text field:*/
-            console.log("This is inp value", inp.value);
-            console.log(
-              "This is the getElementvalue",
-              this.getElementsByTagName("input")[0].value
-            );
             inp.value =
-              val.substr(0, val.lastIndexOf("/") + 1) +
+              val.substr(0, val.lastIndexOf(PATH_SEPARATOR) + 1) +
               this.getElementsByTagName("input")[0].value;
             traverseData(inp.value);
             /*close the list of autocompleted values,
@@ -310,6 +292,7 @@ window.addEventListener("message", (event) => {
     function addActive(x) {
       /*a function to classify an item as "active":*/
       if (!x) {
+        console.log("Could not make selected item more visible.");
         return false;
       }
       /*start by removing the "active" class on all items:*/
