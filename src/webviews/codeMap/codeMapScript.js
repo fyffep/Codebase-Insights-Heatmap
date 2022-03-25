@@ -100,8 +100,7 @@ window.addEventListener("message", (event) => {
     if (d.children) {
       return color(d.depth);
     }
-    let latestCommit = d.latestCommitInTreeWalk;
-    let heatVal = d.commitHashToHeatObjectMap[latestCommit];
+    let heatVal = d.data.latestHeatObject.overallHeat;
     let colorVal = color((255 * heatVal) / 5, 0, (255 * (5 - heatVal)) / 5);
     return colorVal;
   }
@@ -122,8 +121,7 @@ window.addEventListener("message", (event) => {
       if (d.children) {
         return "#777777";
       }
-      let latestCommit = d.data.latestCommitInTreeWalk;
-      let heatVal = d.data.commitHashToHeatObjectMap[latestCommit].overallHeat;
+      let heatVal = d.data.latestHeatObject.overallHeat;
       console.log(heatVal);
       return color(heatVal);
     })
