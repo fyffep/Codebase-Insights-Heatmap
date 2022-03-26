@@ -23,6 +23,14 @@ export async function setGitUrl(url: string): Promise<void> {
   return setPreference("repoURL", url);
 }
 
+export function getGithubActionsWorkflowId(): string {
+  return getPreference("githubActionsWorkflowId");
+}
+
+export async function setGithubActionsWorkflowId(workflowId: string): Promise<void> {
+  return setPreference("githubActionsWorkflowId", workflowId);
+}
+
 export function getJenkinsLogin(): string {
   return getPreference("jenkinsLogin");
 }
