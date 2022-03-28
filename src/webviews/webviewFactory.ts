@@ -68,6 +68,23 @@ export function createOrShowLoginSignupPanel(
     loginSignupWebviewPanel.onDidDispose(() => {
       loginSignupWebviewPanel = undefined;
     });
+    loginSignupWebviewPanel.webview.onDidReceiveMessage(async (message) => {
+      switch (message.command) {
+        case "alert":
+          vscode.window.showInformationMessage(message.data);
+          break;
+        case "copyGitHubAuthCode":
+          GithubOAuth.instance.copyUserCodeToClipboard();
+          vscode.window.showInformationMessage("Copied to clipboard!");
+          break;
+        case "openGitHubAuthWindow":
+          GithubOAuth.instance.openGitHubAuthWindow();
+          break;
+        default:
+          console.error("Invalid message command `"+message.command+"` sent to loginSignupWebviewPanel");
+          break;
+      }
+    });
   }
 }
 
@@ -137,13 +154,6 @@ export function createOrShowSettingsPanel(
         case "alert":
           vscode.window.showInformationMessage(message.data);
           break;
-        case "copyGitHubAuthCode":
-          GithubOAuth.instance.copyUserCodeToClipboard();
-          vscode.window.showInformationMessage("Copied to clipboard!");
-          break;
-        case "openGitHubAuthWindow":
-          GithubOAuth.instance.openGitHubAuthWindow();
-          break;
         case "submitSettingsChange":
           const payload = message.data;
           //Save inputs locally
@@ -156,6 +166,7 @@ export function createOrShowSettingsPanel(
           postCredentials(payload, settingsWebviewPanel);
           break;
         default:
+          console.error("Invalid message command `"+message.command+"` sent to loginSignupWebviewPanel");
           break;
       }
     });

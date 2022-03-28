@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
-import { getGitUrl, getJenkinsSettings } from "../config/config";
+import { getGitUrl, getBranchName } from "../config/config";
 
 //Setup
 const instance = axios.create({
@@ -46,34 +46,6 @@ export function getOverallCodebaseHealthScore(): string {
 }
 
 
-/**
- * A TEMPORARY call to analyze an entire codebase until we split up
- * the data retrieval more effectively on backend.
- * @returns the entire Codebase data
- */
-export function getEntireCodebase(): AxiosPromise<any> 
-{
-    //Send request
-    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
-    var urlPayload = {  
-        githubUrl: githubUrlOfUser
-    };
-    console.log("Requesting analysis of " + githubUrlOfUser);
-    let jenkinsData = getJenkinsSettings();
-    instance.post('/jenkins-simple/',jenkinsData); //Send the Jenkins data
-    return instance.post('/analyze/codebase/', urlPayload)
-        .then((response) => {
-            //Return data from the axios promise
-            return response.data;
-        })
-        .catch(err => {
-            //Handle timeout or error
-            console.error(err);
-            return err;
-        });
-}
-
-
 export function getDashboardData(): AxiosPromise<any> 
 {
     //Send request
@@ -100,7 +72,8 @@ export function getCodeMapData(): AxiosPromise<any>
     //Send request
     var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
     var urlPayload = {  
-        githubUrl: githubUrlOfUser
+        githubUrl: githubUrlOfUser,
+        branchName: getBranchName()
     };
     console.log("Requesting analysis of " + githubUrlOfUser);
     return instance.post('/analyze/group-by-package/', urlPayload)

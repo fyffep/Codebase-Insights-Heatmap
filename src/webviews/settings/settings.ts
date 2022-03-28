@@ -13,10 +13,6 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
   let jenkinsUsername = config.getCiUsername();
   let jenkinsApiKey = config.getApiKey();
 
-  //TODO Check if the OAuth Details are already set
-  let gitOAuthToken = ""; //TODO MOVE TO OWN WEBVIEW
-  var hasAccessToken = gitOAuthToken && gitOAuthToken !== "";
-
   return `
     <!DOCTYPE HTML>
     <HTML>
@@ -51,30 +47,6 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                 </div>
                 
                 
-                
-                
-                
-                <br></br>
-              
-                <!--OAuth-->
-                <h2>GitHub Sign-in</h2>
-                <div id="groupGitHubAuth">
-                    ${hasAccessToken ? 
-                        //If authenticated, display OK msg
-                        '<h3>Authenticated with GitHub ✅</h3>' : 
-                        //Else, show auth buttons
-                        '<table> \
-                            <h4>Step 1. Click the button to copy your authorization code</h4> \
-                            <button onClick="copyGitHubAuthCode()" class="innerDivToCenter">Click here to copy the code</button> \
-                            <br class="spacer-mini" /> \
-                            <h4>Step 2. Paste the authorization code into your browser after clicking the button below to open the GitHub login website</h4> \
-                            <button onClick="openGitHubAuthWindow()" class="innerDivToCenter">Log In with GitHub</button> \
-                        </table>'
-                    }
-                </div>
-
-
-
                 <br></br>
                 <h2>Which Continuous Integration Tool Do You Use?</h2>
                 <table maxWidth="100%">
@@ -142,7 +114,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
 
                 <table style="width: 100%;">
                     <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Update Account">
-                    <h4 id="hUpdatingAccount">We're now analyzing your codebase...</h4>
+                    <h4 id="hUpdatingAccount"></h4>
                 </table>
             </div>
         </body>

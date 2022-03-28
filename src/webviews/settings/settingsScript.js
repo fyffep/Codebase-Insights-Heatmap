@@ -5,20 +5,6 @@
 
 const vscode = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
 
-function openGitHubAuthWindow()
-{
-  vscode.postMessage({
-    command: "openGitHubAuthWindow"
-  });
-}
-
-function copyGitHubAuthCode()
-{
-  vscode.postMessage({
-    command: "copyGitHubAuthCode"
-  });
-}
-
 
 //Updating account message
 const hUpdatingAccount = document.getElementById("hUpdatingAccount");
@@ -127,6 +113,7 @@ function submitCredentials()
     data: payload
   });
   //Show msg to indicate API is doing its work
+  hUpdatingAccount.innerHTML = "We're now analyzing your codebase...";
   hUpdatingAccount.hidden = false;
 }
 
