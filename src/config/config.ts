@@ -25,6 +25,13 @@ export async function setGitUrl(url: string): Promise<void> {
 
 export function getBranchName(): string {
   return getPreference("branchName");
+
+export function getGithubActionsWorkflowId(): string {
+  return getPreference("githubActionsWorkflowId");
+}
+
+export async function setGithubActionsWorkflowId(workflowId: string): Promise<void> {
+  return setPreference("githubActionsWorkflowId", workflowId);
 }
 
 export async function setBranchName(branchName: string): Promise<void> {
