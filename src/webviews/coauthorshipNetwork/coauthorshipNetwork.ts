@@ -12,12 +12,12 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
     //Send a message to our webview with Codebase data.
     if (coauthorshipNetworkWebviewPanel) {
       if (responseData) {
-        console.log("Knowledge Graph received from server. Displaying it.");
+        console.log("Coauthorship network received from server. Displaying it.");
         coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
       }
       else {
         //Show error
-        vscode.window.showInformationMessage("There was a problem retrieving the Knowledge Graph.");
+        vscode.window.showInformationMessage("There was a problem retrieving the coauthorship network");
       }
     } else {
       console.error(
@@ -36,17 +36,16 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
         </head>
         <body>
             <div class="page">
-                <h1> Knowledge Graph </h1>
-                <svg id="graph" width="600" height="600">
+                <svg id="graph" width="1200" height="800">
                     <g class="links"/>
                     <g class="nodes"/>
                 </svg>
             </div>
             <div id="controlPanel" class="sidepanel">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-              <button class="controlbtn" onclick="buttonExample()">I'm a button!</button>
+              <h2 id="email"></h2>
+              <ul id="filesList"></h2>
             </div>
-            <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${coauthorshipNetworkScriptUri}"/>
     </HTML>
