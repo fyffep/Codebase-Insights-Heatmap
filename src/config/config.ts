@@ -74,5 +74,6 @@ export function getJenkinsSettings() {
     "ciUsername": getCiUsername(),
     "apiKey": getApiKey(),
     "jobUrl": getJobUrl()
-  };
+    };
+  }
 }
