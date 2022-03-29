@@ -1,20 +1,20 @@
 import * as vscode from "vscode";
-import * as mockKnowledgeGraph from "../../api/mockKnowledgeGraph";
-import { knowledgeGraphWebviewPanel } from "../webviewFactory";
+import { coauthorshipNetworkWebviewPanel } from "../webviewFactory";
+import * as mockCoauthorshipNetwork from "../../api/mockCoauthorshipNetwork";
 
-export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
+export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
   const cssUri = args.get("css");
   const d3Uri = args.get("d3");
-  const knowledgeGraphScriptUri = args.get("knowledgeGraphScript");
+  const coauthorshipNetworkScriptUri = args.get("coauthorshipNetworkScript");
   const controlPanelScriptUri = args.get("controlPanelScript");
 
-  mockKnowledgeGraph.mockKnowledgeGraphGETRequest(46).then((responseData) => {
+  mockCoauthorshipNetwork.mockCoauthorshipNetworkGETRequest(46).then((responseData) => {
     console.log(responseData);
-    if (knowledgeGraphWebviewPanel) {
-      knowledgeGraphWebviewPanel.webview.postMessage(responseData);
+    if (coauthorshipNetworkWebviewPanel) {
+      coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
     } else {
       console.error(
-        "knowledgeGraphWebviewPanel was undefined when we tried to post the message to it"
+        "coauthorshipNetworkWebviewPanel was undefined when we tried to post the message to it"
       );
     }
   });
@@ -42,7 +42,7 @@ export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
             <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${controlPanelScriptUri}"/>
-        <script src="${knowledgeGraphScriptUri}"/>
+        <script src="${coauthorshipNetworkScriptUri}"/>
     </HTML>
     `;
 }

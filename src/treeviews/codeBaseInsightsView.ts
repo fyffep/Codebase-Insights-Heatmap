@@ -19,11 +19,6 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           title: "Open Codebase Insights settings page",
           command: "codebase-insights.settings",
         };
-      case "Overview":
-        return {
-          title: "Open Codebase Insights overview page",
-          command: "codebase-insights.overview",
-        };
       case "Code Map":
         return {
           title: "Open Codebase Insights code map page",

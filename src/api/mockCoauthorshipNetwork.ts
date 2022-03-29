@@ -23,7 +23,7 @@ export class Link {
     }
 }
 
-export async function mockKnowledgeGraphGETRequest(contributors: number){
+export async function mockCoauthorshipNetworkGETRequest(contributors: number){
     let contributorList: ContributorObject[] = [];
     for (let i = 0; i < contributors; i++)
     {

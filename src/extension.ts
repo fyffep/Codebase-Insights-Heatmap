@@ -38,12 +38,6 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("codebase-insights.overview", () => {
-      webviewFactory.createOrShowOverviewPanel(context);
-    })
-  );
-
-  context.subscriptions.push(
     vscode.commands.registerCommand("codebase-insights.code-map", () => {
       webviewFactory.createOrShowCodeMapPanel(context);
     })
@@ -51,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("codebase-insights.knowledge-graph", () => {
-      webviewFactory.createOrShowKnowledgeGraphPanel(context);
+      webviewFactory.createOrShowCoauthorshipNetworkPanel(context);
     })
   );
 
@@ -62,12 +56,6 @@ export function activate(context: vscode.ExtensionContext) {
         webviewFactory.createOrShowCommitRiskAssessmentPanel(context);
       }
     )
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand("codebase-insights.insights", () => {
-      webviewFactory.createOrShowInsightsPanel(context);
-    })
   );
 }
 

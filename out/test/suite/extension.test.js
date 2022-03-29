@@ -5,7 +5,7 @@ const assert = require("assert");
 // as well as import your extension to test it
 const vscode = require("vscode");
 const mockCodeMap = require("../../api/mockCodeMap");
-const mockKnowledgeGraph_1 = require("../../api/mockKnowledgeGraph");
+const mockCoauthorshipNetwork_1 = require("../../api/mockCoauthorshipNetwork");
 const config = require("../../config/config");
 // import * as myExtension from '../../extension';
 suite("Extension Test Suite", () => {
@@ -52,7 +52,7 @@ suite("Extension Test Suite", () => {
         assert.strictEqual(config.getGitUrl(), "https://www.github.com/my/repository");
     });
     test("Generate mock knowledge graph", async () => {
-        let response = await (0, mockKnowledgeGraph_1.mockKnowledgeGraphGETRequest)(20);
+        let response = await (0, mockCoauthorshipNetwork_1.mockCoauthorshipNetworkGETRequest)(20);
         // for (let i = 0; i < response.nodes.length; i++) {
         //   console.log(response.nodes[i].knowledgeScore);
         // }
