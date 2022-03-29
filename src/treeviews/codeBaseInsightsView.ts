@@ -24,20 +24,15 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           title: "Open Codebase Insights settings page",
           command: "codebase-insights.settings",
         };
-      case "Overview":
-        return {
-          title: "Open Codebase Insights overview page",
-          command: "codebase-insights.overview",
-        };
       case "Code Map":
         return {
           title: "Open Codebase Insights code map page",
           command: "codebase-insights.code-map",
         };
-      case "Knowledge Graph":
+      case "Coauthorship Network":
         return {
-          title: "Open Codebase Insights knowledge graph page",
-          command: "codebase-insights.knowledge-graph",
+          title: "Open Codebase Insights coauthorship network page",
+          command: "codebase-insights.coauthorship-network",
         };
       case "Commit Risk Assessment":
         return {

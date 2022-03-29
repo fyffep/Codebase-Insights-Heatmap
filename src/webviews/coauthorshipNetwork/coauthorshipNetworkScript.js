@@ -12,7 +12,7 @@ const MAX_STROKE_WIDTH = 15; //arbitrary
 var nodes = [];
 var links = [];
 const repelForce = -100;
-const linkLength = 100;
+const linkLength = 200;
 
 let zoom = d3.zoom().on("zoom", handleZoom);
 
@@ -44,35 +44,6 @@ window.addEventListener("message", (event) => {
     .on("tick", ticked);
   initZoom();
 });
-
-// var circle = d3
-//   .selectAll("circle")
-//   .data(nodes)
-//   .enter()
-//   .append("circle")
-//   .attr("class", function (d) {
-//     return d.parent
-//       ? d.children
-//         ? "node"
-//         : "node node--leaf"
-//       : "node node--root";
-//   })
-//   .style("fill", function (d) {
-//     return d.children ? color(d.depth) : null;
-//   })
-//   .on("click", function (event, d) {
-//     console.log("clicked", d, focus, focus !== d);
-//     if (focus !== d) {
-//       zoom(d);
-//       event.stopPropagation();
-//     } else {
-//       zoom(root);
-//       event.stopPropagation();
-//     }
-//   })
-//   .on("mouseover", function (d) {
-//     console.log("mouseover", d);
-//   });
 
 function updateLinks() {
   var u = d3
@@ -112,7 +83,14 @@ function updateNodes() {
     .attr("r", function (d) {
       return (d.knowledgeScore / totalLinesInCodebase) * MAX_CIRCLE_SIZE;
     })
-    .attr("fill", "red");
+    .attr("id", function (d) {
+      return d.email;
+    })
+    .attr("fill", "red")
+    .style("cursor", "pointer")
+    .on("click", function (d) {
+      showAuthorDetailsFromCircle(d);
+    });
   u = d3
     .select(".nodes")
     .selectAll("text")
@@ -129,6 +107,10 @@ function updateNodes() {
     })
     .attr("dy", function (d) {
       return 5;
+    })
+    .style("cursor", "pointer")
+    .on("click", function (d) {
+      showAuthorDetailsFromText(d);
     });
 }
 
@@ -137,22 +119,41 @@ function ticked() {
   updateLinks();
 }
 
-
-
-
-
-
-
 ////////////////////////// CONTROL PANEL //////////////////////////
+
+function showAuthorDetailsFromCircle(d) {
+  let email = d.path[0].id;
+  showAuthorDetails(email);
+}
+function showAuthorDetailsFromText(d) {
+  let email = d.path[0].innerHTML;
+  showAuthorDetails(email);
+}
+function showAuthorDetails(email) {
+  openNav();
+  let emailH2 = document.getElementById("email");
+  emailH2.innerHTML = email;
+  let data;
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].email === email) {
+      data = nodes[i];
+    }
+  }
+  let filesList = document.getElementById("filesList");
+  filesList.innerHTML = "";
+  for (let i = 0; i < data.filesKnown.length; i++) {
+    filesList.innerHTML += "<li>" + data.filesKnown[i] + "</li>";
+  }
+}
 
 function openNav() {
   let controlPanel = document.getElementById("controlPanel");
-  console.log(controlPanel.style.width);
   if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
     //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
     controlPanel.style.width = "250px";
   } else {
     controlPanel.style.width = "0px";
+    controlPanel.style.width = "250px";
   }
 }
 function closeNav() {

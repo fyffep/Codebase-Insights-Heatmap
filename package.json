@@ -23,28 +23,18 @@
         "category": "Codebase Insight Tools"
       },
       {
-        "command": "codebase-insights.overview",
-        "title": "Open Codebase Insights Overview page",
-        "category": "Codebase Insight Tools"
-      },
-      {
         "command": "codebase-insights.code-map",
         "title": "Open Codebase Insights Code Map page",
         "category": "Codebase Insight Tools"
       },
       {
-        "command": "codebase-insights.knowledge-graph",
-        "title": "Open Codebase Insights Knowledge Graph page",
+        "command": "codebase-insights.coauthorship-network",
+        "title": "Open Codebase Insights Coauthorship Network page",
         "category": "Codebase Insight Tools"
       },
       {
         "command": "codebase-insights.commit-risk-assessment",
         "title": "Open Codebase Insights Commit Risk Assessment page",
-        "category": "Codebase Insight Tools"
-      },
-      {
-        "command": "codebase-insights.insights",
-        "title": "Open Codebase Insights 'Insights' page",
         "category": "Codebase Insight Tools"
       },
       {

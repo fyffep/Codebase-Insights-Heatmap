@@ -27,7 +27,7 @@ export class Link {
     }
 }
 
-export async function mockKnowledgeGraphGETRequest(contributors: number){
+export async function mockCoauthorshipNetworkGETRequest(contributors: number){
     let contributorList: ContributorObject[] = [];
     for (let i = 0; i < contributors; i++)
     {
@@ -44,13 +44,6 @@ export async function mockKnowledgeGraphGETRequest(contributors: number){
     let returnObject = {nodes: contributorList, links: links};
     return returnObject;
 }
-
-
-
-
-
-
-
 /*export var mockKnowledgeGraphResponse = {
     "totalLinesInCodebase": 2774+1+7+256,
     "totalFilesInCodebase": 47,

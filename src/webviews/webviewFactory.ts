@@ -2,17 +2,16 @@ import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
 import * as config from "../config/config";
+import { settings } from "cluster";
 import GithubOAuth from "../utils/GithubOAuth";
 import { postCredentials } from "../api/api";
 
 //Webviews -- use these for message passing.
 export let loginSignupWebviewPanel: vscode.WebviewPanel | undefined;
 export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
-export let overviewWebviewPanel: vscode.WebviewPanel | undefined;
 export let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
-export let knowledgeGraphWebviewPanel: vscode.WebviewPanel | undefined;
+export let coauthorshipNetworkWebviewPanel: vscode.WebviewPanel | undefined;
 export let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
-export let insightsWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
@@ -173,28 +172,6 @@ export function createOrShowSettingsPanel(
   }
 }
 
-export function createOrShowOverviewPanel(
-  context: vscode.ExtensionContext
-): void {
-  safelyDisposeAllButOverview();
-  if (overviewWebviewPanel) {
-    overviewWebviewPanel.reveal(preferredColumn);
-  } else {
-    overviewWebviewPanel = vscode.window.createWebviewPanel(
-      "overviewPage",
-      "Overview",
-      preferredColumn,
-      {
-        enableScripts: true,
-        localResourceRoots: [
-          vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/overview")
-          ),
-        ],
-      }
-    );
-  }
-}
 export function createOrShowCodeMapPanel(
   context: vscode.ExtensionContext
 ): void {
@@ -275,22 +252,22 @@ export function createOrShowCodeMapPanel(
   }
 }
 
-export function createOrShowKnowledgeGraphPanel(
+export function createOrShowCoauthorshipNetworkPanel(
   context: vscode.ExtensionContext
 ): void {
-  safelyDisposeAllButKnowledgeGraph();
-  if (knowledgeGraphWebviewPanel) {
-    knowledgeGraphWebviewPanel.reveal(preferredColumn);
+  safelyDisposeAllButCoauthorshipNetwork();
+  if (coauthorshipNetworkWebviewPanel) {
+    coauthorshipNetworkWebviewPanel.reveal(preferredColumn);
   } else {
-    knowledgeGraphWebviewPanel = vscode.window.createWebviewPanel(
-      "knowledgeGraph",
-      "Knowledge Graph",
+    coauthorshipNetworkWebviewPanel = vscode.window.createWebviewPanel(
+      "coauthorshipNetwork",
+      "Coauthorship Network",
       preferredColumn,
       {
         enableScripts: true,
         localResourceRoots: [
           vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/knowledgeGraph")
+            path.join(context.extensionPath, "src/webviews/coauthorshipNetwork")
           ),
           vscode.Uri.file(path.join(context.extensionPath, "resources/d3")),
         ],
@@ -300,40 +277,40 @@ export function createOrShowKnowledgeGraphPanel(
     const cssOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/knowledgeGraph",
-        "knowledgeGraph.css"
+        "src/webviews/coauthorshipNetwork",
+        "coauthorshipNetwork.css"
       )
     );
     const cssUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
-    const knowledgeGraphScriptOnDiskPath = vscode.Uri.file(
+      coauthorshipNetworkWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const coauthorshipNetworkScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/knowledgeGraph",
-        "knowledgeGraphScript.js"
+        "src/webviews/coauthorshipNetwork",
+        "coauthorshipNetworkScript.js"
       )
     );
-    const knowledgeGraphScriptUri =
-      knowledgeGraphWebviewPanel.webview.asWebviewUri(
-        knowledgeGraphScriptOnDiskPath
+    const coauthorshipNetworkScriptUri =
+      coauthorshipNetworkWebviewPanel.webview.asWebviewUri(
+        coauthorshipNetworkScriptOnDiskPath
       );
 
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
-    const d3Uri = knowledgeGraphWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+    const d3Uri = coauthorshipNetworkWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
 
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
-    args.set("knowledgeGraphScript", knowledgeGraphScriptUri);
+    args.set("coauthorshipNetworkScript", coauthorshipNetworkScriptUri);
     args.set("d3", d3Uri);
 
-    knowledgeGraphWebviewPanel.webview.html =
-      htmlFactory.generateKnowledgeGraphHTML(args);
-    knowledgeGraphWebviewPanel.onDidDispose(() => {
-      knowledgeGraphWebviewPanel = undefined;
+    coauthorshipNetworkWebviewPanel.webview.html =
+      htmlFactory.generateCoauthorshipNetworkHTML(args);
+    coauthorshipNetworkWebviewPanel.onDidDispose(() => {
+      coauthorshipNetworkWebviewPanel = undefined;
     });
-    knowledgeGraphWebviewPanel.webview.onDidReceiveMessage((message) => {
+    coauthorshipNetworkWebviewPanel.webview.onDidReceiveMessage((message) => {
       vscode.window.showInformationMessage(message.data);
     });
   }
@@ -394,51 +371,6 @@ export function createOrShowCommitRiskAssessmentPanel(
   }
 }
 
-export function createOrShowInsightsPanel(
-  context: vscode.ExtensionContext
-): void {
-  safelyDisposeAllButInsights();
-  if (insightsWebviewPanel) {
-    insightsWebviewPanel.reveal(preferredColumn);
-  } else {
-    insightsWebviewPanel = vscode.window.createWebviewPanel(
-      "insights",
-      "Insights",
-      preferredColumn,
-      {
-        enableScripts: true,
-        localResourceRoots: [
-          vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/insights")
-          ),
-        ],
-      }
-    );
-
-    const cssOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/insights", "insights.css")
-    );
-    const cssUri = insightsWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
-    const scriptOnDiskPath = vscode.Uri.file(
-      path.join(
-        context.extensionPath,
-        "src/webviews/insights",
-        "insightsScript.js"
-      )
-    );
-    const scriptUri =
-      insightsWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
-
-    let args: Map<string, vscode.Uri> = new Map();
-    args.set("css", cssUri);
-    args.set("script", scriptUri);
-
-    insightsWebviewPanel.webview.html = htmlFactory.generateInsightsHTML(args);
-    insightsWebviewPanel.onDidDispose(() => {
-      insightsWebviewPanel = undefined;
-    });
-  }
-}
 
 function safelyDisposeWebviewPanel(
   webview: vscode.WebviewPanel | undefined
@@ -448,65 +380,36 @@ function safelyDisposeWebviewPanel(
   }
 }
 
-function safelyDisposeAllButOverview(): void {
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+function safelyDisposeAllBut(panel: vscode.WebviewPanel | undefined): void {
+  let panels = [
+    loginSignupWebviewPanel,
+    coauthorshipNetworkWebviewPanel,
+    commitRiskAssessmentWebviewPanel,
+    codeMapWebviewPanel,
+    settingsWebviewPanel
+  ];
+  for (let i = 0; i < panels.length; i++) {
+    if (panels[i] !== panel) {
+      safelyDisposeWebviewPanel(panels[i]);
+    }
+  }
 }
 
 function safelyDisposeAllButCodeMap(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+  safelyDisposeAllBut(codeMapWebviewPanel);
 }
 
-function safelyDisposeAllButKnowledgeGraph(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+function safelyDisposeAllButCoauthorshipNetwork(): void {
+  safelyDisposeAllBut(coauthorshipNetworkWebviewPanel);
 }
 
 function safelyDisposeAllButCommitRiskAssessment(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
-}
-
-function safelyDisposeAllButInsights(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+  safelyDisposeAllBut(commitRiskAssessmentWebviewPanel);
 }
 
 function safelyDisposeAllButSettings(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(loginSignupWebviewPanel);
+  safelyDisposeAllBut(settingsWebviewPanel);
 }
-
 function safelyDisposeAllButLoginSignup(): void {
-  safelyDisposeWebviewPanel(overviewWebviewPanel);
-  safelyDisposeWebviewPanel(codeMapWebviewPanel);
-  safelyDisposeWebviewPanel(knowledgeGraphWebviewPanel);
-  safelyDisposeWebviewPanel(commitRiskAssessmentWebviewPanel);
-  safelyDisposeWebviewPanel(insightsWebviewPanel);
-  safelyDisposeWebviewPanel(settingsWebviewPanel);
+    safelyDisposeAllBut(loginSignupWebviewPanel);
 }

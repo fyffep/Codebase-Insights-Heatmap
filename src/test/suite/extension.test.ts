@@ -6,8 +6,8 @@ import * as vscode from "vscode";
 import * as mockCodeMap from "../../api/mockCodeMap";
 import {
   ContributorObject,
-  mockKnowledgeGraphGETRequest,
-} from "../../api/mockKnowledgeGraph";
+  mockCoauthorshipNetworkGETRequest,
+} from "../../api/mockCoauthorshipNetwork";
 import * as config from "../../config/config";
 // import * as myExtension from '../../extension';
 
@@ -65,7 +65,7 @@ suite("Extension Test Suite", () => {
     );
   });
   test("Generate mock knowledge graph", async () => {
-    let response = await mockKnowledgeGraphGETRequest(20);
+    let response = await mockCoauthorshipNetworkGETRequest(20);
     // for (let i = 0; i < response.nodes.length; i++) {
     //   console.log(response.nodes[i].knowledgeScore);
     // }
