@@ -23,6 +23,10 @@ export async function setGitUrl(url: string): Promise<void> {
   return setPreference("repoURL", url);
 }
 
+export function getBranchName(): string {
+  return getPreference("branchName");
+}
+
 export function getGithubActionsWorkflowId(): string {
   return getPreference("githubActionsWorkflowId");
 }
@@ -31,33 +35,39 @@ export async function setGithubActionsWorkflowId(workflowId: string): Promise<vo
   return setPreference("githubActionsWorkflowId", workflowId);
 }
 
-export function getJenkinsLogin(): string {
-  return getPreference("jenkinsLogin");
+export async function setBranchName(branchName: string): Promise<void> {
+  return setPreference("branchName", branchName);
 }
 
-export async function setJenkinsLogin(login: string): Promise<void> {
-  return setPreference("jenkinsLogin", login);
+export function getCiUsername(): string {
+  return getPreference("ciUsername");
 }
 
-export function getJenkinsPassword(): string {
-  return getPreference("jenkinsPassword");
+export async function setCiUsername(login: string): Promise<void> {
+  return setPreference("ciUsername", login);
 }
 
-export async function setJenkinsPassword(password: string): Promise<void> {
-  return setPreference("jenkinsPassword", password);
+export function getApiKey(): string {
+  return getPreference("apiKey");
 }
 
-export function getJenkinsURL(): string {
-  return getPreference("jenkinsURL");
+export async function setApiKey(apiKey: string): Promise<void> {
+  return setPreference("apiKey", apiKey);
 }
 
-export async function setJenkinsURL(url: string): Promise<void> {
-  return setPreference("jenkinsURL", url);
+export function getJobUrl(): string {
+  return getPreference("jobUrl");
 }
+
+export async function setJobUrl(url: string): Promise<void> {
+  return setPreference("jobUrl", url);
+}
+
 export function getJenkinsSettings() {
   return {
-    "login":getJenkinsLogin(),
-    "password":getJenkinsPassword(),
-    "url":getJenkinsURL()
+    "ciUsername": getCiUsername(),
+    "apiKey": getApiKey(),
+    "jobUrl": getJobUrl()
   };
 }
+

@@ -1,23 +1,30 @@
 import * as vscode from "vscode";
-import * as mockKnowledgeGraph from "../../api/mockKnowledgeGraph";
 import { knowledgeGraphWebviewPanel } from "../webviewFactory";
+import * as api from "../../api/api";
 
 export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
   const cssUri = args.get("css");
   const d3Uri = args.get("d3");
   const knowledgeGraphScriptUri = args.get("knowledgeGraphScript");
-  const controlPanelScriptUri = args.get("controlPanelScript");
 
-  mockKnowledgeGraph.mockKnowledgeGraphGETRequest(46).then((responseData) => {
-    console.log(responseData);
+  //Request Knowledge Graph
+  api.getKnowledgeGraph().then((responseData) => {
+    //Send a message to our webview with Codebase data.
     if (knowledgeGraphWebviewPanel) {
-      knowledgeGraphWebviewPanel.webview.postMessage(responseData);
+      if (responseData) {
+        console.log("Knowledge Graph received from server. Displaying it.");
+        knowledgeGraphWebviewPanel.webview.postMessage(responseData);
+      }
+      else {
+        //Show error
+        vscode.window.showInformationMessage("There was a problem retrieving the Knowledge Graph.");
+      }
     } else {
       console.error(
         "knowledgeGraphWebviewPanel was undefined when we tried to post the message to it"
       );
     }
-  });
+  });  
 
   return `
     <!DOCTYPE HTML>
@@ -41,7 +48,6 @@ export function knowledgeGraphHTML(args: Map<string, vscode.Uri>) {
             </div>
             <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
-        <script src="${controlPanelScriptUri}"/>
         <script src="${knowledgeGraphScriptUri}"/>
     </HTML>
     `;

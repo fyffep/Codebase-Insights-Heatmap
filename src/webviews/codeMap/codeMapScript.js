@@ -49,6 +49,57 @@ window.addEventListener("message", (event) => {
     traverseData(text);
   });
 
+  var childrenList = [];
+
+  function updateChildren() {
+    childrenList.splice(0, childrenList.length);
+    let rootChildren = rootCpy.children;
+    for (childData of rootChildren) {
+      console.log("child data:", childData);
+      if (!childData.data.filename) {
+        childrenList.push(childData.data.path);
+      }
+    }
+    console.log("Children List:", childrenList);
+    autocomplete(document.getElementById("searchBox"), childrenList);
+  }
+
+  var searchBox = d3.select(".searchBox");
+  function traverseData(path) {
+    rootCpy = root;
+    console.log("THIS IS ROOT COPY", rootCpy);
+    let pSplit = path.split("/");
+    for (let i = 0; i < pSplit.length; i++) {
+      console.log(i, pSplit[i]);
+      let pathFound = false;
+
+      if (rootCpy.children) {
+        let dirChildrenLen = rootCpy.children.length;
+        pathFound = false;
+        for (let j = 0; j < dirChildrenLen; j++) {
+          if (rootCpy.children[j].data.path === pSplit[i]) {
+            rootCpy = rootCpy.children[j];
+            pathFound = true;
+            break;
+          }
+        }
+        updateChildren();
+        if (!pathFound) {
+          break;
+        }
+      }
+      if (!pathFound) {
+        break;
+      }
+    }
+    console.log("Zooming to set path");
+    zoom(rootCpy);
+  }
+  searchBox.on("keypress", function (d) {
+    var text = d.srcElement.value;
+    traverseData(text);
+  });
+
   var color = d3
     .scaleLinear()
     .domain([1, 10])
@@ -93,8 +144,7 @@ window.addEventListener("message", (event) => {
     if (d.children) {
       return color(d.depth);
     }
-    let latestCommit = d.latestCommitInTreeWalk;
-    let heatVal = d.commitHashToHeatObjectMap[latestCommit];
+    let heatVal = d.data.latestHeatObject.overallHeat;
     let colorVal = color((255 * heatVal) / 5, 0, (255 * (5 - heatVal)) / 5);
     return colorVal;
   }
@@ -115,9 +165,7 @@ window.addEventListener("message", (event) => {
       if (d.children) {
         return "#777777";
       }
-      // let latestCommit = d.data.latestCommitInTreeWalk;
       let heatVal = d.data.latestHeatObject.overallHeat;
-      // let heatVal = d.data.commitHashToHeatObjectMap[latestCommit].overallHeat;
       return color(heatVal);
     })
     .on("click", function (event, d) {

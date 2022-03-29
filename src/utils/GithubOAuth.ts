@@ -151,8 +151,7 @@ export default class GithubOAuth {
             openVerificationPage)
             .then(() => {
                 // open URL 
-                vscode.env.openExternal(vscode.Uri.parse("https://github.com/login/device"));
-
+                this.openGitHubAuthWindow();
             });
 
 
@@ -164,5 +163,23 @@ export default class GithubOAuth {
         //     vscode.window.showErrorMessage("Unable to fetch access token");
         //     return;
         // }
+    }
+
+    public async copyUserCodeToClipboard() {
+        if (!this.userCode || !this.deviceCode) {
+            try {
+                await this.fetchDeviceAndUserCode();
+            } catch (ex) {
+                console.log(ex);
+                vscode.window.showErrorMessage("Unable to connect to GitHub.");
+                return;
+            }
+        }
+
+        await vscode.env.clipboard.writeText(this.userCode);
+    }
+
+    public openGitHubAuthWindow() {
+        vscode.env.openExternal(vscode.Uri.parse("https://github.com/login/device"));
     }
 }
