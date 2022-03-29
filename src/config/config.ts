@@ -25,6 +25,7 @@ export async function setGitUrl(url: string): Promise<void> {
 
 export function getBranchName(): string {
   return getPreference("branchName");
+}
 
 export function getGithubActionsWorkflowId(): string {
   return getPreference("githubActionsWorkflowId");
@@ -36,14 +37,6 @@ export async function setGithubActionsWorkflowId(workflowId: string): Promise<vo
 
 export async function setBranchName(branchName: string): Promise<void> {
   return setPreference("branchName", branchName);
-}
-
-export function getGithubActionsWorkflowId(): string {
-  return getPreference("githubActionsWorkflowId");
-}
-
-export async function setGithubActionsWorkflowId(workflowId: string): Promise<void> {
-  return setPreference("githubActionsWorkflowId", workflowId);
 }
 
 export function getCiUsername(): string {
@@ -69,11 +62,12 @@ export function getJobUrl(): string {
 export async function setJobUrl(url: string): Promise<void> {
   return setPreference("jobUrl", url);
 }
+
 export function getJenkinsSettings() {
   return {
     "ciUsername": getCiUsername(),
     "apiKey": getApiKey(),
     "jobUrl": getJobUrl()
-    };
-  }
+  };
 }
+
