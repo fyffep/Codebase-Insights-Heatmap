@@ -61,99 +61,99 @@ suite("Extension Test Suite", () => {
         // }
         assert.strictEqual(20, response.nodes.length);
     });
-    test("Get/set jenkins login preference test", async () => {
+    test("Get/set jenkins username preference test", async () => {
         try {
-            await config.setJenkinsLogin("");
+            await config.setCiUsername("");
         }
         catch {
-            assert.fail("setJenkinsLogin await failed");
+            assert.fail("setCiUsername await failed");
         }
-        assert.strictEqual(config.getJenkinsLogin(), "");
+        assert.strictEqual(config.getCiUsername(), "");
         try {
-            await config.setJenkinsLogin("jenkinsbot123");
+            await config.setCiUsername("jenkinsbot123");
         }
         catch {
-            assert.fail("setJenkinsLogin await failed");
+            assert.fail("setCiUsername await failed");
         }
-        assert.strictEqual(config.getJenkinsLogin(), "jenkinsbot123");
+        assert.strictEqual(config.getCiUsername(), "jenkinsbot123");
     });
-    test("Get/set jenkins password preference test", async () => {
+    test("Get/set jenkins API key preference test", async () => {
         try {
-            await config.setJenkinsPassword("");
+            await config.setApiKey("");
+        }
+        catch {
+            assert.fail("setApiKey await failed");
+        }
+        assert.strictEqual(config.getApiKey(), "");
+        try {
+            await config.setApiKey("jenkinsbot123");
         }
         catch {
             assert.fail("setJenkinsPassword await failed");
         }
-        assert.strictEqual(config.getJenkinsPassword(), "");
-        try {
-            await config.setJenkinsPassword("jenkinsbot123");
-        }
-        catch {
-            assert.fail("setJenkinsPassword await failed");
-        }
-        assert.strictEqual(config.getJenkinsPassword(), "jenkinsbot123");
+        assert.strictEqual(config.getApiKey(), "jenkinsbot123");
     });
     test("Get/set jenkins URL preference test", async () => {
         try {
-            await config.setJenkinsURL("");
+            await config.setJobUrl("");
         }
         catch {
             assert.fail("setJenkinsURL await failed");
         }
-        assert.strictEqual(config.getJenkinsURL(), "");
+        assert.strictEqual(config.getJobUrl(), "");
         try {
-            await config.setJenkinsURL("https://www.myjenkinsthing.com");
+            await config.setJobUrl("https://www.myjenkinsthing.com");
         }
         catch {
             assert.fail("setJenkinsURL await failed");
         }
-        assert.strictEqual(config.getJenkinsURL(), "https://www.myjenkinsthing.com");
+        assert.strictEqual(config.getJobUrl(), "https://www.myjenkinsthing.com");
     });
     test("Get/set all jenkins settings test", async () => {
         try {
-            await config.setJenkinsURL("");
+            await config.setJobUrl("");
         }
         catch {
             assert.fail("setJenkinsURL await failed");
         }
         try {
-            await config.setJenkinsLogin("");
+            await config.setCiUsername("");
         }
         catch {
             assert.fail("setJenkinsLogin await failed");
         }
         try {
-            await config.setJenkinsPassword("");
+            await config.setApiKey("");
         }
         catch {
             assert.fail("setJenkinsPassword await failed");
         }
         let jenkinsSettingsObject = config.getJenkinsSettings();
-        assert.strictEqual(jenkinsSettingsObject.login, "");
-        assert.strictEqual(jenkinsSettingsObject.password, "");
-        assert.strictEqual(jenkinsSettingsObject.url, "");
+        assert.strictEqual(jenkinsSettingsObject.ciUsername, "");
+        assert.strictEqual(jenkinsSettingsObject.apiKey, "");
+        assert.strictEqual(jenkinsSettingsObject.jobUrl, "");
         try {
-            await config.setJenkinsURL("abcdefg.com");
+            await config.setJobUrl("abcdefg.com");
         }
         catch {
             assert.fail("setJenkinsURL await failed");
         }
         try {
-            await config.setJenkinsLogin("beegeesfan1234");
+            await config.setCiUsername("beegeesfan1234");
         }
         catch {
             assert.fail("setJenkinsLogin await failed");
         }
         try {
-            await config.setJenkinsPassword("securepassword123");
+            await config.setApiKey("securepassword123");
         }
         catch {
             assert.fail("setJenkinsPassword await failed");
         }
         jenkinsSettingsObject = config.getJenkinsSettings();
-        assert.strictEqual(jenkinsSettingsObject.url, "abcdefg.com");
-        assert.strictEqual(jenkinsSettingsObject.login, "beegeesfan1234");
-        assert.strictEqual(jenkinsSettingsObject.password, "securepassword123");
+        assert.strictEqual(jenkinsSettingsObject.jobUrl, "abcdefg.com");
+        assert.strictEqual(jenkinsSettingsObject.ciUsername, "beegeesfan1234");
+        assert.strictEqual(jenkinsSettingsObject.apiKey, "securepassword123");
     });
 });
 //# sourceMappingURL=extension.test.js.map

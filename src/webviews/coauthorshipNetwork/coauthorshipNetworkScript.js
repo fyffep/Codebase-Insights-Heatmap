@@ -4,6 +4,11 @@ const svg = d3.select("svg");
 var width = svg.attr("width");
 var height = svg.attr("height");
 
+var totalLinesInCodebase; //an int used to scale circle radii
+const MAX_CIRCLE_SIZE = 60; //arbitrary
+var totalFilesInCodebase; //an int used to scale line width
+const MAX_STROKE_WIDTH = 15; //arbitrary
+
 var nodes = [];
 var links = [];
 const repelForce = -100;
@@ -27,10 +32,10 @@ var simulation = d3
   .on("tick", ticked);
 
 window.addEventListener("message", (event) => {
-  nodes = event.data.nodes;
-  //console.log("nodes:" + nodes);
+  totalLinesInCodebase = event.data.totalLinesInCodebase;
+  totalFilesInCodebase = event.data.totalFilesInCodebase;
+  nodes = event.data.contributorList;
   links = event.data.links;
-  //console.log("links" + links);
   simulation = d3
     .forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(repelForce))
@@ -86,6 +91,9 @@ function updateLinks() {
     })
     .attr("y2", function (d) {
       return d.target.y;
+    })
+    .attr("stroke-width", function (d) {
+      return (d.strength / totalFilesInCodebase) * MAX_STROKE_WIDTH;
     });
 }
 
@@ -102,7 +110,7 @@ function updateNodes() {
       return d.y;
     })
     .attr("r", function (d) {
-      return d.knowledgeScore;
+      return (d.knowledgeScore / totalLinesInCodebase) * MAX_CIRCLE_SIZE;
     })
     .attr("fill", "red");
   u = d3
@@ -111,7 +119,7 @@ function updateNodes() {
     .data(nodes)
     .join("text")
     .text(function (d) {
-      return d.name;
+      return d.email;
     })
     .attr("x", function (d) {
       return d.x;
@@ -128,3 +136,32 @@ function ticked() {
   updateNodes();
   updateLinks();
 }
+
+
+
+
+
+
+
+////////////////////////// CONTROL PANEL //////////////////////////
+
+function openNav() {
+  let controlPanel = document.getElementById("controlPanel");
+  console.log(controlPanel.style.width);
+  if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
+    //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
+    controlPanel.style.width = "250px";
+  } else {
+    controlPanel.style.width = "0px";
+  }
+}
+function closeNav() {
+  document.getElementById("controlPanel").style.width = "0";
+}
+function buttonExample() {
+  vscode.postMessage({
+    data: "Thanks for pressing that button!",
+  });
+}
+
+////////////////////////// END CONTROL PANEL //////////////////////////

@@ -32,6 +32,12 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand("codebase-insights.loginSignup", () => {
+      webviewFactory.createOrShowLoginSignupPanel(context);
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand("codebase-insights.settings", () => {
       webviewFactory.createOrShowSettingsPanel(context);
     })
@@ -44,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("codebase-insights.knowledge-graph", () => {
+    vscode.commands.registerCommand("codebase-insights.coauthorship-network", () => {
       webviewFactory.createOrShowCoauthorshipNetworkPanel(context);
     })
   );

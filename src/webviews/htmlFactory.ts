@@ -2,6 +2,7 @@ import * as codeMap from "./codeMap/codeMap";
 import * as coauthorshipNetwork from "./coauthorshipNetwork/coauthorshipNetwork";
 import * as commitRiskAssessment from "./commitRiskAssessment/commitRiskAssessment";
 import * as settings from "./settings/settings";
+import * as loginSignup from "./loginSignup/loginSignup";
 import * as vscode from "vscode";
 
 //args maps names to external script/css files
@@ -21,4 +22,7 @@ export function generateCoauthorshipNetworkHTML(
 }
 export function generateSettingsHTML(args: Map<string, vscode.Uri>): string {
   return settings.settingsHTML(args);
+}
+export function generateLoginSignupHTML(args: Map<string, vscode.Uri>): string {
+  return loginSignup.loginSignupHTML(args);
 }

@@ -14,6 +14,11 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
 
   getCommand(label: string) {
     switch (label) {
+      case "Login / Signup":
+        return {
+          title: "Open Codebase Insights login/signup page",
+          command: "codebase-insights.loginSignup",
+        };
       case "Settings":
         return {
           title: "Open Codebase Insights settings page",
@@ -24,10 +29,10 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           title: "Open Codebase Insights code map page",
           command: "codebase-insights.code-map",
         };
-      case "Knowledge Graph":
+      case "Coauthorship Network":
         return {
-          title: "Open Codebase Insights knowledge graph page",
-          command: "codebase-insights.knowledge-graph",
+          title: "Open Codebase Insights coauthorship network page",
+          command: "codebase-insights.coauthorship-network",
         };
       case "Commit Risk Assessment":
         return {

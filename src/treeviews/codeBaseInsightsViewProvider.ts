@@ -16,6 +16,11 @@ export class CodebaseInsightsViewProvider
 
   private getViews(): CodeBaseInsightsView[] {
     let views = [];
+    let loginSignup = new CodeBaseInsightsView(
+      "Login / Signup",
+      vscode.TreeItemCollapsibleState.None,
+      "Login or signup for Codebase Insights"
+    );
     let settings = new CodeBaseInsightsView(
       "Settings",
       vscode.TreeItemCollapsibleState.None,
@@ -36,7 +41,7 @@ export class CodebaseInsightsViewProvider
       vscode.TreeItemCollapsibleState.None,
       "View your changes currently staged for commit and assess the potential risks associated with your changes"
     );
-    views = [settings, map, coauthorship, risk];
+    views = [loginSignup, settings, map, coauthorship, risk];
     return views;
   }
 }

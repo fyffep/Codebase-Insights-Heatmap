@@ -1,23 +1,30 @@
 import * as vscode from "vscode";
 import { coauthorshipNetworkWebviewPanel } from "../webviewFactory";
-import * as mockCoauthorshipNetwork from "../../api/mockCoauthorshipNetwork";
+import * as api from "../../api/api";
 
 export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
   const cssUri = args.get("css");
   const d3Uri = args.get("d3");
   const coauthorshipNetworkScriptUri = args.get("coauthorshipNetworkScript");
-  const controlPanelScriptUri = args.get("controlPanelScript");
 
-  mockCoauthorshipNetwork.mockCoauthorshipNetworkGETRequest(46).then((responseData) => {
-    console.log(responseData);
+  //Request Knowledge Graph
+  api.getCoauthorshipNetwork().then((responseData) => {
+    //Send a message to our webview with Codebase data.
     if (coauthorshipNetworkWebviewPanel) {
-      coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
+      if (responseData) {
+        console.log("Knowledge Graph received from server. Displaying it.");
+        coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
+      }
+      else {
+        //Show error
+        vscode.window.showInformationMessage("There was a problem retrieving the Knowledge Graph.");
+      }
     } else {
       console.error(
         "coauthorshipNetworkWebviewPanel was undefined when we tried to post the message to it"
       );
     }
-  });
+  });  
 
   return `
     <!DOCTYPE HTML>
@@ -41,7 +48,6 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
             </div>
             <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
-        <script src="${controlPanelScriptUri}"/>
         <script src="${coauthorshipNetworkScriptUri}"/>
     </HTML>
     `;
