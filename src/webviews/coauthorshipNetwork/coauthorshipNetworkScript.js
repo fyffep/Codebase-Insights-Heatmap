@@ -154,10 +154,11 @@ function showLinkDetails(d) {
   let emailH2 = document.getElementById("email");
   emailH2.innerHTML = "Files authored by " + source + " and " + destination;
   let filesList = document.getElementById("filesList");
-  filesList.innerHTML = "";
+  let filesListInnerHTMLString = "";
   for (let i = 0; i < sharedFiles.length; i++) {
-    filesList.innerHTML += "<li>" + sharedFiles[i] + "</li>";
+    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
   }
+  filesList.innerHTML = filesListInnerHTMLString;
 }
 
 function showAuthorDetailsFromCircle(d) {
@@ -179,10 +180,11 @@ function showAuthorDetails(email) {
     }
   }
   let filesList = document.getElementById("filesList");
-  filesList.innerHTML = "";
-  for (let i = 0; i < data.filesKnown.length; i++) {
-    filesList.innerHTML += "<li>" + data.filesKnown[i] + "</li>";
+  let filesListInnerHTMLString = "";
+  for (let i = 0; i < sharedFiles.length; i++) {
+    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
   }
+  filesList.innerHTML = filesListInnerHTMLString;
 }
 
 function openNav() {
