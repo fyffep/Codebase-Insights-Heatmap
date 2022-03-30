@@ -63,6 +63,13 @@ function updateLinks() {
     .attr("y2", function (d) {
       return d.target.y;
     })
+    .attr("id", function (d) {
+      return d.source.email + " " + d.target.email;
+    })
+    .on("click", function (d) {
+      showLinkDetails(d);
+    })
+    .style("cursor", "pointer")
     .attr("stroke-width", function (d) {
       return (d.strength / totalFilesInCodebase) * MAX_STROKE_WIDTH;
     });
@@ -121,6 +128,37 @@ function ticked() {
 
 ////////////////////////// CONTROL PANEL //////////////////////////
 
+function showLinkDetails(d) {
+  id = d.path[0].id;
+  source = id.split(" ")[0];
+  destination = id.split(" ")[1];
+  let sourceData, destinationData;
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].email === source) {
+      sourceData = nodes[i].filesKnown;
+    } else if (nodes[i].email === destination) {
+      destinationData = nodes[i].filesKnown;
+    }
+  }
+  let sharedFiles = [];
+  for (let i = 0; i < sourceData.length; i++) {
+    for (let j = 0; j < destinationData.length; j++) {
+      if (sourceData[i] === destinationData[j]) {
+        sharedFiles.push(sourceData[i]);
+      }
+    }
+  }
+  openNav();
+  let emailH2 = document.getElementById("email");
+  emailH2.innerHTML = "Files authored by " + source + " and " + destination;
+  let filesList = document.getElementById("filesList");
+  let filesListInnerHTMLString = "";
+  for (let i = 0; i < sharedFiles.length; i++) {
+    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
+  }
+  filesList.innerHTML = filesListInnerHTMLString;
+}
+
 function showAuthorDetailsFromCircle(d) {
   let email = d.path[0].id;
   showAuthorDetails(email);
@@ -140,10 +178,11 @@ function showAuthorDetails(email) {
     }
   }
   let filesList = document.getElementById("filesList");
-  filesList.innerHTML = "";
-  for (let i = 0; i < data.filesKnown.length; i++) {
-    filesList.innerHTML += "<li>" + data.filesKnown[i] + "</li>";
+  let filesListInnerHTMLString = "";
+  for (let i = 0; i < sharedFiles.length; i++) {
+    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
   }
+  filesList.innerHTML = filesListInnerHTMLString;
 }
 
 function openNav() {

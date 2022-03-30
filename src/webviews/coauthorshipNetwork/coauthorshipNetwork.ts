@@ -36,7 +36,7 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
         </head>
         <body>
             <div class="page">
-                <svg id="graph" width="1200" height="800">
+                <svg id="graph" width="1200" height="900">
                     <g class="links"/>
                     <g class="nodes"/>
                 </svg>
