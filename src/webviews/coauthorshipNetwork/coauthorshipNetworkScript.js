@@ -132,8 +132,6 @@ function showLinkDetails(d) {
   id = d.path[0].id;
   source = id.split(" ")[0];
   destination = id.split(" ")[1];
-  console.log(source);
-  console.log(destination);
   let sourceData, destinationData;
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].email === source) {
