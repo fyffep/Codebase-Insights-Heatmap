@@ -117,10 +117,7 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("setJenkinsURL await failed");
     }
-    assert.strictEqual(
-      config.getJobUrl(),
-      "https://www.myjenkinsthing.com"
-    );
+    assert.strictEqual(config.getJobUrl(), "https://www.myjenkinsthing.com");
   });
   test("Get/set all jenkins settings test", async () => {
     try {
@@ -168,28 +165,33 @@ suite("Extension Test Suite", () => {
     } catch {
       assert.fail("clearFilteredAuthors failed");
     }
-    assert.strictEqual(config.getAllFilteredAuthors(), undefined);
+    assert.strictEqual(config.getAllFilteredAuthors(), "");
     try {
       await config.addFilteredAuthor("mjawad@iu.edu");
     } catch {
       assert.fail("addFilteredAuthor await failed");
     }
-    assert.strictEqual(
-      config.getAllFilteredAuthors(),
-      ["mjawad@iu.edu"]
-    );
+    assert.strictEqual(config.getAllFilteredAuthors(), " mjawad@iu.edu");
     try {
       await config.clearFilteredAuthors();
     } catch {
       assert.fail("clearFilteredAuthors failed");
     }
-    assert.strictEqual(config.getAllFilteredAuthors(), undefined);
+    assert.strictEqual(config.getAllFilteredAuthors(), "");
     try {
       await config.addFilteredAuthor("mjawad@iu.edu");
       await config.addFilteredAuthor("isherfic@iu.edu");
     } catch {
       assert.fail("addFilteredAuthor await failed");
     }
-    assert.strictEqual(config.getAllFilteredAuthors(), ["mjawad@iu.edu", "isherfic@iu.edu"]);
+    assert.strictEqual(
+      config.getAllFilteredAuthors(),
+      " mjawad@iu.edu isherfic@iu.edu"
+    );
+    try {
+      await config.clearFilteredAuthors();
+    } catch {
+      assert.fail("clearFilteredAuthors failed");
+    }
   });
 });

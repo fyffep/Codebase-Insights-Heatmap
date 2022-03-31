@@ -68,7 +68,7 @@ export async function clearFilteredAuthors(): Promise<void> {
 }
 
 export function getAllFilteredAuthors(): Promise<Array<String>> {
-  return getPreference("filteredAuthors").split[" "];
+  return getPreference("filteredAuthors");
 }
 
 export async function addFilteredAuthor(filteredAuthor: string): Promise<void> {
