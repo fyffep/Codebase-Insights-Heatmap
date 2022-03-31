@@ -174,9 +174,9 @@ function showAuthorDetailsFromText(d) {
 }
 function showAuthorDetails(email) {
   openNav();
-  showFilterButton();
   let emailH2 = document.getElementById("email");
   emailH2.innerHTML = email;
+  showFilterButton();
   let data;
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].email === email) {
@@ -212,18 +212,40 @@ function buttonExample() {
 
 function showFilterButton() {
   let filterButton = document.getElementById("filterButton");
+  console.log(filterButton);
+  let email = document.getElementById("email").innerHTML;
+  filterButton.innerHTML = "Filter " + email;
+  filterButton.onclick(filterAuthor);
 }
 
 function hideFilterButton() {
-
+  let filterButton = document.getElementById("filterButton");
+  filterButton.innerHTML = "";
 }
 
 function clearAllFilters() {
-
+  let clearAllFilters = document.getElementById("clearAllFilters");
+  clearAllFilters.innerHTML = "";
+  nodes = originalNodes;
 }
 
-function filterAuthor(email) {
+function filterAuthor() {
   let clearAllFilters = document.getElementById("clearAllFilters");
+  clearAllFilters.innerHTML = "Clear all author filters";
+  let email = document.getElementById("email").innerHTML;
+  newNodes = [];
+  for (let i = 0; i < nodes.length; i++)
+  {
+    if (nodes[i].email !== email)
+    {
+      newNodes.push(nodes[i]);
+    }
+  }
+  for (let i = 0; i < links.length; i++)
+  {
+    console.log(links[i]);
+  }
+  nodes = newNodes;
 }
 
 ////////////////////////// END CONTROL PANEL //////////////////////////
