@@ -133,6 +133,7 @@ function ticked() {
 ////////////////////////// CONTROL PANEL //////////////////////////
 
 function showLinkDetails(d) {
+  hideFilterButton();
   id = d.path[0].id;
   source = id.split(" ")[0];
   destination = id.split(" ")[1];
@@ -173,6 +174,7 @@ function showAuthorDetailsFromText(d) {
 }
 function showAuthorDetails(email) {
   openNav();
+  showFilterButton();
   let emailH2 = document.getElementById("email");
   emailH2.innerHTML = email;
   let data;
@@ -206,6 +208,22 @@ function buttonExample() {
   vscode.postMessage({
     data: "Thanks for pressing that button!",
   });
+}
+
+function showFilterButton() {
+  let filterButton = document.getElementById("filterButton");
+}
+
+function hideFilterButton() {
+
+}
+
+function clearAllFilters() {
+
+}
+
+function filterAuthor(email) {
+  let clearAllFilters = document.getElementById("clearAllFilters");
 }
 
 ////////////////////////// END CONTROL PANEL //////////////////////////

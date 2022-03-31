@@ -36,15 +36,17 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
         </head>
         <body>
             <div class="page">
+                <p> Click on an author to see the files they've authored, or click on a link between authors to see the files they've both contributed to. </p>
+                <p> You can remove an author from the graph by clicking on them then clicking the "filter author" button in the side panel. Filters can be cleared the same way.</p>
                 <svg id="graph" width="1200" height="900">
                     <g class="links"/>
                     <g class="nodes"/>
                 </svg>
             </div>
             <div id="controlPanel" class="sidePanel">
-              <a href="javascript:void(0)" class="closeButton" onclick="closeNav()">&times;</a>
-              <a href="javascript:void(0)" class="filterButton"></a>
-              <a href="javascript:void(0)" class="clearAllFilters"></a>
+              <a class="closeButton" onclick="closeNav()">&times;</a>
+              <a class="filterButton"></a>
+              <a class="clearAllFilters"></a>
               <h2 id="email"></h2>
               <ul id="filesList"></h2>
             </div>
