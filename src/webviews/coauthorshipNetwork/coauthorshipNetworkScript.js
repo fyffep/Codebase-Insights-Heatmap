@@ -9,7 +9,9 @@ const MAX_CIRCLE_SIZE = 60; //arbitrary
 var totalFilesInCodebase; //an int used to scale line width
 const MAX_STROKE_WIDTH = 15; //arbitrary
 
+var originalNodes = [];
 var nodes = [];
+var originalLinks = [];
 var links = [];
 const repelForce = -100;
 const linkLength = 200;
@@ -35,7 +37,9 @@ window.addEventListener("message", (event) => {
   totalLinesInCodebase = event.data.totalLinesInCodebase;
   totalFilesInCodebase = event.data.totalFilesInCodebase;
   nodes = event.data.contributorList;
+  originalNodes = event.data.contributorList;
   links = event.data.links;
+  originalLinks = event.data.links;
   simulation = d3
     .forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(repelForce))
@@ -174,13 +178,13 @@ function showAuthorDetails(email) {
   let data;
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].email === email) {
-      data = nodes[i];
+      data = nodes[i].filesKnown;
     }
   }
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
-  for (let i = 0; i < sharedFiles.length; i++) {
-    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
+  for (let i = 0; i < data.length; i++) {
+    filesListInnerHTMLString += "<li>" + data[i] + "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
 }

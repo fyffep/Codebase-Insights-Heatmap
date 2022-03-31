@@ -41,8 +41,10 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
                     <g class="nodes"/>
                 </svg>
             </div>
-            <div id="controlPanel" class="sidepanel">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div id="controlPanel" class="sidePanel">
+              <a href="javascript:void(0)" class="closeButton" onclick="closeNav()">&times;</a>
+              <a href="javascript:void(0)" class="filterButton"></a>
+              <a href="javascript:void(0)" class="clearAllFilters"></a>
               <h2 id="email"></h2>
               <ul id="filesList"></h2>
             </div>
