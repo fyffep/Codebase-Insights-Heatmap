@@ -162,4 +162,34 @@ suite("Extension Test Suite", () => {
     assert.strictEqual(jenkinsSettingsObject.ciUsername, "beegeesfan1234");
     assert.strictEqual(jenkinsSettingsObject.apiKey, "securepassword123");
   });
+  test("Get / set filtered authors test", async () => {
+    try {
+      await config.clearFilteredAuthors();
+    } catch {
+      assert.fail("clearFilteredAuthors failed");
+    }
+    assert.strictEqual(config.getAllFilteredAuthors(), undefined);
+    try {
+      await config.addFilteredAuthor("mjawad@iu.edu");
+    } catch {
+      assert.fail("addFilteredAuthor await failed");
+    }
+    assert.strictEqual(
+      config.getAllFilteredAuthors(),
+      ["mjawad@iu.edu"]
+    );
+    try {
+      await config.clearFilteredAuthors();
+    } catch {
+      assert.fail("clearFilteredAuthors failed");
+    }
+    assert.strictEqual(config.getAllFilteredAuthors(), undefined);
+    try {
+      await config.addFilteredAuthor("mjawad@iu.edu");
+      await config.addFilteredAuthor("isherfic@iu.edu");
+    } catch {
+      assert.fail("addFilteredAuthor await failed");
+    }
+    assert.strictEqual(config.getAllFilteredAuthors(), ["mjawad@iu.edu", "isherfic@iu.edu"]);
+  });
 });
