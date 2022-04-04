@@ -12,19 +12,22 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
     //Send a message to our webview with Codebase data.
     if (coauthorshipNetworkWebviewPanel) {
       if (responseData) {
-        console.log("Coauthorship network received from server. Displaying it.");
+        console.log(
+          "Coauthorship network received from server. Displaying it."
+        );
         coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
-      }
-      else {
+      } else {
         //Show error
-        vscode.window.showInformationMessage("There was a problem retrieving the coauthorship network");
+        vscode.window.showInformationMessage(
+          "There was a problem retrieving the coauthorship network"
+        );
       }
     } else {
       console.error(
         "coauthorshipNetworkWebviewPanel was undefined when we tried to post the message to it"
       );
     }
-  });  
+  });
 
   return `
     <!DOCTYPE HTML>
@@ -36,8 +39,6 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
         </head>
         <body>
             <div class="page">
-                <p> Click on an author to see the files they've authored, or click on a link between authors to see the files they've both contributed to.  You can remove an author from the graph by clicking on them then clicking the "filter author" button in the side panel. Filters can be cleared the same way.</p>
-                <p></p>
                 <svg id="graph" width="1200" height="900">
                     <g class="links"/>
                     <g class="nodes"/>
@@ -46,7 +47,8 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
             <div id="controlPanel" class="sidePanel">
               <a class="closeButton" onclick="closeNav()">&times;</a>
               <a id="filterButton"></a>
-              <a id="clearAllFilters"></a>
+              <br/>
+              <a id="clearAllFilters" onclick="clearAllFilters()"></a>
               <h2 id="email"></h2>
               <ul id="filesList"></h2>
             </div>

@@ -213,7 +213,7 @@ function buttonExample() {
 function showFilterButton() {
   let filterButton = d3.select("#filterButton");
   let email = document.getElementById("email").innerHTML;
-  filterButton.text("filter " + email);
+  filterButton.text("Remove " + email);
   filterButton.on("click", filterAuthor);
 }
 
@@ -226,13 +226,15 @@ function clearAllFilters() {
   let clearAllFilters = document.getElementById("clearAllFilters");
   clearAllFilters.innerHTML = "";
   nodes = originalNodes;
+  links = originalLinks;
+  updateNodes();
+  updateLinks();
 }
 
 function filterAuthor() {
   let clearAllFilters = document.getElementById("clearAllFilters");
-  clearAllFilters.innerHTML = "Clear all author filters";
+  clearAllFilters.innerHTML = "Restore ignored contributors";
   let email = document.getElementById("email").innerHTML;
-  console.log("Filtering " + email);
   newNodes = [];
   newLinks = [];
   for (let i = 0; i < nodes.length; i++) {
@@ -247,6 +249,11 @@ function filterAuthor() {
   }
   nodes = newNodes;
   links = newLinks;
+  hideFilterButton();
+  let filesKnown = document.getElementById("filesList");
+  filesKnown.innerHTML = email + " removed from coauthorship network.";
+  updateNodes();
+  updateLinks();
 }
 
 ////////////////////////// END CONTROL PANEL //////////////////////////
