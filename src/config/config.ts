@@ -71,3 +71,11 @@ export function getJenkinsSettings() {
   };
 }
 
+export async function setAxiosURL(url: string): Promise<void> {
+  return setPreference("axiosUrl", url);
+}
+
+export function getAxiosURL(): string {
+  return getPreference("axiosUrl");
+}
+
