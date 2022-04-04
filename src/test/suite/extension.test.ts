@@ -164,10 +164,10 @@ suite("Extension Test Suite", () => {
   });
   test("Axios URL get/set test", async () => {
     try {
-      await config.setAxiosURL("https://www.mydeployment.com");
+      await config.setAxiosUrl("https://www.mydeployment.com");
     } catch {
       assert.fail("setAxiosURL await failed");
     }
-    assert.strictEqual(config.getAxiosURL(), "https://www.mydeployment.com");
+    assert.strictEqual(config.getAxiosUrl(), "https://www.mydeployment.com");
   });
 });

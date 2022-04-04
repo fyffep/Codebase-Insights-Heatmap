@@ -98,6 +98,11 @@
           "type": "string",
           "default": "",
           "description": "URL to the Jenkins instance, including the name of the job to analyze"
+        },
+        "codebase-insights.axiosUrl": {
+          "type": "string",
+          "default": "https://refactor-radar.herokuapp.com/api",
+          "description": "URL where the codebase insights service is running remotely. Pointed at our servers by default, but if you'd like to self-host for security purposes you can point the plugin at your deployment here."
         }
       }
     }
