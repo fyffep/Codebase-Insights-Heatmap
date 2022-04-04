@@ -211,11 +211,10 @@ function buttonExample() {
 }
 
 function showFilterButton() {
-  let filterButton = document.getElementById("filterButton");
-  console.log(filterButton);
+  let filterButton = d3.select("#filterButton");
   let email = document.getElementById("email").innerHTML;
-  filterButton.innerHTML = "Filter " + email;
-  filterButton.onclick(filterAuthor);
+  filterButton.text("filter " + email);
+  filterButton.on("click", filterAuthor);
 }
 
 function hideFilterButton() {
@@ -233,19 +232,21 @@ function filterAuthor() {
   let clearAllFilters = document.getElementById("clearAllFilters");
   clearAllFilters.innerHTML = "Clear all author filters";
   let email = document.getElementById("email").innerHTML;
+  console.log("Filtering " + email);
   newNodes = [];
-  for (let i = 0; i < nodes.length; i++)
-  {
-    if (nodes[i].email !== email)
-    {
+  newLinks = [];
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].email !== email) {
       newNodes.push(nodes[i]);
     }
   }
-  for (let i = 0; i < links.length; i++)
-  {
-    console.log(links[i]);
+  for (let i = 0; i < links.length; i++) {
+    if (links[i].source.email !== email && links[i].target.email !== email) {
+      newLinks.push(links[i]);
+    }
   }
   nodes = newNodes;
+  links = newLinks;
 }
 
 ////////////////////////// END CONTROL PANEL //////////////////////////
