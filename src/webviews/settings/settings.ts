@@ -12,6 +12,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
   let jenkinsUrl = config.getJobUrl();
   let jenkinsUsername = config.getCiUsername();
   let jenkinsApiKey = config.getApiKey();
+  let axiosUrl = config.getAxiosURL();
 
   return `
     <!DOCTYPE HTML>
