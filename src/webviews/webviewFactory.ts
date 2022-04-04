@@ -161,6 +161,7 @@ export function createOrShowSettingsPanel(
           config.setJobUrl(payload["jobUrl"]); 
           config.setCiUsername(payload["ciUsername"]); 
           config.setApiKey(payload["apiKey"]); 
+          config.setAxiosUrl(payload["axiosUrl"]);
           //Send to API
           postCredentials(payload, settingsWebviewPanel);
           break;

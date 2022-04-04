@@ -53,6 +53,8 @@ function submitCredentials()
   payload["githubUrl"] = githubUrl;
   let branchName = document.getElementById("inputBranchName").value;
   payload["branchName"] = branchName; //OPTIONAL
+  let axiosUrl = document.getElementById("inputAxiosUrl").value;
+  payload["axiosUrl"] = axiosUrl;
   
   //Validate
   if (isEmpty(githubUrl)) {
@@ -137,3 +139,8 @@ window.addEventListener("message", (event) => {
     console.error(event);
   }
 });
+
+function restoreDefaultAxiosUrl() {
+  let field = document.getElementById("inputAxiosUrl");
+  field.value = "https://refactor-radar.herokuapp.com/api";
+}

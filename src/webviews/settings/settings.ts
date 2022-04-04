@@ -12,7 +12,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
   let jenkinsUrl = config.getJobUrl();
   let jenkinsUsername = config.getCiUsername();
   let jenkinsApiKey = config.getApiKey();
-  let axiosUrl = config.getAxiosURL();
+  let axiosUrl = config.getAxiosUrl();
 
   return `
     <!DOCTYPE HTML>
@@ -117,6 +117,20 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                     <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Update Account">
                     <h4 id="hUpdatingAccount"></h4>
                 </table>
+
+                <div class="row">
+                    <h2>GitHub Repository</h2>
+                    <table>
+                        <tr>
+                            <td>
+                                Custom Codebase Insights Service URL
+                            </td>
+                            <td>
+                                <input type="text" id="inputAxiosUrl" name="inputAxiosUrl" placeholder="URL where you'd like the plugin to send requests" value="${axiosUrl}" class="inputTextField">
+                                <input onclick="restoreDefaultAxiosUrl()" id="btnRestoreAxiosDefault" class="inputSubmit innerDivToCenter" type="submit" value="Restore Default">
+                            </td>
+                    </table>
+                </div>
             </div>
         </body>
         <script src="${scriptUri}"/>
