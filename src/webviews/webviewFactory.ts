@@ -2,7 +2,7 @@ import path = require("path");
 import * as vscode from "vscode";
 import * as htmlFactory from "./htmlFactory";
 import * as config from "../config/config";
-import { settings } from "cluster";
+import * as git from "../utils/git";
 import GithubOAuth from "../utils/GithubOAuth";
 import { postCredentials } from "../api/api";
 
@@ -318,9 +318,9 @@ export function createOrShowCoauthorshipNetworkPanel(
   }
 }
 
-export function createOrShowCommitRiskAssessmentPanel(
+export async function createOrShowCommitRiskAssessmentPanel(
   context: vscode.ExtensionContext
-): void {
+): Promise<void> {
   safelyDisposeAllButCommitRiskAssessment();
   if (commitRiskAssessmentWebviewPanel) {
     commitRiskAssessmentWebviewPanel.reveal(preferredColumn);
@@ -370,6 +370,8 @@ export function createOrShowCommitRiskAssessmentPanel(
     commitRiskAssessmentWebviewPanel.onDidDispose(() => {
       commitRiskAssessmentWebviewPanel = undefined;
     });
+    let stagedFiles = await git.getStagedFiles();
+    commitRiskAssessmentWebviewPanel.webview.postMessage({command: "stagedFiles", data: stagedFiles});
   }
 }
 
