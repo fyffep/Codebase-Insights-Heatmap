@@ -202,4 +202,26 @@ suite("Extension Test Suite", () => {
       assert.fail("clearFilteredAuthors failed");
     }
   });
+  test("get/set PAT test", async () => {
+    let initialPat = config.getPersonalAccessToken();
+    try {
+      await config.setPersonalAccessToken("");
+    } catch {
+      assert.fail("setPersonalAccessToken failed");
+    }
+    assert.strictEqual(config.getPersonalAccessToken(), "");
+    let testPat = "hy43u89y587941o5ui4hbjkAA";
+    try {
+      await config.setPersonalAccessToken(testPat);
+    } catch {
+      assert.fail("setPersonalAccessToken await failed");
+    }
+    assert.strictEqual(config.getPersonalAccessToken(), testPat);
+    try {
+      await config.setPersonalAccessToken(initialPat);
+    } catch {
+      assert.fail("setPersonalAccessToken await failed");
+    }
+    assert.strictEqual(config.getPersonalAccessToken(), initialPat);
+  });
 });

@@ -82,6 +82,15 @@ export async function addFilteredAuthor(filteredAuthor: string): Promise<void> {
   return setPreference("filteredAuthors", currentFilteredAuthors);
 }
 
+export async function setPersonalAccessToken(pat: string): Promise<void> {
+  return setPreference("personalAccessToken", pat);
+}
+
+export function getPersonalAccessToken(): string {
+  return getPreference("personalAccessToken");
+}
+
+
 export function getJenkinsSettings() {
   return {
     ciUsername: getCiUsername(),
