@@ -55,6 +55,8 @@ function submitCredentials()
   payload["branchName"] = branchName; //OPTIONAL
   let axiosUrl = document.getElementById("inputAxiosUrl").value;
   payload["axiosUrl"] = axiosUrl;
+  let personalAccessToken = document.getElementById("inputPersonalAccessToken").value;
+  payload["personalAccessToken"] = personalAccessToken;
   
   //Validate
   if (isEmpty(githubUrl)) {

@@ -162,6 +162,7 @@ export function createOrShowSettingsPanel(
           config.setCiUsername(payload["ciUsername"]); 
           config.setApiKey(payload["apiKey"]); 
           config.setAxiosUrl(payload["axiosUrl"]);
+          config.setPersonalAccessToken(payload["personalAccessToken"]);
           //Send to API
           postCredentials(payload, settingsWebviewPanel);
           break;
