@@ -43,6 +43,10 @@ table {
 .tdLogo:hover {
   background-color: #666;
 }
+img {
+  width: 35%;
+  height: auto;
+}
 .imgLogo {
   width: 100%;
   height: auto;

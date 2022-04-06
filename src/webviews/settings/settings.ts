@@ -13,6 +13,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
   let jenkinsUsername = config.getCiUsername();
   let jenkinsApiKey = config.getApiKey();
   let axiosUrl = config.getAxiosUrl();
+  let personalAccessToken = config.getPersonalAccessToken();
 
   return `
     <!DOCTYPE HTML>
@@ -114,12 +115,24 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                 <br></br>
 
                 <table style="width: 100%;">
-                    <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Update Account">
+                    <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Save Changes">
                     <h4 id="hUpdatingAccount"></h4>
                 </table>
 
                 <div class="row">
-                    <h2>GitHub Repository</h2>
+                    <h2>GitHub Personal Acccess Token</h2>
+                    <table>
+                        <tr>
+                            <td>
+                                Personal Access Token
+                            </td>
+                            <td>
+                                <input type="text" id="inputPersonalAccessToken" name="inputPersonalAccessToken" placeholder="Personal access token to authenticate with your git repo" value="${personalAccessToken}" class="inputTextField">
+                            </td>
+                    </table>
+                </div>
+                <div class="row">
+                    <h2>Codebase Insights Self-Hosting</h2>
                     <table>
                         <tr>
                             <td>
@@ -127,6 +140,8 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                             </td>
                             <td>
                                 <input type="text" id="inputAxiosUrl" name="inputAxiosUrl" placeholder="URL where you'd like the plugin to send requests" value="${axiosUrl}" class="inputTextField">
+                            </td>
+                            <td>
                                 <input onclick="restoreDefaultAxiosUrl()" id="btnRestoreAxiosDefault" class="inputSubmit innerDivToCenter" type="submit" value="Restore Default">
                             </td>
                     </table>
