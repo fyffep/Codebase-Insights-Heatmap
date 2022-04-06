@@ -159,6 +159,14 @@ suite("Extension Test Suite", () => {
     assert.strictEqual(jenkinsSettingsObject.ciUsername, "beegeesfan1234");
     assert.strictEqual(jenkinsSettingsObject.apiKey, "securepassword123");
   });
+  test("Axios URL get/set test", async () => {
+    try {
+      await config.setAxiosUrl("https://www.mydeployment.com");
+    } catch {
+      assert.fail("setAxiosURL await failed");
+    }
+    assert.strictEqual(config.getAxiosUrl(), "https://www.mydeployment.com");
+  });
   test("Get / set filtered authors test", async () => {
     try {
       await config.clearFilteredAuthors();

@@ -10,7 +10,10 @@ export function getPreference(desiredPreference: string) {
   }
 }
 
-export async function setPreference(desiredPreference: string, value: string | number | undefined) {
+export async function setPreference(
+  desiredPreference: string,
+  value: string | number | undefined
+) {
   let configuration = vscode.workspace.getConfiguration("codebase-insights");
   await configuration.update(desiredPreference, value, true);
 }
@@ -31,7 +34,9 @@ export function getGithubActionsWorkflowId(): string {
   return getPreference("githubActionsWorkflowId");
 }
 
-export async function setGithubActionsWorkflowId(workflowId: string): Promise<void> {
+export async function setGithubActionsWorkflowId(
+  workflowId: string
+): Promise<void> {
   return setPreference("githubActionsWorkflowId", workflowId);
 }
 
@@ -79,9 +84,16 @@ export async function addFilteredAuthor(filteredAuthor: string): Promise<void> {
 
 export function getJenkinsSettings() {
   return {
-    "ciUsername": getCiUsername(),
-    "apiKey": getApiKey(),
-    "jobUrl": getJobUrl()
+    ciUsername: getCiUsername(),
+    apiKey: getApiKey(),
+    jobUrl: getJobUrl(),
   };
 }
 
+export async function setAxiosUrl(url: string): Promise<void> {
+  return setPreference("axiosUrl", url);
+}
+
+export function getAxiosUrl(): string {
+  return getPreference("axiosUrl");
+}
