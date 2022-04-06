@@ -12,19 +12,22 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
     //Send a message to our webview with Codebase data.
     if (coauthorshipNetworkWebviewPanel) {
       if (responseData) {
-        console.log("Coauthorship network received from server. Displaying it.");
+        console.log(
+          "Coauthorship network received from server. Displaying it."
+        );
         coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
-      }
-      else {
+      } else {
         //Show error
-        vscode.window.showInformationMessage("There was a problem retrieving the coauthorship network");
+        vscode.window.showInformationMessage(
+          "There was a problem retrieving the coauthorship network"
+        );
       }
     } else {
       console.error(
         "coauthorshipNetworkWebviewPanel was undefined when we tried to post the message to it"
       );
     }
-  });  
+  });
 
   return `
     <!DOCTYPE HTML>
@@ -41,8 +44,11 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
                     <g class="nodes"/>
                 </svg>
             </div>
-            <div id="controlPanel" class="sidepanel">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div id="controlPanel" class="sidePanel">
+              <a class="closeButton" onclick="closeNav()">&times;</a>
+              <a id="filterButton"></a>
+              <br/>
+              <a id="clearAllFilters" onclick="clearAllFilters()"></a>
               <h2 id="email"></h2>
               <ul id="filesList"></h2>
             </div>

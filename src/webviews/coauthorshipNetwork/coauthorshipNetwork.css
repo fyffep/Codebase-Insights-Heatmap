@@ -8,6 +8,9 @@
 h1 {
   color: red;
 }
+a {
+  cursor: pointer;
+}
 svg {
   background-color: #dddddd;
 }
@@ -18,7 +21,7 @@ line {
 text {
   text-anchor: middle;
 }
-.sidepanel {
+.sidePanel {
   height: 600px;
   width: 0px; /*updated by our js*/
   position: fixed;
@@ -31,7 +34,7 @@ text {
   transition: 0.25s;
 }
 
-.sidepanel .closebtn {
+.sidePanel .closeButton {
   position: absolute;
   top: 0;
   right: 25px;

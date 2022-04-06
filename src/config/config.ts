@@ -68,6 +68,20 @@ export async function setJobUrl(url: string): Promise<void> {
   return setPreference("jobUrl", url);
 }
 
+export async function clearFilteredAuthors(): Promise<void> {
+  return setPreference("filteredAuthors", "");
+}
+
+export function getAllFilteredAuthors(): Promise<Array<String>> {
+  return getPreference("filteredAuthors");
+}
+
+export async function addFilteredAuthor(filteredAuthor: string): Promise<void> {
+  let currentFilteredAuthors = getPreference("filteredAuthors");
+  currentFilteredAuthors += " " + filteredAuthor;
+  return setPreference("filteredAuthors", currentFilteredAuthors);
+}
+
 export function getJenkinsSettings() {
   return {
     ciUsername: getCiUsername(),

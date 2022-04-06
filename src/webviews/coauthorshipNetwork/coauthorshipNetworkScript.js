@@ -9,7 +9,9 @@ const MAX_CIRCLE_SIZE = 60; //arbitrary
 var totalFilesInCodebase; //an int used to scale line width
 const MAX_STROKE_WIDTH = 15; //arbitrary
 
+var originalNodes = [];
 var nodes = [];
+var originalLinks = [];
 var links = [];
 const repelForce = -100;
 const linkLength = 200;
@@ -35,7 +37,9 @@ window.addEventListener("message", (event) => {
   totalLinesInCodebase = event.data.totalLinesInCodebase;
   totalFilesInCodebase = event.data.totalFilesInCodebase;
   nodes = event.data.contributorList;
+  originalNodes = event.data.contributorList;
   links = event.data.links;
+  originalLinks = event.data.links;
   simulation = d3
     .forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(repelForce))
@@ -129,6 +133,7 @@ function ticked() {
 ////////////////////////// CONTROL PANEL //////////////////////////
 
 function showLinkDetails(d) {
+  hideFilterButton();
   id = d.path[0].id;
   source = id.split(" ")[0];
   destination = id.split(" ")[1];
@@ -171,16 +176,17 @@ function showAuthorDetails(email) {
   openNav();
   let emailH2 = document.getElementById("email");
   emailH2.innerHTML = email;
+  showFilterButton();
   let data;
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].email === email) {
-      data = nodes[i];
+      data = nodes[i].filesKnown;
     }
   }
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
-  for (let i = 0; i < sharedFiles.length; i++) {
-    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
+  for (let i = 0; i < data.length; i++) {
+    filesListInnerHTMLString += "<li>" + data[i] + "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
 }
@@ -202,6 +208,52 @@ function buttonExample() {
   vscode.postMessage({
     data: "Thanks for pressing that button!",
   });
+}
+
+function showFilterButton() {
+  let filterButton = d3.select("#filterButton");
+  let email = document.getElementById("email").innerHTML;
+  filterButton.text("Remove " + email);
+  filterButton.on("click", filterAuthor);
+}
+
+function hideFilterButton() {
+  let filterButton = document.getElementById("filterButton");
+  filterButton.innerHTML = "";
+}
+
+function clearAllFilters() {
+  let clearAllFilters = document.getElementById("clearAllFilters");
+  clearAllFilters.innerHTML = "";
+  nodes = originalNodes;
+  links = originalLinks;
+  updateNodes();
+  updateLinks();
+}
+
+function filterAuthor() {
+  let clearAllFilters = document.getElementById("clearAllFilters");
+  clearAllFilters.innerHTML = "Restore ignored contributors";
+  let email = document.getElementById("email").innerHTML;
+  newNodes = [];
+  newLinks = [];
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].email !== email) {
+      newNodes.push(nodes[i]);
+    }
+  }
+  for (let i = 0; i < links.length; i++) {
+    if (links[i].source.email !== email && links[i].target.email !== email) {
+      newLinks.push(links[i]);
+    }
+  }
+  nodes = newNodes;
+  links = newLinks;
+  hideFilterButton();
+  let filesKnown = document.getElementById("filesList");
+  filesKnown.innerHTML = email + " removed from coauthorship network.";
+  updateNodes();
+  updateLinks();
 }
 
 ////////////////////////// END CONTROL PANEL //////////////////////////
