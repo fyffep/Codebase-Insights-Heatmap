@@ -118,6 +118,15 @@ export function postCredentials(payload:any, webviewPanel: vscode.WebviewPanel |
 }
 
 
+export function postModifiedHeatValues(payload:any, webviewPanel: vscode.WebviewPanel | undefined): void 
+{
+    console.log("Sending heatvalues update...");
+    instance.post('/weights/adjust/', payload).then((response) => { //post to the server
+        console.log("Finished codebase analysis after credentials update.");
+    }).catch((errorResponse) => {
+        console.log(errorResponse);
+    });
+}
 
 export function getCoauthorshipNetwork(): AxiosPromise<any> 
 {

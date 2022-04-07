@@ -72,14 +72,17 @@ circle:hover {
 
 .legend {
     font-family: 'Raleway', sans-serif;
-    fill: #333333;
+    fill: #ffffff;
 }
 
+#fileDetailsBlock {
+  margin-left: 20px;
+}
 .tooltip {
     fill: #333333;
 }
 .sidepanel {
-  height: 600px;
+  height: 100%;
   width: 0px; /*updated by our js*/
   position: fixed;
   z-index: 1; /*keeps it on top of other content*/
@@ -124,6 +127,7 @@ circle:hover {
   margin: 0;
   position: absolute;
   left: 50%;
+  top:80%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }

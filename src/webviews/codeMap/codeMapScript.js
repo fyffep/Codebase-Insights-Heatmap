@@ -1,112 +1,31 @@
 d3.select("p").style("color", "green");
 d3.select("p").append("h1").text("Hello from D3!");
 
+// import { postModifiedHeatValues } from "../../api/api";
+
+// const vscode2 = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
+
 window.addEventListener("message", (event) => {
-  data = event.data; // The JSON data our extension sent
-  console.log("Received data:", data);
-
-  let PATH_SEPARATOR = "/";
-  var childrenList = [];
-
-  function updateChildren() {
-    childrenList.splice(0, childrenList.length);
-    let rootChildren = rootCpy.children;
-    for (childData of rootChildren) {
-      if (!childData.data.filename) {
-        childrenList.push(childData.data.path);
-      }
-    }
-    autocomplete(document.getElementById("searchBox"), childrenList);
+  // console.log("Data type", event);
+  switch (event.data.command) {
+    case "gitHubUrl":
+      gitHubUrl = event.data.data;
+      break;
+    case "mapData":
+      data = event.data.data;
   }
+  // data = event.data; // The JSON data our extension sent
+  // if (!data.path) {
+  //   gitHubUrl = data;
+  // }
 
-  var searchBox = d3.select(".searchBox");
-  function traverseData(path) {
-    rootCpy = root;
-    let pSplit = path.split(PATH_SEPARATOR);
-    for (let i = 0; i < pSplit.length; i++) {
-      let pathFound = false;
-
-      if (rootCpy.children) {
-        let dirChildrenLen = rootCpy.children.length;
-        pathFound = false;
-        for (let j = 0; j < dirChildrenLen; j++) {
-          if (rootCpy.children[j].data.path === pSplit[i]) {
-            rootCpy = rootCpy.children[j];
-            pathFound = true;
-            break;
-          }
-        }
-        updateChildren();
-        if (!pathFound) {
-          break;
-        }
-      }
-    }
-    zoom(rootCpy);
-  }
-  searchBox.on("keypress", function (d) {
-    var text = d.srcElement.value;
-    traverseData(text);
-  });
-
-  var childrenList = [];
-
-  function updateChildren() {
-    childrenList.splice(0, childrenList.length);
-    let rootChildren = rootCpy.children;
-    for (childData of rootChildren) {
-      console.log("child data:", childData);
-      if (!childData.data.filename) {
-        childrenList.push(childData.data.path);
-      }
-    }
-    console.log("Children List:", childrenList);
-    autocomplete(document.getElementById("searchBox"), childrenList);
-  }
-
-  var searchBox = d3.select(".searchBox");
-  function traverseData(path) {
-    rootCpy = root;
-    console.log("THIS IS ROOT COPY", rootCpy);
-    let pSplit = path.split("/");
-    for (let i = 0; i < pSplit.length; i++) {
-      console.log(i, pSplit[i]);
-      let pathFound = false;
-
-      if (rootCpy.children) {
-        let dirChildrenLen = rootCpy.children.length;
-        pathFound = false;
-        for (let j = 0; j < dirChildrenLen; j++) {
-          if (rootCpy.children[j].data.path === pSplit[i]) {
-            rootCpy = rootCpy.children[j];
-            pathFound = true;
-            break;
-          }
-        }
-        updateChildren();
-        if (!pathFound) {
-          break;
-        }
-      }
-      if (!pathFound) {
-        break;
-      }
-    }
-    console.log("Zooming to set path");
-    zoom(rootCpy);
-  }
-  searchBox.on("keypress", function (d) {
-    var text = d.srcElement.value;
-    traverseData(text);
-  });
+  // console.log(gitHubUrl, data);
 
   var color = d3
     .scaleLinear()
     .domain([1, 10])
     .range(["#4444aa", "#ff0000"])
     .interpolate(d3.interpolateHcl);
-
-  // var body = d3.select("body").style("background-color", color(-1));
 
   var svg = d3.select("svg"),
     margin = 20,
@@ -136,7 +55,6 @@ window.addEventListener("message", (event) => {
       return b.value - a.value;
     });
 
-  var rootCpy = root;
   var focus = root,
     nodes = pack(root).descendants(),
     view;
@@ -169,7 +87,28 @@ window.addEventListener("message", (event) => {
       return color(heatVal);
     })
     .on("click", function (event, d) {
-      if (focus !== d) {
+      if (!d.children) {
+        fileClicked = d;
+        var origDat = [];
+        var dat = [];
+        for (let i = 0; i < 5; i++) {
+          dat[i] = {};
+          dat[i].order = i;
+        }
+        dat[0].value = d.data.latestHeatObject.fileSizeHeat;
+        dat[1].value = d.data.latestHeatObject.numberOfCommitsHeat;
+        dat[2].value = d.data.latestHeatObject.numberOfAuthorsHeat;
+        dat[3].value = d.data.latestHeatObject.degreeOfCouplingHeat;
+        dat[4].value = d.data.latestHeatObject.goodBadCommitRatioHeat;
+
+        origDat = dat;
+        RadarChart.draw(".radarChart", dat);
+
+        openNav();
+        d3.select("#fileName").text(d.data.filename);
+        d3.select("#filePath").text(d.data.path);
+        d3.select("#fileAuthors").text(d.data.uniqueAuthors.toString());
+      } else if (focus !== d) {
         zoom(d);
         event.stopPropagation();
       } else {
@@ -178,6 +117,7 @@ window.addEventListener("message", (event) => {
       }
     })
     .on("mouseover", function (d) {
+      //   console.log("mouseover", d);
     });
 
   var text = g
@@ -247,132 +187,445 @@ window.addEventListener("message", (event) => {
       return d.r * k;
     });
   }
+  // });
 
-  function autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function (e) {
-      var a,
-        b,
-        i,
-        val = this.value;
-      /*close any already open lists of autocompleted values*/
-      closeAllLists();
-      if (!val) {
-        return false;
-      }
-      currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      /*for each item in the array...*/
-      var valCut = val.substr(
-        val.lastIndexOf(PATH_SEPARATOR) === 0 ? 0 : val.lastIndexOf(PATH_SEPARATOR) + 1,
-        val.length
-      );
-      for (i = 0; i < childrenList.length; i++) {
-        //arr.length
-        /*check if the item starts with the same letters as the text field value:*/
-        if (
-          childrenList[i].substr(0, valCut.length).toUpperCase() ===
-          valCut.toUpperCase()
-        ) {
-          //arr[i]
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML =
-            "<strong>" + arr[i].substr(0, valCut.length) + "</strong>";
-          b.innerHTML += arr[i].substr(valCut.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML +=
-            "<input type='hidden' value='" + childrenList[i] + "'>"; //arr[i]
-          /*execute a function when someone clicks on the item value (DIV element):*/
-          b.addEventListener("click", function (e) {
-            /*insert the value for the autocomplete text field:*/
-            inp.value =
-              val.substr(0, val.lastIndexOf(PATH_SEPARATOR) + 1) +
-              this.getElementsByTagName("input")[0].value;
-            traverseData(inp.value);
-            /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-            closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function (e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) {
-        x = x.getElementsByTagName("div");
-      }
-      if (e.keyCode === 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
-        currentFocus++;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode === 38) {
-        //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
-        currentFocus--;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode === 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
-          if (x) {
-            x[currentFocus].click();
+  // const vscode = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
+
+  //Stuff for the control panel
+  function openNav() {
+    let controlPanel = document.getElementById("controlPanel");
+    if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
+      //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
+      controlPanel.style.width = "350px";
+      //   } else {
+      // controlPanel.style.width = "0px";
+    }
+  }
+
+  function closeNav() {
+    document.getElementById("controlPanel").style.width = "0";
+  }
+
+  //
+  //
+  //
+
+  // Modified https://github.com/azole/d3-radar-chart-draggable
+
+  var RadarChart = {
+    draw: function (id, d, options) {
+      var cfg = {
+        radius: 6, 
+        w: 300,
+        h: 300,
+        factor: 1,
+        factorLegend: 0.85,
+        levels: 4,
+        maxValue: 10,
+        radians: 2 * Math.PI,
+        opacityArea: 0.5,
+        color: d3.rgb("#659CEF"),
+      };
+      if ("undefined" !== typeof options) {
+        for (var i in options) {
+          if ("undefined" !== typeof options[i]) {
+            cfg[i] = options[i];
           }
         }
       }
-    });
-    function addActive(x) {
-      /*a function to classify an item as "active":*/
-      if (!x) {
-        console.log("Could not make selected item more visible.");
-        return false;
+
+      function copyData(src) {
+        dst = [];
+        for (key in src) {
+          dst[key] = src[key];
+        }
+        return dst;
       }
-      /*start by removing the "active" class on all items:*/
-      removeActive(x);
-      if (currentFocus >= x.length) {
-        currentFocus = 0;
-      }
-      if (currentFocus < 0) {
-        currentFocus = x.length - 1;
-      }
-      /*add class "autocomplete-active":*/
-      x[currentFocus].classList.add("autocomplete-active");
-    }
-    function removeActive(x) {
-      /*a function to remove the "active" class from all autocomplete items:*/
-      for (var i = 0; i < x.length; i++) {
-        x[i].classList.remove("autocomplete-active");
-      }
-    }
-    function closeAllLists(elmnt) {
-      /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-      var x = document.getElementsByClassName("autocomplete-items");
-      for (var i = 0; i < x.length; i++) {
-        if (elmnt !== x[i] && elmnt !== inp) {
-          x[i].parentNode.removeChild(x[i]);
+      // var dCopy = [];
+      // dCopy = copyData(d);
+
+      cfg.maxValue = Math.max(
+        cfg.maxValue,
+        d3.max(
+          d.map(function (o) {
+            return o.value;
+          })
+        )
+      );
+      var allAxis = d.map(function (i, j) {
+        // console.log("Mapping allAxis",i, j);
+        return i.axis;
+      });
+      var total = allAxis.length;
+      var radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2);
+
+      d3.select(id).select("svg").remove();
+      var g = d3
+        .select(id)
+        .append("svg")
+        .attr("width", cfg.w)
+        .attr("height", cfg.h)
+        .append("g");
+
+      var tooltip;
+
+      drawSpiderFrame();
+      // drawRadarFrame();
+      //Wrapper for the grid & axes
+      var maxAxisValues = [];
+      drawAxis();
+      var dataValues = [];
+      reCalculatePoints();
+
+      var areagg = initPolygon();
+      drawPoly();
+
+      drawnode();
+
+      function drawSpiderFrame() {
+        for (var j = 0; j < cfg.levels; j++) {
+          var levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels);
+          g.selectAll(".levels")
+            .data(allAxis)
+            .enter()
+            .append("svg:line")
+            .attr("x1", function (d, i) {
+              return (
+                levelFactor *
+                (1 - cfg.factor * Math.sin((i * cfg.radians) / total))
+              );
+            })
+            .attr("y1", function (d, i) {
+              return (
+                levelFactor *
+                (1 - cfg.factor * Math.cos((i * cfg.radians) / total))
+              );
+            })
+            .attr("x2", function (d, i) {
+              return (
+                levelFactor *
+                (1 - cfg.factor * Math.sin(((i + 1) * cfg.radians) / total))
+              );
+            })
+            .attr("y2", function (d, i) {
+              return (
+                levelFactor *
+                (1 - cfg.factor * Math.cos(((i + 1) * cfg.radians) / total))
+              );
+            })
+            .attr("class", "line")
+            .style("stroke", "grey")
+            .style("stroke-width", "0.5px")
+            .attr(
+              "transform",
+              "translate(" +
+                (cfg.w / 2 - levelFactor) +
+                ", " +
+                (cfg.h / 2 - levelFactor) +
+                ")"
+            );
         }
       }
-    }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function (e) {
-      closeAllLists(e.target);
-    });
-  }
+
+      function sendDataToBackend(currentVal) {
+        var dataToSend = {
+          metricNameToWeightMap: {
+            FILE_SIZE:
+              currentVal[0].value -
+              fileClicked.data.latestHeatObject.fileSizeHeat,
+            NUM_OF_COMMITS:
+              currentVal[1].value -
+              fileClicked.data.latestHeatObject.numberOfCommitsHeat,
+            NUM_OF_AUTHORS:
+              currentVal[2].value -
+              fileClicked.data.latestHeatObject.numberOfAuthorsHeat,
+            DEGREE_OF_COUPLING:
+              currentVal[3].value -
+              fileClicked.data.latestHeatObject.degreeOfCouplingHeat,
+            COMMIT_RATIO:
+              currentVal[4].value -
+              fileClicked.data.latestHeatObject.goodBadCommitRatioHeat,
+            CYCLOMATIC_COMPLEXITY: 0,
+          },
+          fileName: fileClicked.data.filename, //new
+          commitHash: "", //new
+          gitHubUrl: gitHubUrl,
+        };
+
+        console.log("Button pressed, sending data to backend", dataToSend);
+        //Make API call(s)
+        vscode.postMessage({
+          command: "submitHeatValueFeedback",
+          data: dataToSend,
+        });
+      }
+
+      d3.select(".controlbtn").on("click", function (e) {
+        sendDataToBackend(d);
+      });
+      function drawRadarFrame() {
+        for (var j = 0; j < cfg.levels; j++) {
+          g.selectAll(".levels")
+            .data(allAxis)
+            .enter()
+            .append("svg:circle")
+            .attr("cx", function (d, i) {
+              return cfg.w / 2;
+            })
+            .attr("cy", function (d, i) {
+              return cfg.h / 2;
+            })
+            .attr("r", function (d, i) {
+              return 37.5 * i;
+            })
+            .attr("class", "circle")
+            .style("stroke", "grey")
+            .style("stroke-width", "0.5px")
+            .style("fill-opacity", "0.05")
+            .style("fill", "#CDCDCD");
+        }
+      }
+
+      function drawAxis() {
+        var axis = g
+          .selectAll(".axis")
+          .data(allAxis)
+          .enter()
+          .append("g")
+          .attr("class", "axis");
+
+        var axisValues = [
+          "File Size",
+          "# of Commits",
+          "# of Authors",
+          "Degree of Coupling",
+          "good:bad commit ratio",
+        ];
+
+        axis
+          .append("line")
+          .attr("x1", cfg.w / 2)
+          .attr("y1", cfg.h / 2)
+          .attr("x2", function (j, i) {
+            maxAxisValues[i] = {
+              x:
+                (cfg.w / 2) *
+                (1 - cfg.factor * Math.sin((i * cfg.radians) / total)),
+              y: 0,
+            };
+            return maxAxisValues[i].x;
+          })
+          .attr("y2", function (j, i) {
+            maxAxisValues[i].y =
+              (cfg.h / 2) *
+              (1 - cfg.factor * Math.cos((i * cfg.radians) / total));
+            return maxAxisValues[i].y;
+          })
+          .attr("class", "line")
+          .style("stroke", "grey")
+          .style("stroke-width", "1px");
+
+        axis
+          .append("text")
+          .attr("class", "legend")
+          .text(function (d, i) {
+            return axisValues[i];
+          })
+          .style("font-family", "sans-serif")
+          .style("font-size", "10px")
+          .attr("x", function (d, i) {
+            return (
+              (cfg.w / 2) *
+                (1 - cfg.factorLegend * Math.sin((i * cfg.radians) / total)) -
+              20 * Math.sin((i * cfg.radians) / total)
+            );
+          })
+          .attr("y", function (d, i) {
+            return (
+              (cfg.h / 2) * (1 - Math.cos((i * cfg.radians) / total)) +
+              20 * Math.cos((i * cfg.radians) / total)
+            );
+          });
+      }
+
+      function reCalculatePoints() {
+        g.selectAll(".nodes").data(d, function (j, i) {
+          dataValues[i] = [
+            (cfg.w / 2) *
+              (1 -
+                (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) *
+                  cfg.factor *
+                  Math.sin((i * cfg.radians) / total)),
+            (cfg.h / 2) *
+              (1 -
+                (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) *
+                  cfg.factor *
+                  Math.cos((i * cfg.radians) / total)),
+          ];
+        });
+        dataValues[d[0].length] = dataValues[0];
+      }
+
+      function initPolygon() {
+        return g
+          .selectAll("area")
+          .data([dataValues])
+          .enter()
+          .append("polygon")
+          .attr("class", "radar-chart-serie0")
+          .style("stroke-width", "2px")
+          .style("stroke", cfg.color)
+          .on("mouseover", function (d) {
+            z = "polygon." + d3.select(this).attr("class");
+            g.selectAll("polygon").transition(200).style("fill-opacity", 0.1);
+            g.selectAll(z).transition(200).style("fill-opacity", 0.7);
+          })
+          .on("mouseout", function () {
+            g.selectAll("polygon")
+              .transition(200)
+              .style("fill-opacity", cfg.opacityArea);
+          })
+          .style("fill", function (j, i) {
+            return cfg.color;
+          })
+          .style("fill-opacity", cfg.opacityArea);
+      }
+
+      function drawPoly() {
+        areagg.attr("points", function (de) {
+          var str = "";
+          for (var pti = 0; pti < de.length; pti++) {
+            str = str + de[pti][0] + "," + de[pti][1] + " ";
+          }
+          return str;
+        });
+      }
+
+      tooltip = g
+        .append("text")
+        .style("opacity", 0)
+        .style("font-family", "sans-serif")
+        .style("font-size", 13);
+
+      function drawnode() {
+        g.selectAll(".nodes")
+          .data(d)
+          .enter()
+          .append("svg:circle")
+          .attr("class", "radar-chart-serie0")
+          .attr("r", cfg.radius)
+          .attr("alt", function (j) {
+            return Math.max(j.value, 0);
+          })
+          .attr("cx", function (j, i) {
+            return (
+              (cfg.w / 2) *
+              (1 -
+                (Math.max(j.value, 0) / cfg.maxValue) *
+                  cfg.factor *
+                  Math.sin((i * cfg.radians) / total))
+            );
+          })
+          .attr("cy", function (j, i) {
+            return (
+              (cfg.h / 2) *
+              (1 -
+                (Math.max(j.value, 0) / cfg.maxValue) *
+                  cfg.factor *
+                  Math.cos((i * cfg.radians) / total))
+            );
+          })
+          .attr("data-id", function (j) {
+            return j.axis;
+          })
+          .style("fill", cfg.color)
+          .style("fill-opacity", 0.9)
+          .on("mouseover", function (d) {
+            newX = parseFloat(d3.select(this).attr("cx")) - 10;
+            newY = parseFloat(d3.select(this).attr("cy")) - 5;
+            tooltip
+              .attr("x", newX)
+              .attr("y", newY)
+              .text(d.value)
+              //   .transition(20)
+              .style("opacity", 1);
+            z = "polygon." + d3.select(this).attr("class");
+            g.selectAll("polygon").transition(200).style("fill-opacity", 0.1);
+            g.selectAll(z).transition(200).style("fill-opacity", 0.7);
+          })
+          .on("mouseout", function () {
+            //   console.log("MouseOUT", d);
+            // if (JSON.stringify(d) === JSON.stringify(dCopy)) {
+            //   //   console.log(d, dCopy);
+            //   // console.log("This is the data:", d);
+            //   //   console.log("Same stuff");
+            // } else {
+            //   dCopy = copyData(d);
+            // }
+            tooltip
+              // .transition(20)
+              .style("opacity", 0);
+            g.selectAll("polygon")
+              .transition(20)
+              .style("fill-opacity", cfg.opacityArea);
+          })
+          .call(d3.drag().on("drag", move)) // for drag & drop
+          .on("dragleave", function (d) {
+            console.log("Drag Ended:", d);
+          })
+          .append("svg:title")
+          .text(function (j) {
+            return Math.max(j.value, 0);
+          });
+      }
+      function move(dobj, i) {
+        // this.parentNode.appendChild(this);
+        var dragTarget = d3.select(this);
+        // console.log(maxAxisValues);
+
+        // i = dobj.sub
+        var oldData = dragTarget.data()[0];
+
+        var oldX = parseFloat(dragTarget.attr("cx")) - cfg.w / 2;
+        var oldY = cfg.h / 2 - parseFloat(dragTarget.attr("cy"));
+        var newY = 0,
+          newX = 0,
+          newValue = 0;
+        var maxX = maxAxisValues[i.order].x - cfg.w / 2;
+        var maxY = cfg.h / 2 - maxAxisValues[i.order].y;
+
+        if (oldX === 0) {
+          newY = oldY - dobj.dy;
+
+          if (Math.abs(newY) > Math.abs(maxY)) {
+            newY = maxY;
+          }
+          newValue = (newY / oldY) * oldData.value;
+        } else {
+          var slope = oldY / oldX;
+          newX = dobj.dx + parseFloat(dragTarget.attr("cx")) - cfg.w / 2;
+
+          if (Math.abs(newX) > Math.abs(maxX)) {
+            newX = maxX;
+          }
+          newY = newX * slope;
+
+          var ratio = newX / oldX;
+          newValue = ratio * oldData.value;
+        }
+
+        dragTarget
+          .attr("cx", function () {
+            return newX + cfg.w / 2;
+          })
+          .attr("cy", function () {
+            return cfg.h / 2 - newY;
+          });
+
+        d[oldData.order].value = newValue;
+        reCalculatePoints();
+        drawPoly();
+      }
+    },
+  };
 });
