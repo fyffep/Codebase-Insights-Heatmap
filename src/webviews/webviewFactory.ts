@@ -4,7 +4,7 @@ import * as htmlFactory from "./htmlFactory";
 import * as config from "../config/config";
 import * as git from "../utils/git";
 import GithubOAuth from "../utils/GithubOAuth";
-import { postCredentials } from "../api/api";
+import { postCredentials, postModifiedHeatValues } from "../api/api";
 
 //Webviews -- use these for message passing.
 export let loginSignupWebviewPanel: vscode.WebviewPanel | undefined;
@@ -248,8 +248,20 @@ export function createOrShowCodeMapPanel(
     codeMapWebviewPanel.onDidDispose(() => {
       codeMapWebviewPanel = undefined;
     });
-    codeMapWebviewPanel.webview.onDidReceiveMessage((message) => {
-      vscode.window.showInformationMessage(message.data);
+    codeMapWebviewPanel.webview.onDidReceiveMessage(async (message) => {
+      switch (message.command) {
+        case "alert":
+          vscode.window.showInformationMessage(message.data);
+          break;
+        case "submitHeatValueFeedback":
+          const payload = message.data;
+          //Send to API
+          postModifiedHeatValues(payload, codeMapWebviewPanel);
+          break;
+        default:
+          console.error("Invalid message command `"+message.command+"` sent to ");
+          break;
+      }
     });
   }
 }
