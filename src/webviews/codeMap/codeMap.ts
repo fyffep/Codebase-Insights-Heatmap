@@ -39,9 +39,8 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
         </head>
         <body>
             <h1> Codebase Heatmap </h1>
-            <p><i> Red-hot files are the most active </i></p>
               <div class="autocomplete" style="width:300px;">
-                <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Path"/>
+                <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Input a file path..."/>
               </div>
             <svg width="800" height="1000"></svg>
             <div id="controlPanel" class="sidepanel">
@@ -54,7 +53,6 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
               </div>
               <button class="controlbtn" >Send Feedback</button>
             </div>
-            <button class="openbtn" onclick="openNav()">&#9776; Toggle Control Panel</button>
         </body>
         <script src="${controlPanelScript}"></script>
         <script src="${radarChartScript}"></script>

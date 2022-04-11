@@ -1,6 +1,3 @@
-d3.select("p").style("color", "green");
-d3.select("p").append("h1").text("Hello from D3!");
-
 // import { postModifiedHeatValues } from "../../api/api";
 
 // const vscode2 = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
