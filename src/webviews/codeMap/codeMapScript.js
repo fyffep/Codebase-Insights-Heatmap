@@ -133,7 +133,7 @@ window.addEventListener("message", (event) => {
       return d.parent === root ? "inline" : "none";
     })
     .text(function (d) {
-      return d.children ? d.data.path : d.data.filename;
+      return d.children ? d.data.path : "";//d.data.filename;
     });
 
   var node = g.selectAll("circle,text");
