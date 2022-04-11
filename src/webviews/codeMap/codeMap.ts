@@ -38,11 +38,10 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <script src="${d3Uri}"></script>
         </head>
         <body>
-            <h1> Codebase Heatmap </h1>
               <div class="autocomplete" style="width:300px;">
                 <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Input a file path..."/>
               </div>
-            <svg width="800" height="1000"></svg>
+            <svg width="1200" height="900"></svg>
             <div id="controlPanel" class="sidepanel">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
               <div class="radarChart"></div>

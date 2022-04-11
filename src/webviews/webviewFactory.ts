@@ -32,7 +32,7 @@ export function createOrShowLoginSignupPanel(
           vscode.Uri.file(
             path.join(
               context.extensionPath,
-              "src/webviews/loginSignup"
+              "out/webviews/loginSignup"
             )
           ),
         ],
@@ -42,7 +42,7 @@ export function createOrShowLoginSignupPanel(
     const cssOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/loginSignup",
+        "out/webviews/loginSignup",
         "loginSignup.css"
       )
     );
@@ -51,7 +51,7 @@ export function createOrShowLoginSignupPanel(
     const scriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/loginSignup",
+        "out/webviews/loginSignup",
         "loginSignupScript.js"
       )
     );
@@ -102,7 +102,7 @@ export function createOrShowSettingsPanel(
         enableScripts: true,
         localResourceRoots: [
           vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/settings")
+            path.join(context.extensionPath, "out/webviews/settings")
           ),
         ],
       }
@@ -110,27 +110,27 @@ export function createOrShowSettingsPanel(
 
     //Image paths
     const jenkinsLogoOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/settings", "jenkinsLogo.png")
+      path.join(context.extensionPath, "out/webviews/settings", "jenkinsLogo.png")
     );
     const jenkinsLogoUri = settingsWebviewPanel.webview.asWebviewUri(jenkinsLogoOnDiskPath);
     const githubActionsLogoOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/settings", "githubActionsLogo.png")
+      path.join(context.extensionPath, "out/webviews/settings", "githubActionsLogo.png")
     );
     const githubActionsLogoUri = settingsWebviewPanel.webview.asWebviewUri(githubActionsLogoOnDiskPath);
     const noCILogoOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/settings", "noCILogo.png")
+      path.join(context.extensionPath, "out/webviews/settings", "noCILogo.png")
     );
     const noCILogoUri = settingsWebviewPanel.webview.asWebviewUri(noCILogoOnDiskPath);
 
     //CSS & vanilla JS
     const cssOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/settings", "settings.css")
+      path.join(context.extensionPath, "out/webviews/settings", "settings.css")
     );
     const cssUri = settingsWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
     const scriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/settings",
+        "out/webviews/settings",
         "settingsScript.js"
       )
     );
@@ -189,7 +189,7 @@ export function createOrShowCodeMapPanel(
         enableScripts: true,
         localResourceRoots: [
           vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/codeMap")
+            path.join(context.extensionPath, "out/webviews/codeMap")
           ),
           vscode.Uri.file(path.join(context.extensionPath, "resources/d3")),
         ],
@@ -197,13 +197,13 @@ export function createOrShowCodeMapPanel(
     );
 
     const cssOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "src/webviews/codeMap", "codeMap.css")
+      path.join(context.extensionPath, "out/webviews/codeMap", "codeMap.css")
     );
     const cssUri = codeMapWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
     const scriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/codeMap",
+        "out/webviews/codeMap",
         "codeMapScript.js"
       )
     );
@@ -213,7 +213,7 @@ export function createOrShowCodeMapPanel(
     const controlPanelScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/codeMap",
+        "out/webviews/codeMap",
         "codeMapControlPanel.js"
       )
     );
@@ -224,7 +224,7 @@ export function createOrShowCodeMapPanel(
     const radarChartScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/codeMap",
+        "out/webviews/codeMap",
         "radarChartScript.js"
       )
     );
@@ -281,7 +281,7 @@ export function createOrShowCoauthorshipNetworkPanel(
         enableScripts: true,
         localResourceRoots: [
           vscode.Uri.file(
-            path.join(context.extensionPath, "src/webviews/coauthorshipNetwork")
+            path.join(context.extensionPath, "out/webviews/coauthorshipNetwork")
           ),
           vscode.Uri.file(path.join(context.extensionPath, "resources/d3")),
         ],
@@ -291,7 +291,7 @@ export function createOrShowCoauthorshipNetworkPanel(
     const cssOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/coauthorshipNetwork",
+        "out/webviews/coauthorshipNetwork",
         "coauthorshipNetwork.css"
       )
     );
@@ -300,7 +300,7 @@ export function createOrShowCoauthorshipNetworkPanel(
     const coauthorshipNetworkScriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/coauthorshipNetwork",
+        "out/webviews/coauthorshipNetwork",
         "coauthorshipNetworkScript.js"
       )
     );
@@ -347,7 +347,7 @@ export async function createOrShowCommitRiskAssessmentPanel(
           vscode.Uri.file(
             path.join(
               context.extensionPath,
-              "src/webviews/commitRiskAssessment"
+              "out/webviews/commitRiskAssessment"
             )
           ),
         ],
@@ -357,7 +357,7 @@ export async function createOrShowCommitRiskAssessmentPanel(
     const cssOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/commitRiskAssessment",
+        "out/webviews/commitRiskAssessment",
         "commitRiskAssessment.css"
       )
     );
@@ -366,7 +366,7 @@ export async function createOrShowCommitRiskAssessmentPanel(
     const scriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
-        "src/webviews/commitRiskAssessment",
+        "out/webviews/commitRiskAssessment",
         "commitRiskAssessmentScript.js"
       )
     );
