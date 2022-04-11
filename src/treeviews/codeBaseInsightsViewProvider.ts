@@ -41,7 +41,7 @@ export class CodebaseInsightsViewProvider
       vscode.TreeItemCollapsibleState.None,
       "View your changes currently staged for commit and assess the potential risks associated with your changes"
     );
-    views = [loginSignup, settings, map, coauthorship, risk];
+    views = [settings, map, coauthorship];
     return views;
   }
 }
