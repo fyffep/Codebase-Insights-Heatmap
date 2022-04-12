@@ -57,7 +57,7 @@ export function getCodeMapData(): AxiosPromise<any>
 export function postCredentials(payload:any, webviewPanel: vscode.WebviewPanel | undefined): void 
 {
     //TEMP: this should be made a request header instead & should be retrieved from local storage
-    payload.githubOAuthToken = "FIXME";
+    payload.githubOAuthToken = payload["personalAccessToken"];
 
     console.log("Sending credentials update...");
     console.log(payload); //TEMP
