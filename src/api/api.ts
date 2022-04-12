@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
-import { getGitUrl, getBranchName } from "../config/config";
+import { getGitUrl, getBranchName, getPersonalAccessToken } from "../config/config";
 import * as config from "../config/config";
 
 let axiosUrl = config.getAxiosUrl();
@@ -38,7 +38,8 @@ export function getCodeMapData(): AxiosPromise<any>
     var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
     var urlPayload = {  
         githubUrl: githubUrlOfUser,
-        branchName: getBranchName()
+        branchName: getBranchName(),
+        githubOAuthToken: getPersonalAccessToken()
     };
     console.log("Requesting analysis of " + githubUrlOfUser);
     return instance.post('/analyze/group-by-package/', urlPayload)
@@ -56,11 +57,9 @@ export function getCodeMapData(): AxiosPromise<any>
 
 export function postCredentials(payload:any, webviewPanel: vscode.WebviewPanel | undefined): void 
 {
-    //TEMP: this should be made a request header instead & should be retrieved from local storage
     payload.githubOAuthToken = payload["personalAccessToken"];
 
     console.log("Sending credentials update...");
-    console.log(payload); //TEMP
     instance.post('/analyze/initiate/', payload).then((response) => { //post to the server
         console.log("Finished codebase analysis after credentials update.");
         //Show success message in webview
@@ -98,7 +97,8 @@ export function getCoauthorshipNetwork(): AxiosPromise<any>
     //Send request
     var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
     var urlPayload = {  
-        githubUrl: githubUrlOfUser
+        githubUrl: githubUrlOfUser,
+        githubOAuthToken: getPersonalAccessToken()
     };
     console.log("Requesting coauthorship network for " + githubUrlOfUser);
     return instance.post('/knowledge/graph/', urlPayload)
