@@ -15,3 +15,13 @@ window.addEventListener("message", (event) => {
         //Submit staged files to backend
     }
 });
+
+function submitStagedFiles() {
+    displayRequestSentMessage();
+    //TODO, waiting on endpoint from backend
+}
+
+function displayRequestSentMessage() {
+    let requestInfo = document.getElementById("requestInfo");
+    requestInfo.innerHTML = "Waiting on analysis results...";
+}

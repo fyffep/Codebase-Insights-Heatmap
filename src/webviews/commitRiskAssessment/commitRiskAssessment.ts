@@ -20,7 +20,8 @@ export function commitRiskAssessmentHTML(
                 <h2>Files staged for commit: </h2>
                 <ul id="filesList">
                 </ul>
-                <input onclick="submitStagedFiles" id="btnSubmitStagedFiles" class="inputSubmit" type="submit" value="Run Analysis">
+                <input onclick="submitStagedFiles()" id="btnSubmitStagedFiles" class="inputSubmit" type="submit" value="Run Analysis">
+                <h4 id="requestInfo"></h4>
             </div>
         </body>
         <script src="${scriptUri}"/>
