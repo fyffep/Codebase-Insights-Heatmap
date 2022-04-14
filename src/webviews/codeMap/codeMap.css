@@ -6,9 +6,17 @@
   padding-bottom: 2%;
 }
 
+a {
+  cursor: pointer;
+}
+
 svg {
   display: block;
   margin: auto;
+}
+
+#codeMap {
+  background-color: #dddddd;
 }
 
 h1 {
@@ -26,60 +34,60 @@ canvas {
 }
 
 circle {
-    fill: indianred;
-    opacity: 0.5;
-    stroke: white;
+  fill: indianred;
+  opacity: 0.5;
+  stroke: white;
 }
 
 text {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-    fill: white;
-    font-size: 10px;
-    text-anchor: middle;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  fill: white;
+  font-size: 10px;
+  text-anchor: middle;
 }
 
 .node {
-    cursor: pointer;
+  cursor: pointer;
 }
-  
+
 .node:hover {
-    stroke: #000;
-    stroke-width: 1.5px;
-}
-  
-.node--leaf {
-    fill: white;
-}
-  
-.label {
-    font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-anchor: middle;
-    /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
-}
-  
-.label,
-.node--root {
-    pointer-events: none; 
+  stroke: #000;
+  stroke-width: 1.5px;
 }
 
 .node--leaf {
-    pointer-events: mouseover; 
+  fill: white;
+}
+
+.label {
+  font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-anchor: middle;
+  /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
+}
+
+.label,
+.node--root {
+  pointer-events: none;
+}
+
+.node--leaf {
+  pointer-events: mouseover;
 }
 
 circle:hover {
-    stroke:black;
+  stroke: black;
 }
 
 .legend {
-    font-family: 'Raleway', sans-serif;
-    fill: #ffffff;
+  font-family: "Raleway", sans-serif;
+  fill: #ffffff;
 }
 
 #fileDetailsBlock {
   margin-left: 20px;
 }
 .tooltip {
-    fill: #333333;
+  fill: #333333;
 }
 .sidepanel {
   height: 100%;
@@ -92,6 +100,10 @@ circle:hover {
   overflow-x: hidden; /*disables horizontal scrolling*/
   padding-top: 60px;
   transition: 0.25s;
+}
+.openPanel2 {
+  padding-left: 10%;
+  font-size: 16px;
 }
 .sidepanel .closebtn {
   position: absolute;
@@ -127,12 +139,10 @@ circle:hover {
   margin: 0;
   position: absolute;
   left: 50%;
-  top:80%;
+  top: 80%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
-
 
 .autocomplete {
   /*the container must be positioned relative:*/
@@ -145,7 +155,7 @@ input {
   padding: 10px;
   font-size: 16px;
 }
-input[type=text] {
+input[type="text"] {
   background-color: #f1f1f1;
   width: 100%;
 }
@@ -178,4 +188,7 @@ input[type=text] {
   /*when navigating through the items using the arrow keys:*/
   background-color: DodgerBlue !important;
   color: #ffffff;
+}
+.heatOption {
+  color: lightgray;
 }

@@ -108,17 +108,10 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                     </table>
                     <br></br>
                 </div>
-
                 <div class="row" id="groupNoCI">
                     <h2>No CI tool in use.</h2>
                 </div>
                 <br></br>
-
-                <table style="width: 100%;">
-                    <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Save Changes">
-                    <h4 id="hUpdatingAccount"></h4>
-                </table>
-
                 <div class="row">
                     <h2>GitHub Personal Acccess Token</h2>
                     <table>
@@ -127,7 +120,7 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                                 Personal Access Token
                             </td>
                             <td>
-                                <input type="text" id="inputPersonalAccessToken" name="inputPersonalAccessToken" placeholder="Personal access token to authenticate with your git repo" value="${personalAccessToken}" class="inputTextField">
+                                <input type="password" id="inputPersonalAccessToken" name="inputPersonalAccessToken" placeholder="Personal access token to authenticate with your git repo" value="${personalAccessToken}" class="inputTextField">
                             </td>
                     </table>
                 </div>
@@ -146,6 +139,10 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                             </td>
                     </table>
                 </div>
+                <table style="width: 100%;">
+                    <input onclick="submitCredentials()" id="btnSubmitCredentials" class="inputSubmit innerDivToCenter" type="submit" value="Save Changes And Request Analysis">
+                    <h4 id="hUpdatingAccount"></h4>
+                </table>
             </div>
         </body>
         <script src="${scriptUri}"/>

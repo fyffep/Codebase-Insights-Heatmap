@@ -1,3 +1,5 @@
+var currentHeatMetric = "overallHeat";
+var data;
 window.addEventListener("message", (event) => {
   // console.log("Data type", event);
   switch (event.data.command) {
@@ -7,23 +9,35 @@ window.addEventListener("message", (event) => {
     case "mapData":
       data = event.data.data;
   }
+  initCodeMap();
+});
 
+function clearSvg() {
+  d3.select("svg").selectAll('*').remove();
+}
+
+function initCodeMap() {
   var color = d3
     .scaleLinear()
-    .domain([0,2,5,7,10])
-    //      dark blue        blue    green    yellow      red
-    .range(["#002550", "#004dcf", "#008b02", "#fcdc00", "#d0021b"])
+    .domain([1, 10])
+    .range(["#0000BB", "#BB0000"])
     .interpolate(d3.interpolateRgb);
 
+  clearSvg();
   var svg = d3.select("svg"),
     margin = 100,
-    diameter = +svg.attr("width")/2,
+    diameter = +svg.attr("width") * 0.8,
     g = svg
       .append("g")
       .attr(
         "transform",
         "translate(" + diameter / 2 + "," + diameter / 2 + ")"
       );
+  function handleZoom(e) {
+    g.attr("transform", e.transform);
+  }
+  let zoom2 = d3.zoom().on("zoom", handleZoom);
+  d3.select("svg").call(zoom2);
 
   var pack = d3
     .pack()
@@ -44,14 +58,6 @@ window.addEventListener("message", (event) => {
   var focus = root,
     nodes = pack(root).descendants(),
     view;
-  function colorCircle(d) {
-    if (d.children) {
-      return color(d.depth);
-    }
-    let heatVal = d.data.latestHeatObject.overallHeat;
-    let colorVal = color((255 * heatVal) / 5, 0, (255 * (5 - heatVal)) / 5);
-    return colorVal;
-  }
 
   var circle = g
     .selectAll("circle")
@@ -67,9 +73,25 @@ window.addEventListener("message", (event) => {
     })
     .style("fill", function (d) {
       if (d.children) {
-        return "#777777";
+        return "#222222";
       }
-      let heatVal = d.data.latestHeatObject.overallHeat;
+      let heatVal;
+      switch (currentHeatMetric) {
+        case "overallHeat":
+          heatVal = d.data.latestHeatObject.overallHeat;
+          break;
+        case "authors":
+          heatVal = d.data.latestHeatObject.numberOfAuthorsHeat;
+          break;
+        case "commits":
+          heatVal = d.data.latestHeatObject.numberOfCommitsHeat;
+          break;
+        default:
+          heatVal = d.data.latestHeatObject.overallHeat;
+          console.log(
+            "Unsupported heat metric. Defaulting to overall heat display."
+          );
+      }
       return color(heatVal);
     })
     .on("click", function (event, d) {
@@ -119,7 +141,7 @@ window.addEventListener("message", (event) => {
       return d.parent === root ? "inline" : "none";
     })
     .text(function (d) {
-      return d.children ? d.data.path : "";//d.data.filename;
+      return d.children ? d.data.path : ""; //d.data.filename;
     });
 
   var node = g.selectAll("circle,text");
@@ -174,7 +196,6 @@ window.addEventListener("message", (event) => {
     });
   }
 
-
   //Stuff for the control panel
   function openNav() {
     let controlPanel = document.getElementById("controlPanel");
@@ -199,7 +220,7 @@ window.addEventListener("message", (event) => {
   var RadarChart = {
     draw: function (id, d, options) {
       var cfg = {
-        radius: 6, 
+        radius: 6,
         w: 300,
         h: 300,
         factor: 1,
@@ -612,4 +633,32 @@ window.addEventListener("message", (event) => {
       }
     },
   };
-});
+}
+function changeCurrentHeatMetric(newHeatMetric) {
+  currentHeatMetric = newHeatMetric;
+}
+function selectOverallHeat() {
+  changeCurrentHeatMetric("overallHeat");
+  initCodeMap();
+  console.log("overall");
+}
+function selectCommitsHeat() {
+  changeCurrentHeatMetric("commits");
+  initCodeMap();
+  console.log("commits");
+}
+function selectAuthorsHeat() {
+  changeCurrentHeatMetric("authors");
+  initCodeMap();
+  console.log("authors");
+}
+function selectCyclomaticComplexityHeat() {
+  changeCurrentHeatMetric("cyclomaticComplexity");
+  initCodeMap();
+  console.log("cyclomatic");
+}
+function selectGoodToBadCommitRatioHeat() {
+  changeCurrentHeatMetric("goodToBadCommitRatio");
+  initCodeMap();
+  console.log("good to bad");
+}

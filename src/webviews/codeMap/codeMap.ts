@@ -38,12 +38,10 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
             <script src="${d3Uri}"></script>
         </head>
         <body>
-              <div class="autocomplete" style="width:300px;">
-                <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Input a file path..."/>
-              </div>
-            <svg width="100%" height="100%"></svg>
+              <a class="openPanel2" onclick="openPanel2()">Open Control Panel</a>
+            <svg id="codeMap" width="1200" height="900"></svg>
             <div id="controlPanel" class="sidepanel">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <a class="closebtn" onclick="closeNav()">&times;</a>
               <div class="radarChart"></div>
               <div id="fileDetailsBlock">
                 <h3 id="fileName"/>
@@ -51,6 +49,32 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
                 <h4 id="fileAuthorsHeader">File Authors</h4><p id="fileAuthors"/>
               </div>
               <button class="controlbtn" >Send Feedback</button>
+            </div>
+            <div id="controlPanel2" class="sidepanel">
+              <a class="closebtn" onclick="closeNav2()">&times;</a>
+              <div class="autocomplete">
+                <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Search for a file"/>
+              </div>
+              <div id="metricSelection">
+              <p> Which metric do you want to view on the heat map?</p>
+              <ul>
+                <li>
+                  <a class="heatOption" id="overallHeatButton" onclick="selectOverallHeat()">Overall heat (default)</a>
+                </li>
+                <li>
+                  <a class="heatOption" id="commitsHeatButton" onclick="selectCommitsHeat()">Recent commit frequency</a>
+                </li>
+                <li>
+                  <a class="heatOption" id="authorsHeatButton" onclick="selectAuthorsHeat()">Number of authors</a>
+                </li>
+                <li>
+                  <a class="heatOption" id="cyclomaticComplexityHeatButton" onclick="selectOverallHeat()">Cyclomatic complexity (currently unavailable)</a>
+                </li>
+                <li>
+                  <a class="heatOption" id="goodToBadCommitRatioHeatButton" onclick="selectOverallHeat()">Appearance in build failure stack traces</a>
+                </li>
+              </ul>
+              </div>
             </div>
         </body>
         <script src="${controlPanelScript}"></script>

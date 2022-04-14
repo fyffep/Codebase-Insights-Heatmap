@@ -2,7 +2,13 @@ const vscode = acquireVsCodeApi(); //allows us to use message passing back to th
 
 //Stuff for the control panel
 function openNav() {
-  let controlPanel = document.getElementById("controlPanel");
+  openControlPanelById("controlPanel");
+}
+function openPanel2() {
+  openControlPanelById("controlPanel2");
+}
+function openControlPanelById(id) {
+  let controlPanel = document.getElementById(id);
   if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
     //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
     controlPanel.style.width = "250px";
@@ -12,6 +18,9 @@ function openNav() {
 }
 function closeNav() {
   document.getElementById("controlPanel").style.width = "0";
+}
+function closeNav2() {
+  document.getElementById("controlPanel2").style.width = "0";
 }
 function buttonExample() {
   vscode.postMessage({
