@@ -41,7 +41,7 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
               <div class="autocomplete" style="width:300px;">
                 <input id="searchBox" class="searchBox" type="text" value="" name="searchBox" placeholder="Input a file path..."/>
               </div>
-            <svg width="1200" height="900"></svg>
+            <svg width="100%" height="100%"></svg>
             <div id="controlPanel" class="sidepanel">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
               <div class="radarChart"></div>

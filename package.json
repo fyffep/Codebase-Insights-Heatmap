@@ -123,6 +123,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
+    "preprecompile": "npm run clean",
     "precompile": "cpx \"src/**/*.{css,jpg,png,js}\" out ",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",

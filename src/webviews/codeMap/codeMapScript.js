@@ -1,7 +1,3 @@
-// import { postModifiedHeatValues } from "../../api/api";
-
-// const vscode2 = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
-
 window.addEventListener("message", (event) => {
   // console.log("Data type", event);
   switch (event.data.command) {
@@ -11,30 +7,23 @@ window.addEventListener("message", (event) => {
     case "mapData":
       data = event.data.data;
   }
-  // data = event.data; // The JSON data our extension sent
-  // if (!data.path) {
-  //   gitHubUrl = data;
-  // }
-
-  // console.log(gitHubUrl, data);
 
   var color = d3
     .scaleLinear()
-    .domain([1, 10])
-    .range(["#4444aa", "#ff0000"])
-    .interpolate(d3.interpolateHcl);
+    .domain([0,2,5,7,10])
+    //      dark blue        blue    green    yellow      red
+    .range(["#002550", "#004dcf", "#008b02", "#fcdc00", "#d0021b"])
+    .interpolate(d3.interpolateRgb);
 
   var svg = d3.select("svg"),
-    margin = 20,
-    diameter = +svg.attr("width"),
+    margin = 100,
+    diameter = +svg.attr("width")/2,
     g = svg
       .append("g")
       .attr(
         "transform",
         "translate(" + diameter / 2 + "," + diameter / 2 + ")"
       );
-
-  // svg.style("background", color(-1));
 
   var pack = d3
     .pack()
@@ -184,9 +173,7 @@ window.addEventListener("message", (event) => {
       return d.r * k;
     });
   }
-  // });
 
-  // const vscode = acquireVsCodeApi(); //allows us to use message passing back to the extension for tweaking parameters
 
   //Stuff for the control panel
   function openNav() {

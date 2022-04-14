@@ -322,4 +322,3 @@ function radarChart(id, data, options) {
     };
     //Call function to draw the Radar chart
 radarChart(".radarChart", data, radarChartOptions);
-console.log("HDFJSALDHKJSAHDKLASHADSL");
