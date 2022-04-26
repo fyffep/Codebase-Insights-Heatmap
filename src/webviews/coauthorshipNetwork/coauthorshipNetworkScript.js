@@ -154,7 +154,7 @@ function getFileColorFromOccurrenceCount(fileName) {
   let color = d3
     .scaleLinear()
     .domain([1, maxAuthorCount])
-    .range(["#4444aa", "#ff0000"])
+    .range(["#ff0000","#4444aa"])
     .interpolate(d3.interpolateHcl);
   let authorCount = fileToOccurrenceCountMap.get(fileName);
   if (authorCount) {
