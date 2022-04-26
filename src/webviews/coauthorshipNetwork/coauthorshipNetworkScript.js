@@ -13,7 +13,7 @@ var originalNodes = [];
 var nodes = [];
 var originalLinks = [];
 var links = [];
-var fileToOccurrenceCountMap = Map();
+var fileToOccurrenceCountMap = new Map();
 var maxAuthorCount = 0;
 const repelForce = -100;
 const linkLength = 200;
@@ -154,7 +154,7 @@ function getFileColorFromOccurrenceCount(fileName) {
   let color = d3
     .scaleLinear()
     .domain([1, maxAuthorCount])
-    .range(["#ff0000","#4444aa"])
+    .range(["#ff0000", "#4444aa"])
     .interpolate(d3.interpolateHcl);
   let authorCount = fileToOccurrenceCountMap.get(fileName);
   if (authorCount) {
@@ -193,7 +193,13 @@ function showLinkDetails(d) {
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
   for (let i = 0; i < sharedFiles.length; i++) {
-    filesListInnerHTMLString += "<li style=\'color:" + getFileColorFromOccurrenceCount(sharedFiles[i]) + "\'>" + sharedFiles[i] + "</li>";
+    console.log(sharedFiles[i], getFileColorFromOccurrenceCount(sharedFiles[i]));
+    filesListInnerHTMLString +=
+      "<li style='color:" +
+      getFileColorFromOccurrenceCount(sharedFiles[i]) +
+      "'>" +
+      sharedFiles[i] +
+      "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
 }
@@ -220,7 +226,12 @@ function showAuthorDetails(email) {
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
   for (let i = 0; i < data.length; i++) {
-    filesListInnerHTMLString += "<li>" + data[i] + "</li>";
+    filesListInnerHTMLString +=
+      "<li style='color:" +
+      getFileColorFromOccurrenceCount(data[i]) +
+      "'>" +
+      data[i] +
+      "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
 }
