@@ -71,3 +71,12 @@ text {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+li {
+  padding-left: 0px;
+  margin: 0px;
+}
+#filterButton, #clearAllFilters, #email{
+  padding: 2%;
+  margin: 2%;
+}

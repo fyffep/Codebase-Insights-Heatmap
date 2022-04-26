@@ -137,14 +137,14 @@ function initFileToOccurrenceCountMap(nodes) {
   for (let i = 0; i < nodes.length; i++) {
     let knownFiles = nodes[i].filesKnown;
     for (let j = 0; j < knownFiles.length; j++) {
-      if (fileToOccurrenceCountMap.has(knownFiles[j])) {
+      if (!fileToOccurrenceCountMap.has(knownFiles[j])) {
         fileToOccurrenceCountMap.set(knownFiles[j], 1);
       } else {
         let currentCount = fileToOccurrenceCountMap.get(knownFiles[j]);
         if (currentCount + 1 > maxAuthorCount) {
           maxAuthorCount = currentCount;
         }
-        fileToOccurrenceCountMap.set(knownFiles[j], currentCount + 1);
+        fileToOccurrenceCountMap.set(knownFiles[j], Number(currentCount) + 1);
       }
     }
   }
@@ -154,7 +154,7 @@ function getFileColorFromOccurrenceCount(fileName) {
   let color = d3
     .scaleLinear()
     .domain([1, maxAuthorCount])
-    .range(["#ff0000", "#4444aa"])
+    .range(["#ff2222", "#4444aa"])
     .interpolate(d3.interpolateHcl);
   let authorCount = fileToOccurrenceCountMap.get(fileName);
   if (authorCount) {
@@ -192,13 +192,23 @@ function showLinkDetails(d) {
   emailH2.innerHTML = "Files authored by " + source + " and " + destination;
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
-  for (let i = 0; i < sharedFiles.length; i++) {
-    console.log(sharedFiles[i], getFileColorFromOccurrenceCount(sharedFiles[i]));
+  let map = new Map();
+  let keys = Array.from(fileToOccurrenceCountMap.keys()).filter(function (n) {
+    return sharedFiles.indexOf(n) > -1;
+  });
+  for (let i = 0; i < keys.length; i++) {
+    map.set(keys[i], fileToOccurrenceCountMap.get(keys[i]));
+  }
+  let sortedFiles = Array.from(map.entries()).sort((a, b) => a[1] - b[1]);
+  for (let i = 0; i < sortedFiles.length; i++) {
     filesListInnerHTMLString +=
       "<li style='color:" +
-      getFileColorFromOccurrenceCount(sharedFiles[i]) +
+      getFileColorFromOccurrenceCount(sortedFiles[i][0]) +
       "'>" +
-      sharedFiles[i] +
+      sortedFiles[i][0] +
+      ": " +
+      sortedFiles[i][1] +
+      " author(s)" +
       "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
@@ -223,14 +233,25 @@ function showAuthorDetails(email) {
       data = nodes[i].filesKnown;
     }
   }
+  let map = new Map();
+  let keys = Array.from(fileToOccurrenceCountMap.keys()).filter(function (n) {
+    return data.indexOf(n) > -1;
+  });
+  for (let i = 0; i < keys.length; i++) {
+    map.set(keys[i], fileToOccurrenceCountMap.get(keys[i]));
+  }
+  let sortedFiles = Array.from(map.entries()).sort((a, b) => a[1] - b[1]);
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < sortedFiles.length; i++) {
     filesListInnerHTMLString +=
       "<li style='color:" +
-      getFileColorFromOccurrenceCount(data[i]) +
+      getFileColorFromOccurrenceCount(sortedFiles[i][0]) +
       "'>" +
-      data[i] +
+      sortedFiles[i][0] + 
+      ": " +
+      sortedFiles[i][1] +
+      " author(s)" +
       "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
@@ -239,11 +260,11 @@ function showAuthorDetails(email) {
 function openNav() {
   let controlPanel = document.getElementById("controlPanel");
   if (controlPanel.style.width === "0px" || !controlPanel.style.width) {
-    //it's undefined the first time you hit the button, which is a case where we want to set it to 250px
-    controlPanel.style.width = "250px";
+    //it's undefined the first time you hit the button, which is a case where we want to set it to 325px
+    controlPanel.style.width = "375px";
   } else {
     controlPanel.style.width = "0px";
-    controlPanel.style.width = "250px";
+    controlPanel.style.width = "375px";
   }
 }
 function closeNav() {
