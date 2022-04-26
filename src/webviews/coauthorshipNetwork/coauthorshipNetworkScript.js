@@ -154,7 +154,7 @@ function getFileColorFromOccurrenceCount(fileName) {
   let color = d3
     .scaleLinear()
     .domain([1, maxAuthorCount])
-    .range(["#ff2222", "#4444aa"])
+    .range(["#ff3333", "#6666aa"])
     .interpolate(d3.interpolateHcl);
   let authorCount = fileToOccurrenceCountMap.get(fileName);
   if (authorCount) {
@@ -248,7 +248,7 @@ function showAuthorDetails(email) {
       "<li style='color:" +
       getFileColorFromOccurrenceCount(sortedFiles[i][0]) +
       "'>" +
-      sortedFiles[i][0] + 
+      sortedFiles[i][0] +
       ": " +
       sortedFiles[i][1] +
       " author(s)" +
