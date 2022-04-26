@@ -185,6 +185,11 @@ function initCodeMap() {
       });
   }
 
+  // Adds Zoom and Pan
+  const handleZoom = (e) => d3.select("svg").attr("transform", e.transform);
+  const zoom2 = d3.zoom().on("zoom", handleZoom);
+  d3.select("svg").call(zoom2); 
+
   function zoomTo(v) {
     var k = diameter / v[2];
     view = v;

@@ -13,6 +13,8 @@ var originalNodes = [];
 var nodes = [];
 var originalLinks = [];
 var links = [];
+var fileToOccurrenceCountMap = Map();
+var maxAuthorCount = 0;
 const repelForce = -100;
 const linkLength = 200;
 
@@ -37,6 +39,7 @@ window.addEventListener("message", (event) => {
   totalLinesInCodebase = event.data.totalLinesInCodebase;
   totalFilesInCodebase = event.data.totalFilesInCodebase;
   nodes = event.data.contributorList;
+  initFileToOccurrenceCountMap(nodes);
   originalNodes = event.data.contributorList;
   links = event.data.links;
   originalLinks = event.data.links;
@@ -130,6 +133,37 @@ function ticked() {
   updateLinks();
 }
 
+function initFileToOccurrenceCountMap(nodes) {
+  for (let i = 0; i < nodes.length; i++) {
+    let knownFiles = nodes[i].filesKnown;
+    for (let j = 0; j < knownFiles.length; j++) {
+      if (fileToOccurrenceCountMap.has(knownFiles[j])) {
+        fileToOccurrenceCountMap.set(knownFiles[j], 1);
+      } else {
+        let currentCount = fileToOccurrenceCountMap.get(knownFiles[j]);
+        if (currentCount + 1 > maxAuthorCount) {
+          maxAuthorCount = currentCount;
+        }
+        fileToOccurrenceCountMap.set(knownFiles[j], currentCount + 1);
+      }
+    }
+  }
+}
+
+function getFileColorFromOccurrenceCount(fileName) {
+  let color = d3
+    .scaleLinear()
+    .domain([1, maxAuthorCount])
+    .range(["#ff0000","#4444aa"])
+    .interpolate(d3.interpolateHcl);
+  let authorCount = fileToOccurrenceCountMap.get(fileName);
+  if (authorCount) {
+    return color(authorCount);
+  } else {
+    return color(1);
+  }
+}
+
 ////////////////////////// CONTROL PANEL //////////////////////////
 
 function showLinkDetails(d) {
@@ -159,7 +193,7 @@ function showLinkDetails(d) {
   let filesList = document.getElementById("filesList");
   let filesListInnerHTMLString = "";
   for (let i = 0; i < sharedFiles.length; i++) {
-    filesListInnerHTMLString += "<li>" + sharedFiles[i] + "</li>";
+    filesListInnerHTMLString += "<li style=\'color:" + getFileColorFromOccurrenceCount(sharedFiles[i]) + "\'>" + sharedFiles[i] + "</li>";
   }
   filesList.innerHTML = filesListInnerHTMLString;
 }
