@@ -22,13 +22,36 @@ function hideAllCIGroups() {
 }
 hideAllCIGroups();
 
-//Select GitHub Actions as CI
+
+//Show current selection based on value of ciToolChosen in config
+const hCiToolChosen = document.getElementById("hCiToolChosen");
+switch (hCiToolChosen.innerHTML)
+{
+  case "GitHub Actions":
+    {
+      groupGitHubActions.hidden = false;
+      break;
+    }
+    case "Jenkins":
+    {
+      groupJenkins.hidden = false;
+      break;
+    }
+    default: //No CI
+    {
+      groupNoCI.hidden = false;
+      break;
+    }
+}
+
+
+//onSelect GitHub Actions as CI
 document.getElementById("imgChooseGitHubActions").addEventListener("click", function (e) {
   hideAllCIGroups();
   groupGitHubActions.hidden = false;
   ciToolChosen = "GitHub Actions";
 });
-//Select GitHub Actions as CI
+//onSelect Jenkins as CI
 document.getElementById("imgChooseJenkins").addEventListener("click", function (e) {
   hideAllCIGroups();
   groupJenkins.hidden = false;

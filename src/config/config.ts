@@ -106,3 +106,23 @@ export async function setAxiosUrl(url: string): Promise<void> {
 export function getAxiosUrl(): string {
   return getPreference("axiosUrl");
 }
+
+export function getCiToolChosen(): string {
+  return getPreference("ciToolChosen");
+}
+
+export async function setCiToolChosen(ciToolChosen: string): Promise<void> {
+  return setPreference("ciToolChosen", ciToolChosen);
+}
+
+export function getSettingsPayload() {
+  return {  
+    githubUrl: getGitUrl(),
+    branchName: getBranchName(),
+    ciToolChosen: getCiToolChosen(),
+    ciUsername: getCiUsername(),
+    apiKey: getApiKey(),
+    jobUrl: getJobUrl(),
+    githubOAuthToken: getPersonalAccessToken()
+  };
+}

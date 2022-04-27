@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 const vscode = require("vscode");
 const mockCodeMap = require("../../api/mockCodeMap");
 const mockCoauthorshipNetwork_1 = require("../../api/mockCoauthorshipNetwork");
 const config = require("../../config/config");
-// import * as myExtension from '../../extension';
 suite("Extension Test Suite", () => {
     vscode.window.showInformationMessage("Start all tests.");
     test("Random mock filename test", () => {
@@ -154,6 +151,77 @@ suite("Extension Test Suite", () => {
         assert.strictEqual(jenkinsSettingsObject.jobUrl, "abcdefg.com");
         assert.strictEqual(jenkinsSettingsObject.ciUsername, "beegeesfan1234");
         assert.strictEqual(jenkinsSettingsObject.apiKey, "securepassword123");
+    });
+    test("Axios URL get/set test", async () => {
+        try {
+            await config.setAxiosUrl("https://www.mydeployment.com");
+        }
+        catch {
+            assert.fail("setAxiosURL await failed");
+        }
+        assert.strictEqual(config.getAxiosUrl(), "https://www.mydeployment.com");
+    });
+    test("Get / set filtered authors test", async () => {
+        try {
+            await config.clearFilteredAuthors();
+        }
+        catch {
+            assert.fail("clearFilteredAuthors failed");
+        }
+        assert.strictEqual(config.getAllFilteredAuthors(), "");
+        try {
+            await config.addFilteredAuthor("mjawad@iu.edu");
+        }
+        catch {
+            assert.fail("addFilteredAuthor await failed");
+        }
+        assert.strictEqual(config.getAllFilteredAuthors(), " mjawad@iu.edu");
+        try {
+            await config.clearFilteredAuthors();
+        }
+        catch {
+            assert.fail("clearFilteredAuthors failed");
+        }
+        assert.strictEqual(config.getAllFilteredAuthors(), "");
+        try {
+            await config.addFilteredAuthor("mjawad@iu.edu");
+            await config.addFilteredAuthor("isherfic@iu.edu");
+        }
+        catch {
+            assert.fail("addFilteredAuthor await failed");
+        }
+        assert.strictEqual(config.getAllFilteredAuthors(), " mjawad@iu.edu isherfic@iu.edu");
+        try {
+            await config.clearFilteredAuthors();
+        }
+        catch {
+            assert.fail("clearFilteredAuthors failed");
+        }
+    });
+    test("get/set PAT test", async () => {
+        let initialPat = config.getPersonalAccessToken();
+        try {
+            await config.setPersonalAccessToken("");
+        }
+        catch {
+            assert.fail("setPersonalAccessToken failed");
+        }
+        assert.strictEqual(config.getPersonalAccessToken(), "");
+        let testPat = "hy43u89y587941o5ui4hbjkAA";
+        try {
+            await config.setPersonalAccessToken(testPat);
+        }
+        catch {
+            assert.fail("setPersonalAccessToken await failed");
+        }
+        assert.strictEqual(config.getPersonalAccessToken(), testPat);
+        try {
+            await config.setPersonalAccessToken(initialPat);
+        }
+        catch {
+            assert.fail("setPersonalAccessToken await failed");
+        }
+        assert.strictEqual(config.getPersonalAccessToken(), initialPat);
     });
 });
 //# sourceMappingURL=extension.test.js.map

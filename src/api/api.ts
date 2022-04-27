@@ -1,48 +1,24 @@
 import * as vscode from "vscode";
 import { randomInt } from "crypto";
 import axios, { AxiosPromise } from 'axios';
-import { getGitUrl, getBranchName, getPersonalAccessToken } from "../config/config";
+import { getGitUrl, getPersonalAccessToken, getSettingsPayload } from "../config/config";
 import * as config from "../config/config";
 
 let axiosUrl = config.getAxiosUrl();
 //Setup
 const instance = axios.create({
-    baseURL: axiosUrl,
-    //baseURL: 'http://localhost:8080/api'
+    //baseURL: axiosUrl,
+    baseURL: 'http://localhost:8080/api'
 });
 
-export function getDashboardData(): AxiosPromise<any> 
-{
-    //Send request
-    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
-    var urlPayload = {  
-        githubUrl: githubUrlOfUser
-    };
-    console.log("Requesting analysis of " + githubUrlOfUser);
-    return instance.post('/analyze/dashboard/', urlPayload)
-        .then((response) => {
-            //Return data from the axios promise
-            return response.data;
-        })
-        .catch(err => {
-            //Handle timeout or error
-            console.error(err);
-            return err;
-        });
-}
 
 
 export function getCodeMapData(): AxiosPromise<any> 
 {
     //Send request
-    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
-    var urlPayload = {  
-        githubUrl: githubUrlOfUser,
-        branchName: getBranchName(),
-        githubOAuthToken: getPersonalAccessToken()
-    };
-    console.log("Requesting analysis of " + githubUrlOfUser);
-    return instance.post('/analyze/group-by-package/', urlPayload)
+    var settingsPayload = getSettingsPayload();
+    console.log("Requesting analysis of " + getGitUrl());
+    return instance.post('/analyze/group-by-package/', settingsPayload)
         .then((response) => {
             //Return data from the axios promise
             return response.data;
@@ -95,13 +71,9 @@ export function postModifiedHeatValues(payload:any, webviewPanel: vscode.Webview
 export function getCoauthorshipNetwork(): AxiosPromise<any> 
 {
     //Send request
-    var githubUrlOfUser = getGitUrl();  //example: "https://github.com/fyffep/P565-SP21-Patient-Manager". User must set this in preferences
-    var urlPayload = {  
-        githubUrl: githubUrlOfUser,
-        githubOAuthToken: getPersonalAccessToken()
-    };
-    console.log("Requesting coauthorship network for " + githubUrlOfUser);
-    return instance.post('/knowledge/graph/', urlPayload)
+    var settingsPayload = getSettingsPayload();
+    console.log("Requesting coauthorship network for " + getGitUrl());
+    return instance.post('/knowledge/graph/', settingsPayload)
         .then((response) => {
             //Return data from the axios promise
             return response.data;

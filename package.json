@@ -88,6 +88,11 @@
           "default": "",
           "description": "Workflow ID for Github Actions"
         },
+        "codebase-insights.ciToolChosen": {
+          "type": "string",
+          "default": "NONE",
+          "description": "The name of the CI tool selected"
+        },
         "codebase-insights.ciUsername": {
           "type": "string",
           "default": "",

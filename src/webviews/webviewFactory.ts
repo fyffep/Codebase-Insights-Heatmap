@@ -159,6 +159,7 @@ export function createOrShowSettingsPanel(
           config.setGitUrl(payload["githubUrl"]); 
           config.setBranchName(payload["branchName"]);
           config.setJobUrl(payload["jobUrl"]); 
+          config.setCiToolChosen(payload["ciToolChosen"]); 
           config.setCiUsername(payload["ciUsername"]); 
           config.setApiKey(payload["apiKey"]); 
           config.setAxiosUrl(payload["axiosUrl"]);

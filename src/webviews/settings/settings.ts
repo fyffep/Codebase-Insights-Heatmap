@@ -70,8 +70,10 @@ export function settingsHTML(args: Map<string, vscode.Uri>): string {
                         </td>
                     </tr>
                 </table>
-                
 
+                <!--This element is always hidden, but it transfers the value of the ciToolChosen from TS to JS upon loading this webview-->
+                <h6 hidden id="hCiToolChosen">${config.getCiToolChosen()}</h6>
+                
                 <div class="row" id="groupGitHubActions">
                     <h2>GitHub Actions</h2>
                     <p>All set - no further information is needed for GitHub Actions.</p>
