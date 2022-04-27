@@ -33,11 +33,6 @@ function initCodeMap() {
         "transform",
         "translate(" + diameter / 2 + "," + diameter / 2 + ")"
       );
-  function handleZoom(e) {
-    g.attr("transform", e.transform);
-  }
-  let zoom2 = d3.zoom().on("zoom", handleZoom);
-  d3.select("svg").call(zoom2);
 
   var pack = d3
     .pack()
