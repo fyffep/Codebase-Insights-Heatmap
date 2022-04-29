@@ -59,19 +59,22 @@ export function codemapHTML(args: Map<string, vscode.Uri>): string {
               <p> Which metric do you want to view on the heat map?</p>
               <ul>
                 <li>
-                  <a class="heatOption" id="overallHeatButton" onclick="selectOverallHeat()">Overall heat (default)</a>
+                  <a class="heatOption" id="overallHeatButton" onclick="selectOverallHeat()">Overall Heat (default)</a>
                 </li>
                 <li>
-                  <a class="heatOption" id="commitsHeatButton" onclick="selectCommitsHeat()">Recent commit frequency</a>
+                  <a class="heatOption" id="commitsHeatButton" onclick="selectCommitsHeat()">Recent Commit Frequency</a>
                 </li>
                 <li>
-                  <a class="heatOption" id="authorsHeatButton" onclick="selectAuthorsHeat()">Number of authors</a>
+                  <a class="heatOption" id="authorsHeatButton" onclick="selectAuthorsHeat()">Number of Authors</a>
                 </li>
-                <li>
+                <!--li>
                   <a class="heatOption" id="cyclomaticComplexityHeatButton" onclick="selectOverallHeat()">Cyclomatic complexity (currently unavailable)</a>
+                </li-->
+                <li>
+                  <a class="heatOption" id="buildFailureScoreHeatButton" onclick="selectBuildFailureScoreHeat()">Appearance in Build Failure Stack Traces</a>
                 </li>
                 <li>
-                  <a class="heatOption" id="goodToBadCommitRatioHeatButton" onclick="selectOverallHeat()">Appearance in build failure stack traces</a>
+                  <a class="heatOption" id="degreeOfCouplingHeatButton" onclick="selectDegreeOfCouplingHeat()">Degree of Coupling</a>
                 </li>
               </ul>
               </div>

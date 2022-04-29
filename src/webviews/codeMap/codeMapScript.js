@@ -33,6 +33,11 @@ function initCodeMap() {
         "transform",
         "translate(" + diameter / 2 + "," + diameter / 2 + ")"
       );
+  function handleZoom(e) {
+    g.attr("transform", e.transform);
+  }
+  let zoom2 = d3.zoom().on("zoom", handleZoom);
+  d3.select("svg").call(zoom2);
 
   var pack = d3
     .pack()
@@ -81,6 +86,12 @@ function initCodeMap() {
         case "commits":
           heatVal = d.data.latestHeatObject.numberOfCommitsHeat;
           break;
+        case "degreeOfCoupling":
+          heatVal = d.data.latestHeatObject.degreeOfCoupling;
+          break;
+        case "buildFailureScore":
+          heatVal = d.data.latestHeatObject.buildFailureScoreHeat;
+          break;
         default:
           heatVal = d.data.latestHeatObject.overallHeat;
           console.log(
@@ -102,7 +113,12 @@ function initCodeMap() {
         dat[1].value = d.data.latestHeatObject.numberOfCommitsHeat;
         dat[2].value = d.data.latestHeatObject.numberOfAuthorsHeat;
         dat[3].value = d.data.latestHeatObject.degreeOfCouplingHeat;
-        dat[4].value = d.data.latestHeatObject.goodBadCommitRatioHeat;
+        if (d.data.latestHeatObject.buildFailureScoreHeat > -1) {
+          dat[4].value = d.data.latestHeatObject.buildFailureScoreHeat;
+        }
+        else { //change default value from -1 to 0 because otherwise the chart's point slips away
+          dat[4].value = 0;
+        }
 
         origDat = dat;
         RadarChart.draw(".radarChart", dat);
@@ -179,11 +195,6 @@ function initCodeMap() {
         }
       });
   }
-
-  // Adds Zoom and Pan
-  const handleZoom = (e) => d3.select("svg").attr("transform", e.transform);
-  const zoom2 = d3.zoom().on("zoom", handleZoom);
-  d3.select("svg").call(zoom2); 
 
   function zoomTo(v) {
     var k = diameter / v[2];
@@ -349,7 +360,7 @@ function initCodeMap() {
               fileClicked.data.latestHeatObject.degreeOfCouplingHeat,
             COMMIT_RATIO:
               currentVal[4].value -
-              fileClicked.data.latestHeatObject.goodBadCommitRatioHeat,
+              fileClicked.data.latestHeatObject.buildFailureScoreHeat,
             CYCLOMATIC_COMPLEXITY: 0,
           },
           fileName: fileClicked.data.filename, //new
@@ -404,7 +415,7 @@ function initCodeMap() {
           "# of Commits",
           "# of Authors",
           "Degree of Coupling",
-          "good:bad commit ratio",
+          "# of Build Failures",
         ];
 
         axis
@@ -657,8 +668,13 @@ function selectCyclomaticComplexityHeat() {
   initCodeMap();
   console.log("cyclomatic");
 }
-function selectGoodToBadCommitRatioHeat() {
-  changeCurrentHeatMetric("goodToBadCommitRatio");
+function selectBuildFailureScoreHeat() {
+  changeCurrentHeatMetric("buildFailureScore");
   initCodeMap();
-  console.log("good to bad");
+  console.log("buildFailureScore");
+}
+function selectDegreeOfCouplingHeat() {
+  changeCurrentHeatMetric("degreeOfCoupling");
+  initCodeMap();
+  console.log("degreeOfCoupling");
 }

@@ -85,6 +85,9 @@ circle:hover {
 
 #fileDetailsBlock {
   margin-left: 20px;
+  padding-right: 25%;
+  max-width: 100%;
+  white-space: normal;
 }
 .tooltip {
   fill: #333333;
@@ -129,6 +132,7 @@ circle:hover {
 .controlbtn {
   /*style stuff*/
   font-size: 14px;
+  font-family: "Trebuchet MS", sans-serif;
   cursor: pointer;
   background-color: #dddddd;
   color: #222;
@@ -142,6 +146,7 @@ circle:hover {
   top: 80%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  border-radius: 20px;
 }
 
 .autocomplete {

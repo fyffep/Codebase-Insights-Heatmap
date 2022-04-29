@@ -7,8 +7,8 @@ import * as config from "../config/config";
 let axiosUrl = config.getAxiosUrl();
 //Setup
 const instance = axios.create({
-    //baseURL: axiosUrl,
-    baseURL: 'http://localhost:8080/api'
+    baseURL: axiosUrl
+    //baseURL: 'http://localhost:8080/api'
 });
 
 
