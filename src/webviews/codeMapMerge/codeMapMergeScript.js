@@ -1,4 +1,6 @@
 var currentHeatMetric = "overallHeat";
+var data1;
+var data2;
 var data;
 window.addEventListener("message", (event) => {
   // console.log("Data type", event);
@@ -7,22 +9,91 @@ window.addEventListener("message", (event) => {
       gitHubUrl = event.data.data;
       break;
     case "mapData":
-      data = event.data.data;
-      console.log(data);
+      console.log(event.data);
+      data1 = event.data.data[0];
+      data2 = event.data.data[1];
+
+      data = event.data.data[0];
+      // console.log(data2);
+      break;
+    // calculate differences between them here
   }
   initCodeMap();
 });
 
+function getOriginalHeatData(filePath) {
+  fileTreeList = data2.fileTreeNodeList;
+  file = checkList(fileTreeList,filePath);
+  // console.log(filePath, file);
+  if(file === undefined){
+    return {
+      overallHeat: 0,
+      numberOfAuthorsHeat: 0,
+      numberOfCommitsHeat: 0,
+      degreeOfCouplingHeat: 0,
+      buildFailureScoreHeat: 0,
+    };
+  }
+  return file.latestHeatObject;
+}
+
+function checkFile(file,filePath) {
+  let result = undefined;
+  if(file.latestHeatObject){
+    if(file.path.toString() == filePath.toString()){
+      result = file;
+    }
+  }else{
+    if(result === undefined){
+      result = checkList(file.fileTreeNodeList,filePath);
+    }
+  }
+  return result;
+}
+
+function checkList(fileList,filePath) {
+  let result = undefined;
+  fileList.forEach((item) => {
+    let file = checkFile(item,filePath);
+    if(file !== undefined){
+      // console.log("find it!");
+      result = file;
+    }
+  });
+  return result;
+}
+
+
 function clearSvg() {
-  d3.select("svg").selectAll('*').remove();
+  d3.select("svg").selectAll("*").remove();
+}
+
+function setColor(heat) {
+  var colorPositive = d3
+    .scaleLinear()
+    .domain([0, 10])
+    .range(["#FFFFFF", "#BB0000"])
+    .interpolate(d3.interpolateRgb);
+  var colorNegative = d3
+    .scaleLinear()
+    .domain([-10, 0])
+    .range(["#0000BB", "#FFFFFF"])
+    .interpolate(d3.interpolateRgb);
+
+  if (heat > 0) {
+    return colorPositive(heat);
+  } else if (heat < 0) {
+    return colorNegative(heat);
+  } else if (heat === 0) {
+    return "#FFFFFF";
+  }
 }
 
 function initCodeMap() {
-  
   var color = d3
     .scaleLinear()
-    .domain([1, 10])
-    .range(["#0000BB", "#BB0000"])
+    .domain([-10, 0, 10])
+    .range(["#0000BB", "#FFFFFF", "#BB0000"])
     .interpolate(d3.interpolateRgb);
 
   clearSvg();
@@ -57,6 +128,8 @@ function initCodeMap() {
       return b.value - a.value;
     });
 
+  // console.log(root1);
+
   var focus = root,
     nodes = pack(root).descendants(),
     view;
@@ -80,27 +153,28 @@ function initCodeMap() {
       let heatVal;
       switch (currentHeatMetric) {
         case "overallHeat":
-          heatVal = d.data.latestHeatObject.overallHeat;
+          heatVal = d.data.latestHeatObject.overallHeat - getOriginalHeatData(d.data.path).overallHeat;
           break;
         case "authors":
-          heatVal = d.data.latestHeatObject.numberOfAuthorsHeat;
+          heatVal = d.data.latestHeatObject.numberOfAuthorsHeat - getOriginalHeatData(d.data.path).numberOfAuthorsHeat;
           break;
         case "commits":
-          heatVal = d.data.latestHeatObject.numberOfCommitsHeat;
+          heatVal = d.data.latestHeatObject.numberOfCommitsHeat - getOriginalHeatData(d.data.path).numberOfCommitsHeat;
           break;
         case "degreeOfCoupling":
-          heatVal = d.data.latestHeatObject.degreeOfCoupling;
+          heatVal = d.data.latestHeatObject.degreeOfCouplingHeat - getOriginalHeatData(d.data.path).degreeOfCouplingHeat;
           break;
         case "buildFailureScore":
-          heatVal = d.data.latestHeatObject.buildFailureScoreHeat;
+          heatVal = d.data.latestHeatObject.buildFailureScoreHeat - getOriginalHeatData(d.data.path).buildFailureScoreHeat;
           break;
         default:
-          heatVal = d.data.latestHeatObject.overallHeat;
+          heatVal = d.data.latestHeatObject.overallHeat - getOriginalHeatData(d.data.path).overallHeat;
           console.log(
             "Unsupported heat metric. Defaulting to overall heat display."
           );
       }
-      return color(heatVal);
+      // console.log(heatVal);
+      return setColor(heatVal);
     })
     .on("click", function (event, d) {
       if (!d.children) {
@@ -117,8 +191,8 @@ function initCodeMap() {
         dat[3].value = d.data.latestHeatObject.degreeOfCouplingHeat;
         if (d.data.latestHeatObject.buildFailureScoreHeat > -1) {
           dat[4].value = d.data.latestHeatObject.buildFailureScoreHeat;
-        }
-        else { //change default value from -1 to 0 because otherwise the chart's point slips away
+        } else {
+          //change default value from -1 to 0 because otherwise the chart's point slips away
           dat[4].value = 0;
         }
 
@@ -360,7 +434,7 @@ function initCodeMap() {
             DEGREE_OF_COUPLING:
               currentVal[3].value -
               fileClicked.data.latestHeatObject.degreeOfCouplingHeat,
-            BUILD_FAILURE_SCORE:
+            COMMIT_RATIO:
               currentVal[4].value -
               fileClicked.data.latestHeatObject.buildFailureScoreHeat,
             CYCLOMATIC_COMPLEXITY: 0,

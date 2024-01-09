@@ -38,9 +38,10 @@ var simulation = d3
 window.addEventListener("message", (event) => {
   totalLinesInCodebase = event.data.totalLinesInCodebase;
   totalFilesInCodebase = event.data.totalFilesInCodebase;
-  nodes = event.data.contributorList;
+  
+  nodes = event.data.advancedContributors;
   initFileToOccurrenceCountMap(nodes);
-  originalNodes = event.data.contributorList;
+  originalNodes = event.data.advancedContributors;
   links = event.data.links;
   originalLinks = event.data.links;
   simulation = d3
@@ -71,7 +72,7 @@ function updateLinks() {
       return d.target.y;
     })
     .attr("id", function (d) {
-      return d.source.email + " " + d.target.email;
+      return d.source.label + " " + d.target.label;
     })
     .on("click", function (d) {
       showLinkDetails(d);
@@ -95,10 +96,10 @@ function updateNodes() {
       return d.y;
     })
     .attr("r", function (d) {
-      return (d.knowledgeScore / totalLinesInCodebase) * MAX_CIRCLE_SIZE;
+      return (d.size / totalLinesInCodebase) * MAX_CIRCLE_SIZE;
     })
     .attr("id", function (d) {
-      return d.email;
+      return d.label;
     })
     .attr("fill", "red")
     .style("cursor", "pointer")
@@ -111,7 +112,7 @@ function updateNodes() {
     .data(nodes)
     .join("text")
     .text(function (d) {
-      return d.email;
+      return d.label;
     })
     .attr("x", function (d) {
       return d.x;
@@ -135,7 +136,7 @@ function ticked() {
 
 function initFileToOccurrenceCountMap(nodes) {
   for (let i = 0; i < nodes.length; i++) {
-    let knownFiles = nodes[i].filesKnown;
+    let knownFiles = nodes[i].fileSets;
     for (let j = 0; j < knownFiles.length; j++) {
       if (!fileToOccurrenceCountMap.has(knownFiles[j])) {
         fileToOccurrenceCountMap.set(knownFiles[j], 1);
@@ -173,10 +174,10 @@ function showLinkDetails(d) {
   destination = id.split(" ")[1];
   let sourceData, destinationData;
   for (let i = 0; i < nodes.length; i++) {
-    if (nodes[i].email === source) {
-      sourceData = nodes[i].filesKnown;
-    } else if (nodes[i].email === destination) {
-      destinationData = nodes[i].filesKnown;
+    if (nodes[i].label === source) {
+      sourceData = nodes[i].fileSets;
+    } else if (nodes[i].label === destination) {
+      destinationData = nodes[i].fileSets;
     }
   }
   let sharedFiles = [];
@@ -229,8 +230,8 @@ function showAuthorDetails(email) {
   showFilterButton();
   let data;
   for (let i = 0; i < nodes.length; i++) {
-    if (nodes[i].email === email) {
-      data = nodes[i].filesKnown;
+    if (nodes[i].label === email) {
+      data = nodes[i].fileSets;
     }
   }
   let map = new Map();

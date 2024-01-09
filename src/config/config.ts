@@ -90,6 +90,20 @@ export function getPersonalAccessToken(): string {
   return getPreference("personalAccessToken");
 }
 
+export async function setSourceBranch(brancheName: string): Promise<void> {
+  return setPreference("mergeSourceBranch", brancheName);
+}
+export async function setTargetBranch(brancheName: string): Promise<void> {
+  return setPreference("mergeTargetBranch", brancheName);
+}
+
+
+export function getTwoBranches() {
+  return {
+    parentBranch: getPreference("mergeSourceBranch"),
+    childBranch: getPreference("mergeTargetBranch"),
+  };
+}
 
 export function getJenkinsSettings() {
   return {
@@ -116,13 +130,27 @@ export async function setCiToolChosen(ciToolChosen: string): Promise<void> {
 }
 
 export function getSettingsPayload() {
-  return {  
+  return {
     githubUrl: getGitUrl(),
     branchName: getBranchName(),
     ciToolChosen: getCiToolChosen(),
     ciUsername: getCiUsername(),
     apiKey: getApiKey(),
     jobUrl: getJobUrl(),
-    githubOAuthToken: getPersonalAccessToken()
+    githubOAuthToken: getPersonalAccessToken(),
+  };
+}
+
+export function getSettingsPayloadForMerge() {
+  return {
+    settingsPayload: getSettingsPayload(),
+    twoBranches: getTwoBranches(),
+  };
+}
+
+export function getSettingsPayloadForFile(filePath: string) {
+  return {
+    settingsPayload: getSettingsPayload(),
+    filename: filePath,
   };
 }

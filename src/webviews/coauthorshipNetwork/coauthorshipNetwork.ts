@@ -15,6 +15,7 @@ export function coauthorshipNetworkHTML(args: Map<string, vscode.Uri>) {
         console.log(
           "Coauthorship network received from server. Displaying it."
         );
+        console.log(responseData);
         coauthorshipNetworkWebviewPanel.webview.postMessage(responseData);
       } else {
         //Show error

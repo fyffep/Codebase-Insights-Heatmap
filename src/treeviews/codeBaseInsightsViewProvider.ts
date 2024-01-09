@@ -41,7 +41,33 @@ export class CodebaseInsightsViewProvider
       vscode.TreeItemCollapsibleState.None,
       "View your changes currently staged for commit and assess the potential risks associated with your changes"
     );
-    views = [settings, map, coauthorship, risk];
+
+    let fileComparision = new CodeBaseInsightsView(
+      "File Comparision",
+      vscode.TreeItemCollapsibleState.None,
+      "Compare file's health in all branches"
+    );
+
+
+    let branchHealthComparision = new CodeBaseInsightsView(
+      "Branch Health Comparision",
+      vscode.TreeItemCollapsibleState.None,
+      "Compare two branch's health"
+    );
+
+    let mergeSuggestion = new CodeBaseInsightsView(
+      "Merge Suggestion",
+      vscode.TreeItemCollapsibleState.None,
+      "Suggest file over branch to merge"
+    );
+
+    let mergeMap = new CodeBaseInsightsView(
+      "Merge Map",
+      vscode.TreeItemCollapsibleState.None,
+      "Display CodeMap after Merge"
+    );
+
+    views = [settings, map, coauthorship, risk, fileComparision, branchHealthComparision, mergeSuggestion, mergeMap];
     return views;
   }
 }

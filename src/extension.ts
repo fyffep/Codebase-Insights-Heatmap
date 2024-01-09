@@ -50,9 +50,12 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("codebase-insights.coauthorship-network", () => {
-      webviewFactory.createOrShowCoauthorshipNetworkPanel(context);
-    })
+    vscode.commands.registerCommand(
+      "codebase-insights.coauthorship-network",
+      () => {
+        webviewFactory.createOrShowCoauthorshipNetworkPanel(context);
+      }
+    )
   );
 
   context.subscriptions.push(
@@ -62,6 +65,36 @@ export function activate(context: vscode.ExtensionContext) {
         webviewFactory.createOrShowCommitRiskAssessmentPanel(context);
       }
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "codebase-insights.file-comparision",
+      () => {
+        webviewFactory.createOrShowFileComparision(context);
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "codebase-insights.branch-health-comparision",
+      () => {
+        webviewFactory.createOrShowBranchHealthComparision(context);
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "codebase-insights.merge-suggestion",
+      () => {
+        webviewFactory.createOrShowMergeSuggestion(context);
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("codebase-insights.code-map-merge", () => {
+      webviewFactory.createOrShowCodeMapMergePanel(context);
+    })
   );
 }
 

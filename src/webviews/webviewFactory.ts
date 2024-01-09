@@ -4,7 +4,12 @@ import * as htmlFactory from "./htmlFactory";
 import * as config from "../config/config";
 import * as git from "../utils/git";
 import GithubOAuth from "../utils/GithubOAuth";
-import { postCredentials, postModifiedHeatValues } from "../api/api";
+import {
+  getFileData,
+  postCredentials,
+  postMergeCredentials,
+  postModifiedHeatValues,
+} from "../api/api";
 
 //Webviews -- use these for message passing.
 export let loginSignupWebviewPanel: vscode.WebviewPanel | undefined;
@@ -12,6 +17,10 @@ export let settingsWebviewPanel: vscode.WebviewPanel | undefined;
 export let codeMapWebviewPanel: vscode.WebviewPanel | undefined;
 export let coauthorshipNetworkWebviewPanel: vscode.WebviewPanel | undefined;
 export let commitRiskAssessmentWebviewPanel: vscode.WebviewPanel | undefined;
+export let fileComparisionWebviewPanel: vscode.WebviewPanel | undefined;
+export let branchHealthComparisionWebviewPanel: vscode.WebviewPanel | undefined;
+export let mergeSuggestionWebviewPanel: vscode.WebviewPanel | undefined;
+export let codeMapMergeWebviewPanel: vscode.WebviewPanel | undefined;
 
 const preferredColumn: vscode.ViewColumn = vscode.ViewColumn.One;
 
@@ -30,10 +39,7 @@ export function createOrShowLoginSignupPanel(
         enableScripts: true,
         localResourceRoots: [
           vscode.Uri.file(
-            path.join(
-              context.extensionPath,
-              "out/webviews/loginSignup"
-            )
+            path.join(context.extensionPath, "out/webviews/loginSignup")
           ),
         ],
       }
@@ -46,8 +52,7 @@ export function createOrShowLoginSignupPanel(
         "loginSignup.css"
       )
     );
-    const cssUri =
-      loginSignupWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const cssUri = loginSignupWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
     const scriptOnDiskPath = vscode.Uri.file(
       path.join(
         context.extensionPath,
@@ -80,7 +85,11 @@ export function createOrShowLoginSignupPanel(
           GithubOAuth.instance.openGitHubAuthWindow();
           break;
         default:
-          console.error("Invalid message command `"+message.command+"` sent to loginSignupWebviewPanel");
+          console.error(
+            "Invalid message command `" +
+              message.command +
+              "` sent to loginSignupWebviewPanel"
+          );
           break;
       }
     });
@@ -110,17 +119,30 @@ export function createOrShowSettingsPanel(
 
     //Image paths
     const jenkinsLogoOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "out/webviews/settings", "jenkinsLogo.png")
+      path.join(
+        context.extensionPath,
+        "out/webviews/settings",
+        "jenkinsLogo.png"
+      )
     );
-    const jenkinsLogoUri = settingsWebviewPanel.webview.asWebviewUri(jenkinsLogoOnDiskPath);
+    const jenkinsLogoUri = settingsWebviewPanel.webview.asWebviewUri(
+      jenkinsLogoOnDiskPath
+    );
     const githubActionsLogoOnDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, "out/webviews/settings", "githubActionsLogo.png")
+      path.join(
+        context.extensionPath,
+        "out/webviews/settings",
+        "githubActionsLogo.png"
+      )
     );
-    const githubActionsLogoUri = settingsWebviewPanel.webview.asWebviewUri(githubActionsLogoOnDiskPath);
+    const githubActionsLogoUri = settingsWebviewPanel.webview.asWebviewUri(
+      githubActionsLogoOnDiskPath
+    );
     const noCILogoOnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "out/webviews/settings", "noCILogo.png")
     );
-    const noCILogoUri = settingsWebviewPanel.webview.asWebviewUri(noCILogoOnDiskPath);
+    const noCILogoUri =
+      settingsWebviewPanel.webview.asWebviewUri(noCILogoOnDiskPath);
 
     //CSS & vanilla JS
     const cssOnDiskPath = vscode.Uri.file(
@@ -156,19 +178,23 @@ export function createOrShowSettingsPanel(
         case "submitSettingsChange":
           const payload = message.data;
           //Save inputs locally
-          config.setGitUrl(payload["githubUrl"]); 
+          config.setGitUrl(payload["githubUrl"]);
           config.setBranchName(payload["branchName"]);
-          config.setJobUrl(payload["jobUrl"]); 
-          config.setCiToolChosen(payload["ciToolChosen"]); 
-          config.setCiUsername(payload["ciUsername"]); 
-          config.setApiKey(payload["apiKey"]); 
+          config.setJobUrl(payload["jobUrl"]);
+          config.setCiToolChosen(payload["ciToolChosen"]);
+          config.setCiUsername(payload["ciUsername"]);
+          config.setApiKey(payload["apiKey"]);
           config.setAxiosUrl(payload["axiosUrl"]);
           config.setPersonalAccessToken(payload["personalAccessToken"]);
           //Send to API
           postCredentials(payload, settingsWebviewPanel);
           break;
         default:
-          console.error("Invalid message command `"+message.command+"` sent to loginSignupWebviewPanel");
+          console.error(
+            "Invalid message command `" +
+              message.command +
+              "` sent to loginSignupWebviewPanel"
+          );
           break;
       }
     });
@@ -229,6 +255,11 @@ export function createOrShowCodeMapPanel(
         "radarChartScript.js"
       )
     );
+
+    //Image paths
+    const heatmapImagePath = vscode.Uri.file(
+      path.join(context.extensionPath, "out/webviews/codeMap", "image.png")
+    );
     const radarChartScriptUri = codeMapWebviewPanel.webview.asWebviewUri(
       radarChartScriptOnDiskPath
     );
@@ -237,6 +268,8 @@ export function createOrShowCodeMapPanel(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
     const d3Uri = codeMapWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+    const heatmapImagePathUri =
+      codeMapWebviewPanel.webview.asWebviewUri(heatmapImagePath);
 
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
@@ -244,6 +277,7 @@ export function createOrShowCodeMapPanel(
     args.set("controlPanel", controlPanelScriptUri);
     args.set("d3", d3Uri);
     args.set("radarChart", radarChartScriptUri);
+    args.set("resource", heatmapImagePathUri);
 
     codeMapWebviewPanel.webview.html = htmlFactory.generateCodeMapHTML(args);
     codeMapWebviewPanel.onDidDispose(() => {
@@ -260,7 +294,9 @@ export function createOrShowCodeMapPanel(
           postModifiedHeatValues(payload, codeMapWebviewPanel);
           break;
         default:
-          console.error("Invalid message command `"+message.command+"` sent to ");
+          console.error(
+            "Invalid message command `" + message.command + "` sent to "
+          );
           break;
       }
     });
@@ -313,7 +349,8 @@ export function createOrShowCoauthorshipNetworkPanel(
     const d3OnDiskPath = vscode.Uri.file(
       path.join(context.extensionPath, "resources/d3", "d3.min.js")
     );
-    const d3Uri = coauthorshipNetworkWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+    const d3Uri =
+      coauthorshipNetworkWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
 
     let args: Map<string, vscode.Uri> = new Map();
     args.set("css", cssUri);
@@ -384,10 +421,357 @@ export async function createOrShowCommitRiskAssessmentPanel(
       commitRiskAssessmentWebviewPanel = undefined;
     });
     let stagedFiles = await git.getStagedFiles();
-    commitRiskAssessmentWebviewPanel.webview.postMessage({command: "stagedFiles", data: stagedFiles});
+    commitRiskAssessmentWebviewPanel.webview.postMessage({
+      command: "stagedFiles",
+      data: stagedFiles,
+    });
   }
 }
 
+export async function createOrShowFileComparision(
+  context: vscode.ExtensionContext
+): Promise<void> {
+  console.log("Sending file compairion");
+  safelyDisposeAllButFileComparision();
+  if (fileComparisionWebviewPanel) {
+    fileComparisionWebviewPanel.reveal(preferredColumn);
+  } else {
+    fileComparisionWebviewPanel = vscode.window.createWebviewPanel(
+      "fileComparision",
+      "File Comparision across branch",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(context.extensionPath, "out/webviews/fileComparision")
+          ),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/fileComparision",
+        "fileComparision.css"
+      )
+    );
+    const cssUri =
+      fileComparisionWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const scriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/fileComparision",
+        "fileComparisionScript.js"
+      )
+    );
+    const scriptUri =
+      fileComparisionWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
+    fileComparisionWebviewPanel.webview.html =
+      htmlFactory.generateFileComparision(args);
+    fileComparisionWebviewPanel.onDidDispose(() => {
+      fileComparisionWebviewPanel = undefined;
+    });
+
+    fileComparisionWebviewPanel.webview.onDidReceiveMessage(
+      async (message) => {
+        switch (message.command) {
+          case "alert":
+            vscode.window.showInformationMessage(message.data);
+            break;
+          case "fileName":
+            const filedata = getFileData(message.data);
+            // console.log("filedata received",fileData);
+            // if(fileComparisionWebviewPanel){
+            //   fileComparisionWebviewPanel.webview.postMessage({
+            //     command: "fileNameReceived",
+            //     data: fileData,
+            //   });
+            // }
+            
+            break;
+          default:
+            console.error(
+              "Invalid message command `" +
+                message.command +
+                "` sent to loginSignupWebviewPanel"
+            );
+            break;
+        }
+      }
+    );
+  }
+}
+
+//branchHealthComparision
+
+export async function createOrShowBranchHealthComparision(
+  context: vscode.ExtensionContext
+): Promise<void> {
+  console.log("Sending branch health comparision");
+  safelyDisposeAllButBranchHealthComparision();
+  if (branchHealthComparisionWebviewPanel) {
+    branchHealthComparisionWebviewPanel.reveal(preferredColumn);
+  } else {
+    branchHealthComparisionWebviewPanel = vscode.window.createWebviewPanel(
+      "branchHealthComparision",
+      "Branch Health Comparision",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(
+              context.extensionPath,
+              "out/webviews/branchHealthComparision"
+            )
+          ),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/branchHealthComparision",
+        "branchHealthComparision.css"
+      )
+    );
+    const cssUri =
+      branchHealthComparisionWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const scriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/branchHealthComparision",
+        "branchHealthComparisionScript.js"
+      )
+    );
+    const scriptUri =
+      branchHealthComparisionWebviewPanel.webview.asWebviewUri(
+        scriptOnDiskPath
+      );
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("script", scriptUri);
+
+    branchHealthComparisionWebviewPanel.webview.html =
+      htmlFactory.generateBranchHealthComparision(args);
+    branchHealthComparisionWebviewPanel.onDidDispose(() => {
+      branchHealthComparisionWebviewPanel = undefined;
+    });
+    branchHealthComparisionWebviewPanel.webview.onDidReceiveMessage(
+      async (message) => {
+        switch (message.command) {
+          case "alert":
+            vscode.window.showInformationMessage(message.data);
+            break;
+          case "updateSettingsChange":
+            const updatePayload = message.data;
+            if (branchHealthComparisionWebviewPanel) {
+              branchHealthComparisionWebviewPanel.webview.postMessage({
+                command: "api-status-message",
+                data:
+                  "Analyzing merge from " +
+                  updatePayload["sourceBranch"] +
+                  "to" +
+                  updatePayload["targetBranch"],
+              });
+            }
+            console.log("UpdatePayload", updatePayload);
+            config.setSourceBranch(
+              updatePayload["sourceBranch"]["sourceBranchName"]
+            );
+            config.setTargetBranch(
+              updatePayload["targetBranch"]["targetBranchName"]
+            );
+            postMergeCredentials(branchHealthComparisionWebviewPanel);
+            break;
+          default:
+            console.error(
+              "Invalid message command `" +
+                message.command +
+                "` sent to loginSignupWebviewPanel"
+            );
+            break;
+        }
+      }
+    );
+  }
+}
+
+//mergeSuggestion
+//MergeSuggestion
+
+export async function createOrShowMergeSuggestion(
+  context: vscode.ExtensionContext
+): Promise<void> {
+  console.log("Sending merge suggestion");
+  safelyDisposeAllButmergeSuggestion();
+  if (mergeSuggestionWebviewPanel) {
+    mergeSuggestionWebviewPanel.reveal(preferredColumn);
+  } else {
+    mergeSuggestionWebviewPanel = vscode.window.createWebviewPanel(
+      "mergeSuggestion",
+      "Merge Suggestion",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(context.extensionPath, "out/webviews/mergeSuggestion")
+          ),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/mergeSuggestion",
+        "mergeSuggestion.css"
+      )
+    );
+    const cssUri =
+      mergeSuggestionWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    // const scriptOnDiskPath = vscode.Uri.file(
+    //   path.join(
+    //     context.extensionPath,
+    //     "out/webviews/branchHealthComparision",
+    //     "branchHealthComparisionScript.js"
+    //   )
+    // );
+    // const scriptUri =
+    // mergeSuggestionWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+    const resultImage = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/mergeSuggestion",
+        "comp.png"
+      )
+    );
+    const resultImageUri =
+      mergeSuggestionWebviewPanel.webview.asWebviewUri(resultImage);
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    // args.set("script", scriptUri);
+    args.set("resultImage", resultImageUri);
+
+    mergeSuggestionWebviewPanel.webview.html =
+      htmlFactory.generateMergeSuggestion(args);
+    mergeSuggestionWebviewPanel.onDidDispose(() => {
+      mergeSuggestionWebviewPanel = undefined;
+    });
+  }
+}
+
+export function createOrShowCodeMapMergePanel(
+  context: vscode.ExtensionContext
+): void {
+  safelyDisposeAllButCodeMapMerge();
+  if (codeMapMergeWebviewPanel) {
+    codeMapMergeWebviewPanel.reveal(preferredColumn);
+  } else {
+    codeMapMergeWebviewPanel = vscode.window.createWebviewPanel(
+      "codeMapPage",
+      "Code Map",
+      preferredColumn,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(
+            path.join(context.extensionPath, "out/webviews/codeMapMerge")
+          ),
+          vscode.Uri.file(path.join(context.extensionPath, "resources/d3")),
+        ],
+      }
+    );
+
+    const cssOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/codeMapMerge",
+        "codeMapMerge.css"
+      )
+    );
+    const cssUri = codeMapMergeWebviewPanel.webview.asWebviewUri(cssOnDiskPath);
+    const scriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/codeMapMerge",
+        "codeMapMergeScript.js"
+      )
+    );
+    const scriptUri =
+      codeMapMergeWebviewPanel.webview.asWebviewUri(scriptOnDiskPath);
+
+    const controlPanelScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/codeMapMerge",
+        "codeMapMergeControlPanel.js"
+      )
+    );
+    const controlPanelScriptUri = codeMapMergeWebviewPanel.webview.asWebviewUri(
+      controlPanelScriptOnDiskPath
+    );
+
+    const radarChartScriptOnDiskPath = vscode.Uri.file(
+      path.join(
+        context.extensionPath,
+        "out/webviews/codeMapMerge",
+        "radarChartScript.js"
+      )
+    );
+
+    const radarChartScriptUri = codeMapMergeWebviewPanel.webview.asWebviewUri(
+      radarChartScriptOnDiskPath
+    );
+
+    const d3OnDiskPath = vscode.Uri.file(
+      path.join(context.extensionPath, "resources/d3", "d3.min.js")
+    );
+    const d3Uri = codeMapMergeWebviewPanel.webview.asWebviewUri(d3OnDiskPath);
+
+    let args: Map<string, vscode.Uri> = new Map();
+    args.set("css", cssUri);
+    args.set("codeMapScript", scriptUri);
+    args.set("controlPanel", controlPanelScriptUri);
+    args.set("d3", d3Uri);
+    args.set("radarChart", radarChartScriptUri);
+
+    codeMapMergeWebviewPanel.webview.html =
+      htmlFactory.generateCodeMapMergeHTML(args);
+    codeMapMergeWebviewPanel.onDidDispose(() => {
+      codeMapMergeWebviewPanel = undefined;
+    });
+    codeMapMergeWebviewPanel.webview.onDidReceiveMessage(async (message) => {
+      switch (message.command) {
+        case "alert":
+          vscode.window.showInformationMessage(message.data);
+          break;
+        case "submitHeatValueFeedback":
+          const payload = message.data;
+          //Send to API
+          postModifiedHeatValues(payload, codeMapMergeWebviewPanel);
+          break;
+        default:
+          console.error(
+            "Invalid message command `" + message.command + "` sent to "
+          );
+          break;
+      }
+    });
+  }
+}
 
 function safelyDisposeWebviewPanel(
   webview: vscode.WebviewPanel | undefined
@@ -403,7 +787,11 @@ function safelyDisposeAllBut(panel: vscode.WebviewPanel | undefined): void {
     coauthorshipNetworkWebviewPanel,
     commitRiskAssessmentWebviewPanel,
     codeMapWebviewPanel,
-    settingsWebviewPanel
+    settingsWebviewPanel,
+    codeMapMergeWebviewPanel,
+    fileComparisionWebviewPanel,
+    branchHealthComparisionWebviewPanel,
+    mergeSuggestionWebviewPanel,
   ];
   for (let i = 0; i < panels.length; i++) {
     if (panels[i] !== panel) {
@@ -416,6 +804,10 @@ function safelyDisposeAllButCodeMap(): void {
   safelyDisposeAllBut(codeMapWebviewPanel);
 }
 
+function safelyDisposeAllButCodeMapMerge(): void {
+  safelyDisposeAllBut(codeMapMergeWebviewPanel);
+}
+
 function safelyDisposeAllButCoauthorshipNetwork(): void {
   safelyDisposeAllBut(coauthorshipNetworkWebviewPanel);
 }
@@ -424,9 +816,21 @@ function safelyDisposeAllButCommitRiskAssessment(): void {
   safelyDisposeAllBut(commitRiskAssessmentWebviewPanel);
 }
 
+function safelyDisposeAllButFileComparision(): void {
+  safelyDisposeAllBut(fileComparisionWebviewPanel);
+}
+
+function safelyDisposeAllButBranchHealthComparision(): void {
+  safelyDisposeAllBut(branchHealthComparisionWebviewPanel);
+}
+
+function safelyDisposeAllButmergeSuggestion(): void {
+  safelyDisposeAllBut(mergeSuggestionWebviewPanel);
+}
+
 function safelyDisposeAllButSettings(): void {
   safelyDisposeAllBut(settingsWebviewPanel);
 }
 function safelyDisposeAllButLoginSignup(): void {
-    safelyDisposeAllBut(loginSignupWebviewPanel);
+  safelyDisposeAllBut(loginSignupWebviewPanel);
 }

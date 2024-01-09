@@ -1,0 +1,39 @@
+.page {
+  padding: 10%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+h1 {
+  color: orange;
+  margin-left: 15%;
+  font-size: 400;
+}
+
+.branchSelection {
+  margin-left: 20%;
+  text-align: left;
+  margin-top: 4%;
+}
+
+select {
+  width: 250px;
+}
+
+#compareButton {
+  margin-top: 4%;
+  margin-left: 20%;
+  background-color: #66ccff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+#statMessage {
+  margin-top: 4%;
+  margin-left: 20%;
+}

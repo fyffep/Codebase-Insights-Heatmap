@@ -39,6 +39,26 @@ export class CodeBaseInsightsView extends vscode.TreeItem {
           title: "Open Codebase Insights Commit Risk Assessment page",
           command: "codebase-insights.commit-risk-assessment",
         };
+      case "File Comparision":
+        return {
+          title: "Open Codebase Insights File Comparision page",
+          command: "codebase-insights.file-comparision",
+        };
+      case "Branch Health Comparision":
+        return {
+          title: "Open Codebase Insights Branch Health Comparision page",
+          command: "codebase-insights.branch-health-comparision",
+        };
+      case "Merge Suggestion":
+        return {
+          title: "Open Codebase Insights Merge Suggestion page",
+          command: "codebase-insights.merge-suggestion",
+        };
+      case "Merge Map":
+        return {
+          title: "Open Codebase Insights Code Map Merge page",
+          command: "codebase-insights.code-map-merge",
+        };
       case "Insights":
         return {
           title: "Open Codebase Insights Insights page",
